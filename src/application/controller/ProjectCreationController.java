@@ -15,7 +15,7 @@ public class ProjectCreationController {
 	private CommonObjs commonObjs = CommonObjs.getInstance();
 	
 	@FXML 
-	// Method is triggers when "Cancel Project" operation is performed
+	// Method is triggered when "Cancel Project" operation is performed
 	public void CancelNewProjectOp() {
 		// Gets URL of the "HomePageWelcome.fxml" file and loads the JavaFx scene graph
 		URL url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");

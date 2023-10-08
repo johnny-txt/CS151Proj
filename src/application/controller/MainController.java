@@ -13,7 +13,7 @@ public class MainController {
 	// Injects HBox element from the FXML file into this controller
 	@FXML HBox mainBox;
 	
-	// Method is triggers when "Create Project" operation is performed
+	// Method is triggered when "Create Project" operation is performed
 	@FXML public void CreateProjectOperation() {
 		// Gets URL of the "ProjectCreation.fxml" file and loads the JavaFx scene graph
 		URL url = getClass().getClassLoader().getResource("view/ProjectCreation.fxml");
