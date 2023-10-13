@@ -1,9 +1,13 @@
 package application;
 
+import java.net.URL;
+import java.sql.*;
+
 // Import necessary JavaFX classes for building the application
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.fxml.FXMLLoader;
 
@@ -28,7 +32,16 @@ public class Main extends Application {
 			
 			// Initialize and configure a shared instance of CommonObjs
 			CommonObjs commonObjs = CommonObjs.getInstance();
+			
 			commonObjs.setMainBox(mainBox);
+			
+			URL url = getClass().getClassLoader().getResource("view/ProjectList.fxml");
+			AnchorPane pane = (AnchorPane) FXMLLoader.load(url);
+			mainBox.getChildren().add(pane);
+			
+			url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
+			pane = (AnchorPane) FXMLLoader.load(url);
+			mainBox.getChildren().add(pane);
 			
 			
 		} catch(Exception e) {
@@ -38,6 +51,15 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
+		Connection conn = null;
+        try {
+            // Connect to the SQLite database (create if it doesn't exist)
+            conn = DriverManager.getConnection("jdbc:sqlite:database.db");
+            System.out.println("Database created successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		
 		// Launches the JavaFX application, calls the start method to display the user interface
 		launch(args);
 	}
