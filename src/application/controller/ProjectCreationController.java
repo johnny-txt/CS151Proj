@@ -6,6 +6,7 @@ import java.net.URL;
 import application.CommonObjs;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
@@ -14,7 +15,7 @@ public class ProjectCreationController {
 	// Creates instance of CommonObjs to access common objects and data across the application
 	private CommonObjs commonObjs = CommonObjs.getInstance();
 	
-	@FXML 
+	@FXML
 	// Method is triggered when "Cancel Project" operation is performed
 	public void CancelNewProjectOp() {
 		// Gets URL of the "HomePageWelcome.fxml" file and loads the JavaFx scene graph
@@ -62,7 +63,8 @@ public class ProjectCreationController {
 			// Adds pane1 to the mainBox
 			mainBox.getChildren().add(pane1);
 			
-			mainBox.setDisable(true);
+			//ProjectListController.ListEnable();
+			
 		} catch (IOException e) {
 			// Handles any exception that may occur during the view loading process
 			e.printStackTrace();
