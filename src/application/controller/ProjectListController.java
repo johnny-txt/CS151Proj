@@ -7,6 +7,7 @@ import application.CommonObjs;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -16,7 +17,9 @@ public class ProjectListController {
 	// Creates instance of CommonObjs to access common objects and data across the application
 	private CommonObjs commonObjs = CommonObjs.getInstance();
 	
-	@FXML private Button coolList;
+	@FXML private ListView CoolList;
+	
+	@FXML private Label EmptyListText;
 	
 	public void CreateProjectOperation() {
 		// Gets URL of the "ProjectCreation.fxml" file and loads the JavaFx scene graph
@@ -36,10 +39,17 @@ public class ProjectListController {
 			// Adds pane1 to the mainBox
 			mainBox.getChildren().add(pane1);
 			
-			coolList.setVisible(false);
+			//EnableList();
+			
 		} catch (IOException e) {
 			// Handles any exception that may occur during the view loading process
 			e.printStackTrace();
 		}
+	}
+	
+	public void EnableList() {
+		EmptyListText.setVisible(false);
+		CoolList.setVisible(true);
+		
 	}
 }

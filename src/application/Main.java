@@ -37,6 +37,7 @@ public class Main extends Application {
 			
 			URL url = getClass().getClassLoader().getResource("view/ProjectList.fxml");
 			AnchorPane pane = (AnchorPane) FXMLLoader.load(url);
+			commonObjs.setProjectList(pane);
 			mainBox.getChildren().add(pane);
 			
 			url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");

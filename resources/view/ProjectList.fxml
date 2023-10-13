@@ -2,14 +2,15 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane fx:id="ProjectList" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: LIGHTGREY;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.ProjectListController">
    <children>
-      <Label layoutX="25.0" layoutY="166.0" text="Create a new project by&#10;entering project infromation" textAlignment="CENTER" />
+      <Label fx:id="EmptyListText" layoutX="25.0" layoutY="166.0" text="Create a new project by&#10;entering project infromation" textAlignment="CENTER" />
       <TextField layoutX="15.0" layoutY="14.0" prefHeight="25.0" prefWidth="170.0" />
       <Button layoutX="15.0" layoutY="346.0" mnemonicParsing="false" onAction="#CreateProjectOperation" prefHeight="40.0" prefWidth="170.0" style="-fx-background-color: ROYALBLUE;" text="Create" textFill="WHITE" />
-      <Button fx:id="coolList" layoutX="14.0" layoutY="53.0" mnemonicParsing="false" text="Test" />
+      <ListView fx:id="CoolList" layoutY="51.0" prefHeight="280.0" prefWidth="200.0" style="visibility: FALSE;" />
    </children>
 </AnchorPane>

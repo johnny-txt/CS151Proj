@@ -6,6 +6,8 @@ import java.net.URL;
 import application.CommonObjs;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -42,6 +44,7 @@ public class ProjectCreationController {
 		
 	}
 	
+	
 	@FXML 
     public void CreateNewProjectOp() {
 		// Gets URL of the "HomePageWelcome.fxml" file and loads the JavaFx scene graph
@@ -63,11 +66,21 @@ public class ProjectCreationController {
 			// Adds pane1 to the mainBox
 			mainBox.getChildren().add(pane1);
 			
-			//ProjectListController.ListEnable();
+			AnchorPane lol = commonObjs.getProjectList();
+			
+			Node emptyListText = lol.getChildren().get(0);
+			Node projectList = lol.getChildren().get(3);
+			
+			emptyListText.setVisible(false);
+			projectList.setVisible(true);
+
+
 			
 		} catch (IOException e) {
 			// Handles any exception that may occur during the view loading process
 			e.printStackTrace();
 		}
 	}
+	
+	
 }
