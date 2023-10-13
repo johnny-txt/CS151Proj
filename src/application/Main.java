@@ -1,5 +1,9 @@
 package application;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 // Import necessary JavaFX classes for building the application
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -37,8 +41,23 @@ public class Main extends Application {
 		}
 	}
 	
+	
+
+	
 	public static void main(String[] args) {
+		
+		Connection conn = null;
+        try {
+            // Connect to the SQLite database (create if it doesn't exist)
+            conn = DriverManager.getConnection("jdbc:sqlite:database.db");
+            System.out.println("Database created successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
 		// Launches the JavaFX application, calls the start method to display the user interface
 		launch(args);
 	}
+	
+	
 }
