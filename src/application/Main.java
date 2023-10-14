@@ -45,7 +45,6 @@ public class Main extends Application {
 
 	
 	public static void main(String[] args) {
-		// Launches the JavaFX application, calls the start method to display the user interface
 		launch(args);
 	}
 	
