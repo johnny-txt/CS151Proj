@@ -12,7 +12,7 @@
    <children>
       <Button fx:id="CancelNewProject" layoutX="40.0" layoutY="331.0" mnemonicParsing="false" onAction="#CancelNewProjectOp" prefHeight="37.0" prefWidth="130.0" style="-fx-background-color: FIREBRICK;" text="Cancel" textFill="WHITE" />
       <Button fx:id="CreateNewProject" layoutX="245.0" layoutY="331.0" mnemonicParsing="false" onAction="#CreateNewProjectOp" prefHeight="37.0" prefWidth="130.0" style="-fx-background-color: ROYALBLUE;" text="Create" textFill="WHITE" />
-      <DatePicker layoutX="40.0" layoutY="161.0" />
+      <DatePicker fx:id="date" layoutX="40.0" layoutY="161.0" />
       <Label layoutX="34.0" layoutY="26.0" text="New Project">
          <font>
             <Font size="30.0" />
