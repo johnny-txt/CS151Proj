@@ -11,13 +11,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class ProjectListController {
 	
 	// Creates instance of CommonObjs to access common objects and data across the application
 	private CommonObjs commonObjs = CommonObjs.getInstance();
 	
-	@FXML private ListView CoolList;
+	@FXML private VBox list;
 	
 	@FXML private Label EmptyListText;
 	
@@ -41,15 +43,18 @@ public class ProjectListController {
 			
 			//EnableList();
 			
+			list.getChildren().add(new Text("Item "));
+			
 		} catch (IOException e) {
 			// Handles any exception that may occur during the view loading process
 			e.printStackTrace();
 		}
 	}
 	
+	
 	public void EnableList() {
 		EmptyListText.setVisible(false);
-		CoolList.setVisible(true);
+		list.setVisible(true);
 		
 	}
 }

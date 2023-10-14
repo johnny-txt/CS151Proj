@@ -1,5 +1,6 @@
 package application;
 
+import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
@@ -10,6 +11,7 @@ public class CommonObjs {
 	// Private field to hold the reference to the HBox representing the main user interface
 	private HBox mainBox;
 	private AnchorPane projectList;
+	private ListView list;
 	
 	// Instantiates CommonObjs only within this class
 	private CommonObjs() {}
@@ -36,6 +38,15 @@ public class CommonObjs {
 	// Setter method to set the mainBox HBox from outside the class
 	public void setProjectList(AnchorPane projectList) {
 		this.projectList = projectList;
+	}
+	
+	public ListView getList() {
+		return list;
+	}
+	
+	// Setter method to set the mainBox HBox from outside the class
+	public void setList(ListView list) {
+		this.list = list;
 	}
 
 }
