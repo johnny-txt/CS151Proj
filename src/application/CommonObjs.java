@@ -1,5 +1,6 @@
 package application;
 
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
 public class CommonObjs {
@@ -8,6 +9,7 @@ public class CommonObjs {
 	
 	// Private field to hold the reference to the HBox representing the main user interface
 	private HBox mainBox;
+	private AnchorPane projectList;
 	
 	// Instantiates CommonObjs only within this class
 	private CommonObjs() {}
@@ -26,4 +28,14 @@ public class CommonObjs {
 	public void setMainBox(HBox mainBox) {
 		this.mainBox = mainBox;
 	}
+	
+	public AnchorPane getProjectList() {
+		return projectList;
+	}
+	
+	// Setter method to set the mainBox HBox from outside the class
+	public void setProjectList(AnchorPane projectList) {
+		this.projectList = projectList;
+	}
+
 }
