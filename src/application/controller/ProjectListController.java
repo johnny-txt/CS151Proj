@@ -19,9 +19,9 @@ public class ProjectListController {
 	// Creates instance of CommonObjs to access common objects and data across the application
 	private CommonObjs commonObjs = CommonObjs.getInstance();
 	
-	@FXML private VBox list;
+	@FXML public VBox list;
 	
-	@FXML private Label EmptyListText;
+	@FXML public Label EmptyListText;
 	
 	public void CreateProjectOperation() {
 		// Gets URL of the "ProjectCreation.fxml" file and loads the JavaFx scene graph
@@ -43,7 +43,7 @@ public class ProjectListController {
 			
 			//EnableList();
 			
-			list.getChildren().add(new Text("Item "));
+			//AddList("Project 1");
 			
 		} catch (IOException e) {
 			// Handles any exception that may occur during the view loading process
@@ -55,6 +55,11 @@ public class ProjectListController {
 	public void EnableList() {
 		EmptyListText.setVisible(false);
 		list.setVisible(true);
+		
+	}
+	
+	public void AddList(String projectName) {
+		list.getChildren().add(new Text(projectName));
 		
 	}
 }

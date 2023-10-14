@@ -7,10 +7,14 @@ import application.CommonObjs;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class ProjectCreationController {
 	
@@ -44,7 +48,6 @@ public class ProjectCreationController {
 		
 	}
 	
-	//lol
 	@FXML 
     public void CreateNewProjectOp() {
 		// Gets URL of the "HomePageWelcome.fxml" file and loads the JavaFx scene graph
@@ -69,11 +72,15 @@ public class ProjectCreationController {
 			AnchorPane lol = commonObjs.getProjectList();
 			
 			Node emptyListText = lol.getChildren().get(0);
-			Node projectList = lol.getChildren().get(3);
 			
 			emptyListText.setVisible(false);
-			projectList.setVisible(true);
-
+			
+			VBox coolList = commonObjs.getList();
+			
+			if (lol.getChildren().size() < 3) {
+				lol.getChildren().add(coolList);
+			}
+			coolList.getChildren().add(new Text("Project #"));
 
 			
 		} catch (IOException e) {
