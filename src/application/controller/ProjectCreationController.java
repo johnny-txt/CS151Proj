@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 import application.CommonObjs;
 import application.ProjectBean;
+import application.data_access_objects.ProjectDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.DatePicker;
@@ -15,10 +16,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
 public class ProjectCreationController {
+	@FXML
+	private TextField name;
 	
-	private TextField Name;
-	private TextArea Description;
-	private DatePicker Date;
+	@FXML
+	private DatePicker date;
+	
+	@FXML
+	private TextArea description;
+	
 	// Creates instance of CommonObjs to access common objects and data across the application
 	private CommonObjs commonObjs = CommonObjs.getInstance();
 	
@@ -26,8 +32,6 @@ public class ProjectCreationController {
 	// Method is triggered when "Cancel Project" operation is performed
 	public void CancelNewProjectOp() {
 		
-		
-	
 		// Gets URL of the "HomePageWelcome.fxml" file and loads the JavaFx scene graph
 		URL url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
 		
@@ -54,7 +58,11 @@ public class ProjectCreationController {
 	
 	@FXML 
     public void CreateNewProjectOp() {
-        URL url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
+        String projName = name.getText();
+        LocalDate theDate = date.getValue();
+        String desc = description.getText();
+		
+		URL url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
 
         try {
             AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
@@ -69,18 +77,11 @@ public class ProjectCreationController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        ProjectDAO dao = new ProjectDAO();
+        ProjectBean proj = new ProjectBean(projName, theDate, desc);
+        dao.createProjectTable();
+        dao.insertProject(proj);
+        
     }
-	
-	@FXML
-	//method that takes user input so it can be made into an object
-	public void getInfo() {
-		String description = Description.getText();
-		String projName = Name.getText();
-		LocalDate theDate = Date.getValue();
-		ProjectBean proj = new ProjectBean(projName, description, theDate);
-		
-	}
-	
 	
 }
