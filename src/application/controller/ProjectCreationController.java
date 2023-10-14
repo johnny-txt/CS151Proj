@@ -44,7 +44,7 @@ public class ProjectCreationController {
 		
 	}
 	
-	
+	//lol
 	@FXML 
     public void CreateNewProjectOp() {
 		// Gets URL of the "HomePageWelcome.fxml" file and loads the JavaFx scene graph
