@@ -45,27 +45,6 @@ public class Main extends Application {
 
 	
 	public static void main(String[] args) {
-		try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException exception) {
-            System.err.println("SQLite JDBC driver not found.");
-            exception.printStackTrace();
-            return;
-        }
-		
-		
-		Connection conn = null;
-        try {
-            // Connect to the SQLite database (create if it doesn't exist)
-        	
-        	
-            conn = DriverManager.getConnection("jdbc:sqlite:database.db");
-            System.out.println("Database created successfully.");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-		// Launches the JavaFX application, calls the start method to display the user interface
 		launch(args);
 	}
 	
