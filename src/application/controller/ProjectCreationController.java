@@ -62,6 +62,9 @@ public class ProjectCreationController {
 	
 	@FXML 
     public void CreateNewProjectOp() {
+		String projName = name.getText();
+        LocalDate theDate = date.getValue();
+        String desc = description.getText();
 		// Gets URL of the "HomePageWelcome.fxml" file and loads the JavaFx scene graph
 		URL url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
 		
