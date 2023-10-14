@@ -1,9 +1,5 @@
 package application;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
 // Import necessary JavaFX classes for building the application
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -40,9 +36,6 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-	
-	
-
 	
 	public static void main(String[] args) {
 		launch(args);
