@@ -10,6 +10,8 @@ import application.data_access_objects.ProjectDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.DatePicker;
@@ -17,6 +19,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class ProjectCreationController {
 	@FXML
@@ -59,14 +63,13 @@ public class ProjectCreationController {
 		
 	}
 	
-	
-	@FXML
-	public void CreateNewProjectOp() {
-	    String projName = name.getText();
+	@FXML 
+    public void CreateNewProjectOp() {
+      String projName = name.getText();
 	    LocalDate theDate = date.getValue();
 	    String desc = description.getText();
-
-	    // Check if any of the fields is empty
+  
+      // Check if any of the fields is empty
 	    if (projName.isEmpty() || theDate == null || desc.isEmpty()) {
 	        return;
 	    }
@@ -91,16 +94,22 @@ public class ProjectCreationController {
 
 	        mainBox.getChildren().add(pane1);
 
-	        AnchorPane lol = commonObjs.getProjectList();
-
-	        Node emptyListText = lol.getChildren().get(0);
-	        Node projectList = lol.getChildren().get(3);
-
-	        emptyListText.setVisible(false);
-	        projectList.setVisible(true);
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
+			    AnchorPane lol = commonObjs.getProjectList();
+			
+			    Node emptyListText = lol.getChildren().get(0);
+			
+			    emptyListText.setVisible(false);
+			
+			    VBox coolList = commonObjs.getList();
+			
+			    if (lol.getChildren().size() < 3) {
+			    	lol.getChildren().add(coolList);
+		    	}
+			    coolList.getChildren().add(new Text("Project #"));
+        
+	     } catch (IOException e) {
+	          e.printStackTrace();
+	     }
 	}
 	
 }
