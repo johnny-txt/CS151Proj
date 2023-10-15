@@ -2,6 +2,7 @@ package application;
 
 import java.net.URL;
 import java.sql.*;
+import java.util.List;
 
 import application.controller.ProjectListController;
 import application.data_access_objects.ProjectDAO;
@@ -13,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.fxml.FXMLLoader;
 
 
@@ -59,9 +61,17 @@ public class Main extends Application {
 			VBox coolList = commonObjs.getList();
 			AnchorPane lol = commonObjs.getProjectList();
 			
+			List<String> projNames = ProjectDAO.getProjectNames();
+			
+			for (String name : projNames) {
+				coolList.getChildren().add(new Text(name));
+			}
+			
 		    if (lol.getChildren().size() < 3) {
 		    	lol.getChildren().add(coolList);
 	    	}
+		    
+		    
 			
 			
 		} catch(Exception e) {
