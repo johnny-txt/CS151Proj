@@ -6,13 +6,10 @@ import java.net.URL;
 import application.CommonObjs;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 public class ProjectListController {
 	
@@ -41,25 +38,9 @@ public class ProjectListController {
 			// Adds pane1 to the mainBox
 			mainBox.getChildren().add(pane1);
 			
-			//EnableList();
-			
-			//AddList("Project 1");
-			
 		} catch (IOException e) {
 			// Handles any exception that may occur during the view loading process
 			e.printStackTrace();
 		}
-	}
-	
-	
-	public void EnableList() {
-		EmptyListText.setVisible(false);
-		list.setVisible(true);
-		
-	}
-	
-	public void AddList(String projectName) {
-		list.getChildren().add(new Text(projectName));
-		
 	}
 }

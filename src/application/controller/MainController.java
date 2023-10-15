@@ -3,11 +3,9 @@ package application.controller;
 import java.io.IOException;
 import java.net.URL;
 
-import application.CommonObjs;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
@@ -15,8 +13,6 @@ public class MainController {
 	
 	// Injects HBox element from the FXML file into this controller
 	@FXML HBox mainBox;
-	
-	@FXML private ListView CoolList;
 	
 	@FXML private Label EmptyListText;
 	

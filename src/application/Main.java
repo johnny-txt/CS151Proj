@@ -1,15 +1,12 @@
 package application;
 
 import java.net.URL;
-import java.sql.*;
 import java.util.List;
 
-import application.controller.ProjectListController;
 import application.data_access_objects.ProjectDAO;
 // Import necessary JavaFX classes for building the application
 import javafx.application.Application;
 import javafx.stage.Stage;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -67,12 +64,9 @@ public class Main extends Application {
 				coolList.getChildren().add(new Text(name));
 			}
 			
-		    if (lol.getChildren().size() < 3) {
+		    if (projNames.size() > 0 && lol.getChildren().size() < 3) {
 		    	lol.getChildren().add(coolList);
 	    	}
-		    
-		    
-			
 			
 		} catch(Exception e) {
 			// Handles exceptions that may occur when starting application
