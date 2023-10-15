@@ -2,8 +2,10 @@ package application;
 
 import java.net.URL;
 import java.sql.*;
+import java.util.List;
 
 import application.controller.ProjectListController;
+import application.data_access_objects.ProjectDAO;
 // Import necessary JavaFX classes for building the application
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -12,13 +14,17 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.fxml.FXMLLoader;
 
 
 public class Main extends Application {
+	public static ProjectDAO projDao;
 	// Start method is entry point for JavaFx applications
 	@Override
 	public void start(Stage primaryStage) {
+		projDao = new ProjectDAO();
+	    projDao.createProjectTable();
 		try {
 			// Loads the main user interface layout from "Main.fxml" file
 			HBox mainBox = (HBox)FXMLLoader.load(getClass().getClassLoader().getResource("view/Main.fxml"));
@@ -51,11 +57,31 @@ public class Main extends Application {
 			VBox list = (VBox) FXMLLoader.load(url);
 			commonObjs.setList(list);
 			
+			//To test looking at db
+			VBox coolList = commonObjs.getList();
+			AnchorPane lol = commonObjs.getProjectList();
+			
+			List<String> projNames = ProjectDAO.getProjectNames();
+			
+			for (String name : projNames) {
+				coolList.getChildren().add(new Text(name));
+			}
+			
+		    if (lol.getChildren().size() < 3) {
+		    	lol.getChildren().add(coolList);
+	    	}
+		    
+		    
+			
 			
 		} catch(Exception e) {
 			// Handles exceptions that may occur when starting application
 			e.printStackTrace();
 		}
+	}
+	
+	public static void addProj(ProjectBean proj) {
+		projDao.insertProject(proj);
 	}
 	
 	public static void main(String[] args) {
