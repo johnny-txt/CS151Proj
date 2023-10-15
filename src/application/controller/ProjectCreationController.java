@@ -5,6 +5,7 @@ import java.net.URL;
 import java.time.LocalDate;
 
 import application.CommonObjs;
+import application.Main;
 import application.ProjectBean;
 import application.data_access_objects.ProjectDAO;
 import javafx.fxml.FXML;
@@ -81,10 +82,8 @@ public class ProjectCreationController {
 	    }
 
 	    // If all fields are non-empty, create the project
-	    ProjectDAO dao = new ProjectDAO();
 	    ProjectBean proj = new ProjectBean(projName, theDate, desc);
-	    dao.createProjectTable();
-	    dao.insertProject(proj);
+	    Main.addProj(proj);
 
 	    // Continue with page change
 	    URL url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
@@ -111,7 +110,7 @@ public class ProjectCreationController {
 			    if (lol.getChildren().size() < 3) {
 			    	lol.getChildren().add(coolList);
 		    	}
-			    coolList.getChildren().add(new Text("Project #"));
+			    coolList.getChildren().add(new Text(proj.getName()));
         
 	     } catch (IOException e) {
 	          e.printStackTrace();

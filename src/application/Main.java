@@ -4,6 +4,7 @@ import java.net.URL;
 import java.sql.*;
 
 import application.controller.ProjectListController;
+import application.data_access_objects.ProjectDAO;
 // Import necessary JavaFX classes for building the application
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -16,9 +17,12 @@ import javafx.fxml.FXMLLoader;
 
 
 public class Main extends Application {
+	public static ProjectDAO projDao;
 	// Start method is entry point for JavaFx applications
 	@Override
 	public void start(Stage primaryStage) {
+		projDao = new ProjectDAO();
+	    projDao.createProjectTable();
 		try {
 			// Loads the main user interface layout from "Main.fxml" file
 			HBox mainBox = (HBox)FXMLLoader.load(getClass().getClassLoader().getResource("view/Main.fxml"));
@@ -52,10 +56,15 @@ public class Main extends Application {
 			commonObjs.setList(list);
 			
 			
+			
 		} catch(Exception e) {
 			// Handles exceptions that may occur when starting application
 			e.printStackTrace();
 		}
+	}
+	
+	public static void addProj(ProjectBean proj) {
+		projDao.insertProject(proj);
 	}
 	
 	public static void main(String[] args) {
