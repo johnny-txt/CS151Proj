@@ -55,6 +55,13 @@ public class Main extends Application {
 			VBox list = (VBox) FXMLLoader.load(url);
 			commonObjs.setList(list);
 			
+			//To test looking at db
+			VBox coolList = commonObjs.getList();
+			AnchorPane lol = commonObjs.getProjectList();
+			
+		    if (lol.getChildren().size() < 3) {
+		    	lol.getChildren().add(coolList);
+	    	}
 			
 			
 		} catch(Exception e) {
