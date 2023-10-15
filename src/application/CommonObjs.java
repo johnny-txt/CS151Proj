@@ -1,8 +1,5 @@
 package application;
 
-import application.controller.ProjectListController;
-import javafx.scene.Node;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;

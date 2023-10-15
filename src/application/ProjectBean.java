@@ -1,9 +1,6 @@
 package application;
 import java.time.LocalDate;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
-
 public class ProjectBean {
 	
 	private String name;

@@ -93,9 +93,7 @@ public class ProjectDAO {
             System.out.println("Failed to retrieve project names from the database: " + e.getMessage());
             e.printStackTrace();
         }
-
         System.out.println("Retrieved project names: " + projectNames);
-
         return projectNames;
     }
 }
