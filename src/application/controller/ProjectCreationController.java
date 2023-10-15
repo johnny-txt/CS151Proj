@@ -32,6 +32,12 @@ public class ProjectCreationController {
 	@FXML
 	private TextArea description;
 	
+	public void initialize() {
+        // Set the DatePicker to the current date
+        date.setValue(LocalDate.now());
+
+    }
+	
 	// Creates instance of CommonObjs to access common objects and data across the application
 	private CommonObjs commonObjs = CommonObjs.getInstance();
 	
