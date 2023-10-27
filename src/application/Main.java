@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 
 
 public class Main extends Application {
@@ -61,7 +62,7 @@ public class Main extends Application {
 			List<String> projNames = ProjectDAO.getProjectNames();
 			
 			for (String name : projNames) {
-				coolList.getChildren().add(new Text(name));
+				coolList.getChildren().add(new Button(name));
 			}
 			
 		    if (projNames.size() > 0 && lol.getChildren().size() < 3) {

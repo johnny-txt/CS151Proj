@@ -17,6 +17,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.control.Button;
 
 public class ProjectCreationController {
 	@FXML
@@ -39,7 +40,7 @@ public class ProjectCreationController {
 	
 	@FXML
 	// Method is triggered when "Cancel Project" operation is performed
-	public void CancelNewProjectOp() {
+	public void cancelNewProjectOp() {
 		
 		// Gets URL of the "HomePageWelcome.fxml" file and loads the JavaFx scene graph
 		URL url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
@@ -66,7 +67,7 @@ public class ProjectCreationController {
 	}
 	
 	@FXML 
-    public void CreateNewProjectOp() {
+    public void createNewProjectOp() {
       String projName = name.getText();
 	    LocalDate theDate = date.getValue();
 	    String desc = description.getText();
@@ -105,7 +106,9 @@ public class ProjectCreationController {
 			    if (lol.getChildren().size() < 3) {
 			    	lol.getChildren().add(coolList);
 		    	}
-			    coolList.getChildren().add(new Text(proj.getName()));
+			    
+			    Button projectButton = new Button(projName);
+			    coolList.getChildren().add(projectButton);
         
 	     } catch (IOException e) {
 	          e.printStackTrace();
