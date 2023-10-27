@@ -68,7 +68,7 @@ public class ProjectCreationController {
 	
 	@FXML 
     public void createNewProjectOp() {
-      String projName = name.getText();
+		String projName = name.getText();
 	    LocalDate theDate = date.getValue();
 	    String desc = description.getText();
   
