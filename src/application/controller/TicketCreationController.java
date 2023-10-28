@@ -77,12 +77,15 @@ public class TicketCreationController {
 
 	        mainBox.getChildren().add(box1);
 
-			    VBox ticketList = commonObjs.getTicketList();
-			    ticketList.getChildren().clear();
+			VBox ticketList = commonObjs.getTicketList();
+			System.out.println(ticketList);
+			ticketList.getChildren().clear();
 			    
-			    
-			    Text ticketText = new Text(tName);
-			    ticketList.getChildren().add(ticketText);
+			for (String ticketName : ticketDAO.getTicketNames()) {
+				Button ticketButton = new Button(ticketName);
+				ticketButton = (Button) FXMLLoader.load(ticketUrl);
+				box1.getChildren().add(ticketButton);
+			}
         
 	     } catch (IOException e) {
 	          e.printStackTrace();

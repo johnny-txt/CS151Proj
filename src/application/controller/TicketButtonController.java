@@ -16,7 +16,7 @@ public class TicketButtonController {
 	@FXML 
 	public void openTicket() {
 		// Gets URL of the "ProjectCreation.fxml" file and loads the JavaFx scene graph
-		URL url = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
+		URL url = getClass().getClassLoader().getResource("view/TicketBox.fxml");
 		URL commentListUrl = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
 
 		try {
