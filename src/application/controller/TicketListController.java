@@ -21,10 +21,9 @@ public class TicketListController {
 	public void CreateTicketOperation() {
 		// Gets URL of the "ProjectCreation.fxml" file and loads the JavaFx scene graph
 		URL url = getClass().getClassLoader().getResource("view/TicketCreation.fxml");
-		URL ticketListUrl = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
 		
 		try {
-			TicketCreationController.loadProjects();
+			//TicketCreationController.loadProjects();
 			
 			// Loads and AnchorPane for the ProjectCreation view
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
