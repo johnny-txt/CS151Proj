@@ -11,10 +11,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class TicketButtonController {
-	@FXML 
 	private CommonObjs commonObjs = CommonObjs.getInstance();
 	
-	@FXML public void openTicket() {
+	@FXML 
+	public void openTicket() {
 		// Gets URL of the "ProjectCreation.fxml" file and loads the JavaFx scene graph
 		URL url = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
 		URL commentListUrl = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
