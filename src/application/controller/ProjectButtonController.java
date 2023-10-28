@@ -17,10 +17,15 @@ public class ProjectButtonController {
 	
 	@FXML public void openProject() {
 		// Gets URL of the "ProjectCreation.fxml" file and loads the JavaFx scene graph
-		URL url = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
+		URL url = getClass().getClassLoader().getResource("view/ProjectBox.fxml");
+		URL ticketListUrl = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
 		try {
 			// Loads and AnchorPane for the ProjectCreation view
-			VBox pane1 = (VBox) FXMLLoader.load(url);
+			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
+			VBox ticketList = (VBox) FXMLLoader.load(ticketListUrl);
+			commonObjs.setTicketList(ticketList);
+			
+			pane1.getChildren().add(commonObjs.getTicketList());
 
 	        HBox mainBox = commonObjs.getMainBox();
 

@@ -5,6 +5,7 @@
 
 <AnchorPane fx:id="ProjectBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: GRAY;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.TicketListController">
    <children>
-      <Button fx:id="CreateTicketButton" layoutX="135.0" layoutY="331.0" mnemonicParsing="false" onAction="#CreateTicketOperation" prefHeight="37.0" prefWidth="130.0" style="-fx-background-color: ROYALBLUE;" text="Create Ticket" textFill="WHITE" />
+      <Button fx:id="CreateTicketButton" layoutX="235.0" layoutY="349.0" mnemonicParsing="false" onAction="#CreateTicketOperation" prefHeight="37.0" prefWidth="130.0" style="-fx-background-color: ROYALBLUE;" text="Create Ticket" textFill="WHITE" />
+      <Button fx:id="Back" layoutX="27.0" layoutY="349.0" mnemonicParsing="false" onAction="#Back" prefHeight="37.0" prefWidth="130.0" style="-fx-background-color: FIREBRICK;" text="Back" textFill="WHITE" />
    </children>
 </AnchorPane>

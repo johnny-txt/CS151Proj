@@ -55,6 +55,12 @@ public class Main extends Application {
 			VBox list = (VBox) FXMLLoader.load(url);
 			commonObjs.setList(list);
 			
+			/*
+			url = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
+			VBox ticketList = (VBox) FXMLLoader.load(url);
+			commonObjs.setList(ticketList);
+			*/
+			
 			//To test looking at db
 			VBox coolList = commonObjs.getList();
 			AnchorPane lol = commonObjs.getProjectList();

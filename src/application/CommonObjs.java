@@ -1,5 +1,6 @@
 package application;
 
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -12,6 +13,8 @@ public class CommonObjs {
 	private HBox mainBox;
 	private AnchorPane projectList;
 	private VBox list;
+	private VBox ticketList;
+	private ChoiceBox<String> projectDropdown;
 	
 	// Instantiates CommonObjs only within this class
 	private CommonObjs() {}
@@ -45,5 +48,21 @@ public class CommonObjs {
 	
 	public void setList(VBox list) {
 		this.list = list;
+	}
+	
+	public VBox getTicketList() {
+		return ticketList;
+	}
+	
+	public void setTicketList(VBox list) {
+		this.ticketList = list;
+	}
+	
+	public ChoiceBox<String> getProjectDropdown() {
+		return projectDropdown;
+	}
+	
+	public void setProjectDropdown(ChoiceBox<String> dropdown) {
+		this.projectDropdown = dropdown;
 	}
 }
