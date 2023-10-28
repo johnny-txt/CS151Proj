@@ -17,12 +17,15 @@ public class ProjectButtonController {
 	@FXML 
 	private CommonObjs commonObjs = CommonObjs.getInstance();
 	
+	@FXML
+	private Button projectButton;
+	
 	@FXML public void openProject() {
 		// Gets URL of the "ProjectCreation.fxml" file and loads the JavaFx scene graph
 		URL url = getClass().getClassLoader().getResource("view/ProjectBox.fxml");
 		URL ticketListUrl = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
 		try {
-			commonObjs.setCurrentProject(1);
+			commonObjs.setCurrentProject(commonObjs.getList().getChildren().indexOf(projectButton) + 1);
 			// Loads and AnchorPane for the ProjectCreation view
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
 			VBox ticketList = (VBox) FXMLLoader.load(ticketListUrl);
@@ -35,7 +38,7 @@ public class ProjectButtonController {
 				int ticketProjectID = Main.ticketDao.getTicketProjectByID(ticketID);
 				String ticketName = Main.ticketDao.getTicketNameByID(ticketID);
 				if (ticketProjectID == commonObjs.getCurrentProject()) {
-					Text ticketText = new Text(ticketProjectID + " " + ticketName);
+					Text ticketText = new Text(ticketName);
 					ticketList.getChildren().add(ticketText);
 				}
 			}
