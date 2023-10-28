@@ -82,8 +82,10 @@ public class TicketCreationController {
 	        mainBox.getChildren().add(pane1);
 
 			VBox ticketList = commonObjs.getTicketList();
+
+			System.out.println(ticketList);
 			ticketList.getChildren().clear();
-			
+			    
 			    
 			for (int ticketID : ticketDAO.getTicketIDs()) {
 				int ticketProjectID = ticketDAO.getTicketProjectByID(ticketID);

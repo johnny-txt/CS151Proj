@@ -6,14 +6,20 @@ import java.time.LocalDate;
 
 import application.CommentBean;
 import application.CommonObjs;
+import application.data_access_objects.CommentDAO;
+import application.data_access_objects.TicketDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class CommentCreationController {
+	private CommentDAO commentDAO;
+	
 	@FXML
 	private DatePicker date;
 	
@@ -28,16 +34,44 @@ public class CommentCreationController {
 	
 	@FXML
 	public void createNewCommentOp() {
+		commentDAO = new CommentDAO();
+		String tName = "";
 		LocalDate theDate = date.getValue();
 		String desc = description.getText();
 		
-		if (theDate == null || desc.isEmpty()) {
+		if (tName == null || theDate == null || desc.isEmpty()) {
 			return;
 		}
 		
+		int ticketID = TicketDAO.getTicketIDByName(tName);
 		CommentBean comment = new CommentBean(theDate, desc);
+		commentDAO.insertComment(comment, ticketID);
 		
-		URL url = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
+		URL url = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
+//	    URL commentUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
+		
+		try {
+	        VBox box1 = (VBox) FXMLLoader.load(url);
+
+	        HBox mainBox = commonObjs.getMainBox();
+
+	        if (mainBox.getChildren().size() > 1) {
+	            mainBox.getChildren().remove(1);
+	        }
+
+	        mainBox.getChildren().add(box1);
+
+			    VBox commentList = commonObjs.getCommentList();
+			    commentList.getChildren().clear();
+			    
+			    
+//			    Text ticketText = new Text(tName);
+//			    commentList.getChildren().add(ticketText);
+        
+	     } catch (IOException e) {
+	          e.printStackTrace();
+	     }
+
 	}
 	
 	@FXML

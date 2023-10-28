@@ -38,7 +38,7 @@ public class CommentDAO {
         }
 	}
 	
-	public void insertComment(CommentBean comment, String ticketName) {
+	public void insertComment(CommentBean comment, int ticketID) {
 		try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
@@ -49,13 +49,13 @@ public class CommentDAO {
 		
 		LocalDate commentDate = comment.getDate();
 		String commentText = comment.getText();
-		int ticketID = TicketDAO.getTicketIDByName(ticketName);
+		int id = ticketID;
 		
 		try (Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db")) {
 	          String insert = "INSERT INTO comment_table (ticketID, commentDate, commentText) VALUES (?, ?, ?)";
 
 	          try (PreparedStatement preparedStatement = connect.prepareStatement(insert)) {
-	              preparedStatement.setInt(1, ticketID);
+	              preparedStatement.setInt(1, id);
 	              preparedStatement.setDate(2, java.sql.Date.valueOf(commentDate));
 	              preparedStatement.setString(3, commentText);
 
