@@ -3,6 +3,7 @@ package application;
 import java.net.URL;
 import java.util.List;
 
+import application.data_access_objects.CommentDAO;
 import application.data_access_objects.ProjectDAO;
 import application.data_access_objects.TicketDAO;
 // Import necessary JavaFX classes for building the application
@@ -20,6 +21,7 @@ import javafx.scene.control.Button;
 public class Main extends Application {
 	public static ProjectDAO projDao;
 	public static TicketDAO ticketDao;
+	public static CommentDAO commentDao;
 	// Start method is entry point for JavaFx applications
 	@Override
 	public void start(Stage primaryStage) {
@@ -27,6 +29,8 @@ public class Main extends Application {
 	    projDao.createProjectTable();
 	    ticketDao = new TicketDAO();
 	    ticketDao.createTicketTable();
+	    commentDao = new CommentDAO();
+	    commentDao.createCommentTable();
 		try {
 			// Loads the main user interface layout from "Main.fxml" file
 			HBox mainBox = (HBox)FXMLLoader.load(getClass().getClassLoader().getResource("view/Main.fxml"));
