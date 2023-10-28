@@ -78,9 +78,9 @@ public class TicketCreationController {
 			    	lol.getChildren().add(coolList);
 		    	}
 			    
-			    Button projectButton = (Button) FXMLLoader.load(buttonUrl);
-			    projectButton.setText(projName);
-			    coolList.getChildren().add(projectButton);
+//			    Button projectButton = (Button) FXMLLoader.load(buttonUrl);
+//			    projectButton.setText(projName);
+//			    coolList.getChildren().add(projectButton);
         
 	     } catch (IOException e) {
 	          e.printStackTrace();
