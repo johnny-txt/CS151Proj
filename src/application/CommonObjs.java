@@ -16,6 +16,7 @@ public class CommonObjs {
 	private VBox ticketList;
 	private VBox commentList;
 	private ChoiceBox<String> projectDropdown;
+	private int currentProjectID;
 	
 	// Instantiates CommonObjs only within this class
 	private CommonObjs() {}
@@ -73,5 +74,13 @@ public class CommonObjs {
 	
 	public void setCommentList(VBox list) {
 		this.commentList = list;
+	}
+	
+	public int getCurrentProject() {
+		return currentProjectID;
+	}
+	
+	public void setCurrentProject(int id) {
+		this.currentProjectID = id;
 	}
 }

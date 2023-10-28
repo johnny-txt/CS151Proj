@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.List;
 
 import application.CommonObjs;
+import application.Main;
 import application.TicketBean;
 import application.data_access_objects.ProjectDAO;
 import application.data_access_objects.TicketDAO;
@@ -23,7 +24,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public class TicketCreationController {
-	private TicketDAO ticketDAO;
+	public TicketDAO ticketDAO;
 	
 	@FXML
 	private TextField ticketName;
@@ -50,7 +51,7 @@ public class TicketCreationController {
 	
 	@FXML
 	public void createNewTicketOp() {
-		ticketDAO = new TicketDAO();
+		ticketDAO = Main.ticketDao;
 		String pName = projectDropdown.getValue();
 		String tName = ticketName.getText();
 		String desc = description.getText();
@@ -63,10 +64,13 @@ public class TicketCreationController {
 		TicketBean ticket = new TicketBean(projectID, tName, desc);
 		ticketDAO.insertTicket(ticket, projectID);
 		
+		URL projectBoxUrl = getClass().getClassLoader().getResource("view/ProjectBox.fxml");
 		URL url = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
 	    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 	
 	    try {
+	    	
+			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(projectBoxUrl);
 	        VBox box1 = (VBox) FXMLLoader.load(url);
 
 	        HBox mainBox = commonObjs.getMainBox();
@@ -75,17 +79,23 @@ public class TicketCreationController {
 	            mainBox.getChildren().remove(1);
 	        }
 
-	        mainBox.getChildren().add(box1);
+	        mainBox.getChildren().add(pane1);
 
 			VBox ticketList = commonObjs.getTicketList();
-			System.out.println(ticketList);
 			ticketList.getChildren().clear();
+			
+			
 			    
-			List<String> projNames = ProjectDAO.getProjectNames();
-			for (String ticketName : ticketDAO.getTicketNames()) {
-				Text ticketText = new Text(ticketName);
-				box1.getChildren().add(ticketText);
+			for (int ticketID : ticketDAO.getTicketIDs()) {
+				int ticketProjectID = ticketDAO.getTicketProjectByID(ticketID);
+				String ticketName = ticketDAO.getTicketNameByID(ticketID);
+				if (ticketProjectID == commonObjs.getCurrentProject()) {
+					Text ticketText = new Text(ticketProjectID + " " + ticketName);
+					box1.getChildren().add(ticketText);
+				}
 			}
+			
+			pane1.getChildren().add(box1);
         
 	     } catch (IOException e) {
 	          e.printStackTrace();
