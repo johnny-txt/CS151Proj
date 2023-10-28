@@ -96,6 +96,64 @@ public class TicketDAO {
 		
 	}
 	
+	public static List<Integer> getTicketProjectIDs(){
+		List<Integer> ticketProjectIDs = new ArrayList<>();
+		
+		try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.err.println("SQLite JDBC driver not found.");
+            e.printStackTrace();
+            return ticketProjectIDs;
+        }
+		
+		try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+	            Statement statement = connection.createStatement()) {
+	            String selectSQL = "SELECT projectID FROM ticket_table";
+	            ResultSet resultSet = statement.executeQuery(selectSQL);
+
+	            while (resultSet.next()) {
+	                int ticketProjectID = resultSet.getInt("projectID");
+	                ticketProjectIDs.add(ticketProjectID);
+	            }
+	        } catch (SQLException e) {
+	            System.out.println("Failed to retrieve ticket names from the database: " + e.getMessage());
+	            e.printStackTrace();
+	        }
+		System.out.println("Retrieved ticket project id's: " + ticketProjectIDs);
+		return ticketProjectIDs;
+		
+	}
+	
+	public static List<Integer> getTicketIDs(){
+		List<Integer> ticketIDs = new ArrayList<>();
+		
+		try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.err.println("SQLite JDBC driver not found.");
+            e.printStackTrace();
+            return ticketIDs;
+        }
+		
+		try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+	            Statement statement = connection.createStatement()) {
+	            String selectSQL = "SELECT id FROM ticket_table";
+	            ResultSet resultSet = statement.executeQuery(selectSQL);
+
+	            while (resultSet.next()) {
+	                int ticketID = resultSet.getInt("id");
+	                ticketIDs.add(ticketID);
+	            }
+	        } catch (SQLException e) {
+	            System.out.println("Failed to retrieve ticket names from the database: " + e.getMessage());
+	            e.printStackTrace();
+	        }
+		System.out.println("Retrieved ticket project id's: " + ticketIDs);
+		return ticketIDs;
+		
+	}
+	
 	public static int getTicketIDByName(String ticketName) {
         int ticketID = -1;
 
@@ -120,6 +178,58 @@ public class TicketDAO {
             e.printStackTrace();
         }
         return ticketID;
+    }
+	
+	public static String getTicketNameByID(int ticketID) {
+        String ticketName = null;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.err.println("SQLite JDBC driver not found.");
+            e.printStackTrace();
+            return ticketName;
+        }
+
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT ticketName FROM ticket_table WHERE id = ?")) {
+            preparedStatement.setInt(1, ticketID);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                ticketName = resultSet.getString("ticketName");
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve project ID from the database: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return ticketName;
+    }
+	
+	public static int getTicketProjectByID(int ticketID) {
+        int ticketProject = -1;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.err.println("SQLite JDBC driver not found.");
+            e.printStackTrace();
+            return ticketProject;
+        }
+
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT projectID FROM ticket_table WHERE id = ?")) {
+            preparedStatement.setInt(1, ticketID);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+            	ticketProject = resultSet.getInt("projectID");
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve project ID from the database: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return ticketProject;
     }
 	
 }
