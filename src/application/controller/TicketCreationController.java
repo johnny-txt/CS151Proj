@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -29,15 +30,17 @@ public class TicketCreationController {
 	private TextArea description;
 	
 	@FXML
-	public static ChoiceBox<String> projects;
+	public ComboBox<String> projectDropdown;
 	
 	@FXML
-	public static void loadProjects() {
+	public void loadProjects() {
+		projectDropdown.getItems().clear();
+		System.out.println("lol");
 		
 		List<String> projNames = ProjectDAO.getProjectNames();
 		
 		for (String name : projNames) {
-			System.out.println(name);
+			projectDropdown.getItems().add(name);
 		}
 	}
 	
