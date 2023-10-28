@@ -96,4 +96,30 @@ public class ProjectDAO {
         System.out.println("Retrieved project names: " + projectNames);
         return projectNames;
     }
+	
+	public static int getProjectIDByName(String projectName) {
+        int projectID = -1;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.err.println("SQLite JDBC driver not found.");
+            e.printStackTrace();
+            return projectID;
+        }
+
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT id FROM project_table WHERE projectName = ?")) {
+            preparedStatement.setString(1, projectName);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                projectID = resultSet.getInt("id");
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve project ID from the database: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return projectID;
+    }
 }
