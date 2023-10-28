@@ -61,8 +61,11 @@ public class Main extends Application {
 			
 			List<String> projNames = ProjectDAO.getProjectNames();
 			
+			URL urlButton = getClass().getClassLoader().getResource("view/ProjectButton.fxml");
 			for (String name : projNames) {
-				coolList.getChildren().add(new Button(name));
+				Button projectButton = (Button) FXMLLoader.load(urlButton);
+			    projectButton.setText(name);
+				coolList.getChildren().add(projectButton);
 			}
 			
 		    if (projNames.size() > 0 && lol.getChildren().size() < 3) {

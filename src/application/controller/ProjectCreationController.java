@@ -83,7 +83,8 @@ public class ProjectCreationController {
 
 	    // Continue with page change
 	    URL url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
-
+	    URL buttonUrl = getClass().getClassLoader().getResource("view/ProjectButton.fxml");
+	    
 	    try {
 	        AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
 
@@ -107,7 +108,8 @@ public class ProjectCreationController {
 			    	lol.getChildren().add(coolList);
 		    	}
 			    
-			    Button projectButton = new Button(projName);
+			    Button projectButton = (Button) FXMLLoader.load(buttonUrl);
+			    projectButton.setText(projName);
 			    coolList.getChildren().add(projectButton);
         
 	     } catch (IOException e) {
