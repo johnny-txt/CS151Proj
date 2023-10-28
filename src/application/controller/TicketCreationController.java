@@ -9,12 +9,14 @@ import application.CommonObjs;
 import application.data_access_objects.ProjectDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class TicketCreationController {
 	@FXML
@@ -49,6 +51,40 @@ public class TicketCreationController {
 		if (tName.isEmpty() || desc.isEmpty()) {
 			return;
 		}
+		
+		URL url = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
+	    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
+	
+	    try {
+	        AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
+
+	        HBox mainBox = commonObjs.getMainBox();
+
+	        if (mainBox.getChildren().size() > 1) {
+	            mainBox.getChildren().remove(1);
+	        }
+
+	        mainBox.getChildren().add(pane1);
+
+			    AnchorPane lol = commonObjs.getProjectList();
+			
+			    Node emptyListText = lol.getChildren().get(0);
+			
+			    emptyListText.setVisible(false);
+			
+			    VBox coolList = commonObjs.getList();
+			
+			    if (lol.getChildren().size() < 3) {
+			    	lol.getChildren().add(coolList);
+		    	}
+			    
+//			    Button projectButton = (Button) FXMLLoader.load(buttonUrl);
+//			    projectButton.setText(projName);
+//			    coolList.getChildren().add(projectButton);
+        
+	     } catch (IOException e) {
+	          e.printStackTrace();
+	     }
 	}
 	
 	@FXML

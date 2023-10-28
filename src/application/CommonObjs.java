@@ -14,6 +14,7 @@ public class CommonObjs {
 	private AnchorPane projectList;
 	private VBox list;
 	private VBox ticketList;
+	private VBox commentList;
 	private ChoiceBox<String> projectDropdown;
 	
 	// Instantiates CommonObjs only within this class
@@ -64,5 +65,13 @@ public class CommonObjs {
 	
 	public void setProjectDropdown(ChoiceBox<String> dropdown) {
 		this.projectDropdown = dropdown;
+	}
+	
+	public VBox getCommentList() {
+		return commentList;
+	}
+	
+	public void setCommentList(VBox list) {
+		this.commentList = list;
 	}
 }
