@@ -1,12 +1,12 @@
 package application;
 
 public class TicketBean {
-	private String projectName;
+	private int projectID;
 	private String ticketName;
 	private String description;
 	
-	public TicketBean(String projectName, String ticketName, String description) {
-		this.projectName = projectName;
+	public TicketBean(int projectID, String ticketName, String description) {
+		this.projectID = projectID;
 		this.ticketName = ticketName;
 		this.description = description;
 	}

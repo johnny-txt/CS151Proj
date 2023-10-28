@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.List;
 
 import application.data_access_objects.ProjectDAO;
+import application.data_access_objects.TicketDAO;
 // Import necessary JavaFX classes for building the application
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -18,11 +19,14 @@ import javafx.scene.control.Button;
 
 public class Main extends Application {
 	public static ProjectDAO projDao;
+	public static TicketDAO ticketDao;
 	// Start method is entry point for JavaFx applications
 	@Override
 	public void start(Stage primaryStage) {
 		projDao = new ProjectDAO();
 	    projDao.createProjectTable();
+	    ticketDao = new TicketDAO();
+	    ticketDao.createTicketTable();
 		try {
 			// Loads the main user interface layout from "Main.fxml" file
 			HBox mainBox = (HBox)FXMLLoader.load(getClass().getClassLoader().getResource("view/Main.fxml"));

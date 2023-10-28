@@ -6,7 +6,9 @@ import java.net.URL;
 import java.util.List;
 
 import application.CommonObjs;
+import application.TicketBean;
 import application.data_access_objects.ProjectDAO;
+import application.data_access_objects.TicketDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -18,10 +20,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class TicketCreationController {
-	@FXML
-	private TextField projName;
+	private TicketDAO ticketDAO;
 	
 	@FXML
 	private TextField ticketName;
@@ -48,18 +50,24 @@ public class TicketCreationController {
 	
 	@FXML
 	public void createNewTicketOp() {
+		ticketDAO = new TicketDAO();
+		String pName = projectDropdown.getValue();
 		String tName = ticketName.getText();
 		String desc = description.getText();
 		
-		if (tName.isEmpty() || desc.isEmpty()) {
+		if (pName == null || tName.isEmpty() || desc.isEmpty()) {
 			return;
 		}
+		
+		int projectID = ProjectDAO.getProjectIDByName(pName);
+		TicketBean ticket = new TicketBean(projectID, tName, desc);
+		ticketDAO.insertTicket(ticket, projectID);
 		
 		URL url = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
 	    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 	
 	    try {
-	        AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
+	        VBox box1 = (VBox) FXMLLoader.load(url);
 
 	        HBox mainBox = commonObjs.getMainBox();
 
@@ -67,23 +75,14 @@ public class TicketCreationController {
 	            mainBox.getChildren().remove(1);
 	        }
 
-	        mainBox.getChildren().add(pane1);
+	        mainBox.getChildren().add(box1);
 
-			    AnchorPane lol = commonObjs.getProjectList();
-			
-			    Node emptyListText = lol.getChildren().get(0);
-			
-			    emptyListText.setVisible(false);
-			
-			    VBox coolList = commonObjs.getList();
-			
-			    if (lol.getChildren().size() < 3) {
-			    	lol.getChildren().add(coolList);
-		    	}
+			    VBox ticketList = commonObjs.getTicketList();
+			    ticketList.getChildren().clear();
 			    
-//			    Button projectButton = (Button) FXMLLoader.load(buttonUrl);
-//			    projectButton.setText(projName);
-//			    coolList.getChildren().add(projectButton);
+			    
+			    Text ticketText = new Text(tName);
+			    ticketList.getChildren().add(ticketText);
         
 	     } catch (IOException e) {
 	          e.printStackTrace();

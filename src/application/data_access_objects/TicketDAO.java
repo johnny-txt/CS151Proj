@@ -25,8 +25,8 @@ public class TicketDAO {
 		try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
 	            Statement statement = connection.createStatement()) {
 	            String createTableSQL = "CREATE TABLE IF NOT EXISTS ticket_table (" +
-	                    "id INTEGER PRIMARY KEY, " +
-	            		"projectID INTEGER" +
+	            		"id INTEGER PRIMARY KEY, " +
+	                    "projectID INTEGER, " +
 	                    "ticketName TEXT, " +
 	                    "ticketDescription TEXT" +
 	                    ")";
@@ -36,7 +36,7 @@ public class TicketDAO {
 	    	System.out.println("Failed to create ticket_table: " + e.getMessage());
 	    }
 	}
-	public void insertTicket(TicketBean ticket, String projectName) {
+	public void insertTicket(TicketBean ticket, int projectID) {
 		try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
@@ -45,17 +45,17 @@ public class TicketDAO {
             return;
         }
 		
-		String ticketName = ticket.getTicketName();
-		String ticketDesc = ticket.getDescription();
-		int projectID = ProjectDAO.getProjectIDByName(projectName);
+		String tName = ticket.getTicketName();
+		String tDesc = ticket.getDescription();
+		int id = projectID;
 		
 		try (Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db")) {
 	          String insert = "INSERT INTO ticket_table (projectID, ticketName, ticketDescription) VALUES (?, ?, ?)";
-
+	          				   
 	          try (PreparedStatement preparedStatement = connect.prepareStatement(insert)) {
-	        	  preparedStatement.setInt(1, projectID);
-	        	  preparedStatement.setString(2, ticketName);
-	              preparedStatement.setString(3, ticketDesc);
+	        	  preparedStatement.setInt(1, id);
+	        	  preparedStatement.setString(2, tName);
+	              preparedStatement.setString(3, tDesc);
 
 	              preparedStatement.executeUpdate();
 	              System.out.println("Data inserted");
