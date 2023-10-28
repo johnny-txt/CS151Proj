@@ -77,12 +77,15 @@ public class TicketCreationController {
 
 	        mainBox.getChildren().add(box1);
 
-			    VBox ticketList = commonObjs.getTicketList();
-			    ticketList.getChildren().clear();
+			VBox ticketList = commonObjs.getTicketList();
+			System.out.println(ticketList);
+			ticketList.getChildren().clear();
 			    
-			    
-			    Text ticketText = new Text(tName);
-			    ticketList.getChildren().add(ticketText);
+			List<String> projNames = ProjectDAO.getProjectNames();
+			for (String ticketName : ticketDAO.getTicketNames()) {
+				Text ticketText = new Text(ticketName);
+				box1.getChildren().add(ticketText);
+			}
         
 	     } catch (IOException e) {
 	          e.printStackTrace();

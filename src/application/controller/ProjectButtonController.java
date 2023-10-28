@@ -23,6 +23,7 @@ public class ProjectButtonController {
 			// Loads and AnchorPane for the ProjectCreation view
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
 			VBox ticketList = (VBox) FXMLLoader.load(ticketListUrl);
+			System.out.println(commonObjs.getTicketList());
 			commonObjs.setTicketList(ticketList);
 			
 			pane1.getChildren().add(commonObjs.getTicketList());
