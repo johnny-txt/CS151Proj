@@ -27,7 +27,7 @@ public class CommentDAO {
              Statement statement = connection.createStatement()) {
             String createTableSQL = "CREATE TABLE IF NOT EXISTS comment_table (" +
                     "id INTEGER PRIMARY KEY, " +
-                    //"projectName TEXT, " +
+            		"ticketID INTEGER" +
                     "commentDate DATE, " +
                     "commentText TEXT" +
                     ")";
@@ -38,7 +38,7 @@ public class CommentDAO {
         }
 	}
 	
-	public void insertComment(CommentBean comment) {
+	public void insertComment(CommentBean comment, String ticketName) {
 		try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
@@ -49,23 +49,24 @@ public class CommentDAO {
 		
 		LocalDate commentDate = comment.getDate();
 		String commentText = comment.getText();
+		int ticketID = TicketDAO.getTicketIDByName(ticketName);
 		
 		try (Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db")) {
-	          String insert = "INSERT INTO comment_table (commentDate, commentText) VALUES (?, ?)";
+	          String insert = "INSERT INTO comment_table (ticketID, commentDate, commentText) VALUES (?, ?, ?)";
 
 	          try (PreparedStatement preparedStatement = connect.prepareStatement(insert)) {
-//	              preparedStatement.setString();
-	              preparedStatement.setDate(1, java.sql.Date.valueOf(commentDate));
-	              preparedStatement.setString(2, commentText);
+	              preparedStatement.setInt(1, ticketID);
+	              preparedStatement.setDate(2, java.sql.Date.valueOf(commentDate));
+	              preparedStatement.setString(3, commentText);
 
 	              preparedStatement.executeUpdate();
 	              System.out.println("Data inserted");
 	          } catch (SQLException e) {
 	              System.out.println("Failed to execute the SQL statement: " + e.getMessage());
 	          }
-	      } catch (SQLException e) {
-	          System.out.println("Failed to connect to the database: " + e.getMessage());
-	      }
+		} catch (SQLException e) {
+			System.out.println("Failed to connect to the database: " + e.getMessage());
+	    }
 	}
 	
 	public static List<String> getComments(){

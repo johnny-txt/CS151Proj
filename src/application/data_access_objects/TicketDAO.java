@@ -23,20 +23,20 @@ public class TicketDAO {
 		}
 		
 		try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
-	             Statement statement = connection.createStatement()) {
+	            Statement statement = connection.createStatement()) {
 	            String createTableSQL = "CREATE TABLE IF NOT EXISTS ticket_table (" +
 	                    "id INTEGER PRIMARY KEY, " +
-	                    //"projectName TEXT, " +
+	            		"projectID INTEGER" +
 	                    "ticketName TEXT, " +
 	                    "ticketDescription TEXT" +
 	                    ")";
 	            statement.executeUpdate(createTableSQL);
 	            System.out.println("ticket_table created successfully.");
-	        } catch (SQLException e) {
-	            System.out.println("Failed to create ticket_table: " + e.getMessage());
-	        }
+	    } catch (SQLException e) {
+	    	System.out.println("Failed to create ticket_table: " + e.getMessage());
+	    }
 	}
-	public void insertTicket(TicketBean ticket) {
+	public void insertTicket(TicketBean ticket, String projectName) {
 		try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
@@ -47,14 +47,15 @@ public class TicketDAO {
 		
 		String ticketName = ticket.getTicketName();
 		String ticketDesc = ticket.getDescription();
+		int projectID = ProjectDAO.getProjectIDByName(projectName);
 		
 		try (Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db")) {
-	          String insert = "INSERT INTO ticket_table (ticketName, ticketDescription) VALUES (?, ?)";
+	          String insert = "INSERT INTO ticket_table (projectID, ticketName, ticketDescription) VALUES (?, ?, ?)";
 
 	          try (PreparedStatement preparedStatement = connect.prepareStatement(insert)) {
-	        	  //preparedStatement.setString();
-	        	  preparedStatement.setString(1, ticketName);
-	              preparedStatement.setString(2, ticketDesc);
+	        	  preparedStatement.setInt(1, projectID);
+	        	  preparedStatement.setString(2, ticketName);
+	              preparedStatement.setString(3, ticketDesc);
 
 	              preparedStatement.executeUpdate();
 	              System.out.println("Data inserted");
@@ -94,4 +95,31 @@ public class TicketDAO {
 		return ticketNames;
 		
 	}
+	
+	public static int getTicketIDByName(String ticketName) {
+        int ticketID = -1;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.err.println("SQLite JDBC driver not found.");
+            e.printStackTrace();
+            return ticketID;
+        }
+
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT id FROM ticket_table WHERE ticketName = ?")) {
+            preparedStatement.setString(1, ticketName);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                ticketID = resultSet.getInt("id");
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve project ID from the database: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return ticketID;
+    }
+	
 }
