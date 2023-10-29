@@ -3,6 +3,7 @@ package application.controller;
 import java.io.IOException;
 
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 
 import application.CommonObjs;
@@ -40,6 +41,8 @@ public class TicketCreationController {
 		projectDropdown.getItems().clear();
 		
 		List<String> projNames = ProjectDAO.getProjectNames();
+		
+		Collections.sort(projNames, String.CASE_INSENSITIVE_ORDER);
 		
 		for (String name : projNames) {
 			projectDropdown.getItems().add(name);
