@@ -2,7 +2,8 @@ package application.controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import application.CommentBean;
 import application.CommonObjs;
@@ -10,24 +11,27 @@ import application.data_access_objects.CommentDAO;
 import application.data_access_objects.TicketDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 public class CommentCreationController {
 	private CommentDAO commentDAO;
 	
 	@FXML
-	private DatePicker date;
+	private TextField timestamp;
 	
 	@FXML
 	private TextArea description;
 	
 	public void initialize() {
-		date.setValue(LocalDate.now());
+	    LocalDateTime currentDateTime = LocalDateTime.now();
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); 
+	    String formattedDateTime = currentDateTime.format(formatter);
+	    
+	    timestamp.setText(formattedDateTime);
 	}
 	
 	private CommonObjs commonObjs = CommonObjs.getInstance();
@@ -36,15 +40,15 @@ public class CommentCreationController {
 	public void createNewCommentOp() {
 		commentDAO = new CommentDAO();
 		String tName = "";
-		LocalDate theDate = date.getValue();
+		String time = timestamp.getText();
 		String desc = description.getText();
 		
-		if (tName == null || theDate == null || desc.isEmpty()) {
+		if (tName == null || time == null || desc.isEmpty()) {
 			return;
 		}
 		
 		int ticketID = TicketDAO.getTicketIDByName(tName);
-		CommentBean comment = new CommentBean(theDate, desc);
+		CommentBean comment = new CommentBean(time, desc);
 		commentDAO.insertComment(comment, ticketID);
 		
 		URL url = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");

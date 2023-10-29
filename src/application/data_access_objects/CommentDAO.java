@@ -29,7 +29,7 @@ public class CommentDAO {
             String createTableSQL = "CREATE TABLE IF NOT EXISTS comment_table (" +
                     "id INTEGER PRIMARY KEY, " +
             		"ticketID INTEGER, " +
-                    "commentDate DATE, " +
+                    "timeStamp TEXT, " +
             		"commentText TEXT" +
                     ")";
             statement.executeUpdate(createTableSQL);
@@ -48,16 +48,16 @@ public class CommentDAO {
             return;
         }
 		
-		LocalDate commDate = comment.getDate();
+		String timestamp = comment.getTimestamp();
 		String commText = comment.getText();
 		int id = ticketID;
 		
 		try (Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db")) {
-	          String insert = "INSERT INTO comment_table (ticketID, commentDate, commentText) VALUES (?, ?, ?)";
+	          String insert = "INSERT INTO comment_table (ticketID, timeStamp, commentText) VALUES (?, ?, ?)";
 
 	          try (PreparedStatement preparedStatement = connect.prepareStatement(insert)) {
 	              preparedStatement.setInt(1, id);
-	              preparedStatement.setDate(2, java.sql.Date.valueOf(commDate));
+	              preparedStatement.setString(2, timestamp);
 	              preparedStatement.setString(3, commText);
 	              
 	              preparedStatement.executeUpdate();
