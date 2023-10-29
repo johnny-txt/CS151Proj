@@ -2,20 +2,20 @@ package application;
 import java.time.LocalDate;
 
 public class CommentBean {
-	private LocalDate date;
+	private String timestamp;
 	private String text;
 	
-	public CommentBean(LocalDate date, String text) {
-		this.date = date;
+	public CommentBean(String time, String text) {
+		this.timestamp = time;
 		this.text = text;
 	}
 	
-	public LocalDate getDate() {
-		return date;
+	public String getTimestamp() {
+		return timestamp;
 	}
 	
-	public void setDate(LocalDate date) {
-		this.date = date;
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
 	}
 	
 	public String getText() {

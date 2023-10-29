@@ -2,7 +2,8 @@ package application.controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import application.CommentBean;
 import application.CommonObjs;
@@ -11,44 +12,45 @@ import application.data_access_objects.CommentDAO;
 import application.data_access_objects.TicketDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 public class CommentCreationController {
 	private CommentDAO commentDAO;
 	
 	@FXML
-	private DatePicker date;
+	private TextField timestamp;
 	
 	@FXML
 	private TextArea description;
 	
 	public void initialize() {
-		date.setValue(LocalDate.now());
+	    LocalDateTime currentDateTime = LocalDateTime.now();
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); 
+	    String formattedDateTime = currentDateTime.format(formatter);
+	    
+	    timestamp.setText(formattedDateTime);
 	}
 	
 	private CommonObjs commonObjs = CommonObjs.getInstance();
 	
 	@FXML
 	public void createNewCommentOp() {
-		commentDAO = Main.commentDao;
-		LocalDate theDate = date.getValue();
+		commentDAO = new CommentDAO();
+		String tName = "";
+		String time = timestamp.getText();
 		String desc = description.getText();
 		
-		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/TicketBox.fxml");
-		
-		if (theDate == null || desc.isEmpty()) {
+		if (tName == null || time == null || desc.isEmpty()) {
 			return;
 		}
 		
-		int ticketID = commonObjs.getCurrentTicket();
-		System.out.println("current ticket = " + ticketID);
-		CommentBean comment = new CommentBean(theDate, desc);
+		int ticketID = TicketDAO.getTicketIDByName(tName);
+		CommentBean comment = new CommentBean(time, desc);
+
 		commentDAO.insertComment(comment, ticketID);
 		
 		URL url = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
