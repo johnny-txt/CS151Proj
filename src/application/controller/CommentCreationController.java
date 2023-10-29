@@ -49,7 +49,7 @@ public class CommentCreationController {
 			return;
 		}
 		
-		int ticketID = TicketDAO.getTicketIDByName(tName);
+		int ticketID = commonObjs.getCurrentTicket();
 		CommentBean comment = new CommentBean(time, desc);
 
 		commentDAO.insertComment(comment, ticketID);
