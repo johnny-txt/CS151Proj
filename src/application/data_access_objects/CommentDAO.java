@@ -126,4 +126,85 @@ public class CommentDAO {
 		return commentTicketIDs;
 		
 	}
+	
+	public static List<Integer> getCommentIDs(){
+		List<Integer> commentIDs = new ArrayList<>();
+		
+		try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.err.println("SQLite JDBC driver not found.");
+            e.printStackTrace();
+            return commentIDs;
+        }
+		
+		try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+	            Statement statement = connection.createStatement()) {
+	            String selectSQL = "SELECT id FROM comment_table";
+	            ResultSet resultSet = statement.executeQuery(selectSQL);
+
+	            while (resultSet.next()) {
+	                int commentID = resultSet.getInt("id");
+	                commentIDs.add(commentID);
+	            }
+	        } catch (SQLException e) {
+	            System.out.println("Failed to retrieve ticket names from the database: " + e.getMessage());
+	            e.printStackTrace();
+	        }
+		System.out.println("Retrieved ticket project id's: " + commentIDs);
+		return commentIDs;
+		
+	}
+	
+	public static int getCommentTicketByID(int commentID) {
+        int commentTicket = -1;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.err.println("SQLite JDBC driver not found.");
+            e.printStackTrace();
+            return commentTicket;
+        }
+
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT ticketID FROM comment_table WHERE id = ?")) {
+            preparedStatement.setInt(1, commentID);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+            	commentTicket = resultSet.getInt("ticketID");
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve project ID from the database: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return commentTicket;
+    }
+	
+	public static String getCommentByID(int commentID) {
+        String comment = null;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.err.println("SQLite JDBC driver not found.");
+            e.printStackTrace();
+            return comment;
+        }
+
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT commentText FROM comment_table WHERE id = ?")) {
+            preparedStatement.setInt(1, commentID);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                comment = resultSet.getString("commentText");
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve project ID from the database: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return comment;
+    }
 }
