@@ -93,7 +93,7 @@ public class TicketCreationController {
 				if (ticketProjectID == commonObjs.getCurrentProject()) {
 					System.out.println(commonObjs.getCurrentProject());
 					
-					Text ticketButton = new Text();//(Button) FXMLLoader.load(ticketUrl);
+					Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
 					ticketButton.setText(ticketName);
 					box1.getChildren().add(ticketButton);
 				}
