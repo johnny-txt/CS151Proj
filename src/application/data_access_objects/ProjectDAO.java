@@ -97,6 +97,34 @@ public class ProjectDAO {
         return projectNames;
     }
 	
+	public static List<String> getProjectDesc() {
+        List<String> projectDesc = new ArrayList<>();
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.err.println("SQLite JDBC driver not found.");
+            e.printStackTrace();
+            return projectDesc;
+        }
+
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+             Statement statement = connection.createStatement()) {
+            String selectSQL = "SELECT projectDescription FROM project_table";
+            ResultSet resultSet = statement.executeQuery(selectSQL);
+
+            while (resultSet.next()) {
+                String pDesc = resultSet.getString("projectDescription");
+                projectDesc.add(pDesc);
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve project descriptions from the database: " + e.getMessage());
+            e.printStackTrace();
+        }
+        System.out.println("Retrieved project descriptions: " + projectDesc);
+        return projectDesc;
+    }
+	
 	public static int getProjectIDByName(String projectName) {
         int projectID = -1;
 
