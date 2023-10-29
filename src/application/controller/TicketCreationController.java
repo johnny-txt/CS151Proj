@@ -38,7 +38,6 @@ public class TicketCreationController {
 	@FXML
 	public void loadProjects() {
 		projectDropdown.getItems().clear();
-		System.out.println("lol");
 		
 		List<String> projNames = ProjectDAO.getProjectNames();
 		

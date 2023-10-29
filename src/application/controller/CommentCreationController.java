@@ -6,10 +6,12 @@ import java.time.LocalDate;
 
 import application.CommentBean;
 import application.CommonObjs;
+import application.Main;
 import application.data_access_objects.CommentDAO;
 import application.data_access_objects.TicketDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
@@ -34,16 +36,18 @@ public class CommentCreationController {
 	
 	@FXML
 	public void createNewCommentOp() {
-		commentDAO = new CommentDAO();
-		String tName = "";
+		commentDAO = Main.commentDao;
 		LocalDate theDate = date.getValue();
 		String desc = description.getText();
 		
-		if (tName == null || theDate == null || desc.isEmpty()) {
+		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/TicketBox.fxml");
+		
+		if (theDate == null || desc.isEmpty()) {
 			return;
 		}
 		
-		int ticketID = TicketDAO.getTicketIDByName(tName);
+		int ticketID = commonObjs.getCurrentTicket();
+		System.out.println("current ticket = " + ticketID);
 		CommentBean comment = new CommentBean(theDate, desc);
 		commentDAO.insertComment(comment, ticketID);
 		
@@ -51,6 +55,7 @@ public class CommentCreationController {
 //	    URL commentUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 		
 		try {
+			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
 	        VBox box1 = (VBox) FXMLLoader.load(url);
 
 	        HBox mainBox = commonObjs.getMainBox();
@@ -59,14 +64,24 @@ public class CommentCreationController {
 	            mainBox.getChildren().remove(1);
 	        }
 
-	        mainBox.getChildren().add(box1);
+	        mainBox.getChildren().add(pane1);
 
 			    VBox commentList = commonObjs.getCommentList();
 			    commentList.getChildren().clear();
 			    
-			    
-//			    Text ticketText = new Text(tName);
-//			    commentList.getChildren().add(ticketText);
+			    for (int commentID : commentDAO.getCommentIDs()) {
+					int commentTicketID = commentDAO.getCommentTicketByID(commentID);
+					String commentText = commentDAO.getCommentByID(commentID);
+					
+					if (commentTicketID == commonObjs.getCurrentTicket()) {
+						
+						Text commentTxt = new Text();
+						commentTxt.setText(commentText);
+						box1.getChildren().add(commentTxt);
+					}
+				}
+				
+				pane1.getChildren().add(box1);
         
 	     } catch (IOException e) {
 	          e.printStackTrace();
