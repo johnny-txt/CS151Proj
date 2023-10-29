@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 
 import application.CommentBean;
 import application.CommonObjs;
+import application.Main;
 import application.data_access_objects.CommentDAO;
 import application.data_access_objects.TicketDAO;
 import javafx.fxml.FXML;
@@ -49,12 +50,14 @@ public class CommentCreationController {
 		
 		int ticketID = TicketDAO.getTicketIDByName(tName);
 		CommentBean comment = new CommentBean(time, desc);
+
 		commentDAO.insertComment(comment, ticketID);
 		
 		URL url = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
 //	    URL commentUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 		
 		try {
+			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
 	        VBox box1 = (VBox) FXMLLoader.load(url);
 
 	        HBox mainBox = commonObjs.getMainBox();
@@ -63,14 +66,24 @@ public class CommentCreationController {
 	            mainBox.getChildren().remove(1);
 	        }
 
-	        mainBox.getChildren().add(box1);
+	        mainBox.getChildren().add(pane1);
 
 			    VBox commentList = commonObjs.getCommentList();
 			    commentList.getChildren().clear();
 			    
-			    
-//			    Text ticketText = new Text(tName);
-//			    commentList.getChildren().add(ticketText);
+			    for (int commentID : commentDAO.getCommentIDs()) {
+					int commentTicketID = commentDAO.getCommentTicketByID(commentID);
+					String commentText = commentDAO.getCommentByID(commentID);
+					
+					if (commentTicketID == commonObjs.getCurrentTicket()) {
+						
+						Text commentTxt = new Text();
+						commentTxt.setText(commentText);
+						box1.getChildren().add(commentTxt);
+					}
+				}
+				
+				pane1.getChildren().add(box1);
         
 	     } catch (IOException e) {
 	          e.printStackTrace();
