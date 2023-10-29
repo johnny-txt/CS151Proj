@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class CommentCreationController {
 	private CommentDAO commentDAO;
@@ -55,6 +56,7 @@ public class CommentCreationController {
 		
 		URL url = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
 //	    URL commentUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
+		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/TicketBox.fxml");
 		
 		try {
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
