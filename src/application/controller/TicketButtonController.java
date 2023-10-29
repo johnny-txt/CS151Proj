@@ -6,12 +6,15 @@ import java.net.URL;
 import application.CommonObjs;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class TicketButtonController {
 	private CommonObjs commonObjs = CommonObjs.getInstance();
+	@FXML
+	private Button ticketButton;
 	
 	@FXML 
 	public void openTicket() {
@@ -20,6 +23,8 @@ public class TicketButtonController {
 		URL commentListUrl = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
 
 		try {
+			commonObjs.setCurrentTicket(commonObjs.getTicketList().getChildren().indexOf(ticketButton) + 1);
+			
 			// Loads and AnchorPane for the ProjectCreation view
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
 			VBox commentList = (VBox) FXMLLoader.load(commentListUrl);
