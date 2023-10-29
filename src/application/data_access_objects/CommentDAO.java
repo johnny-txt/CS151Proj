@@ -1,6 +1,7 @@
 package application.data_access_objects;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,9 +28,9 @@ public class CommentDAO {
              Statement statement = connection.createStatement()) {
             String createTableSQL = "CREATE TABLE IF NOT EXISTS comment_table (" +
                     "id INTEGER PRIMARY KEY, " +
-            		"ticketID INTEGER" +
+            		"ticketID INTEGER, " +
                     "commentDate DATE, " +
-                    "commentText TEXT" +
+            		"commentText TEXT" +
                     ")";
             statement.executeUpdate(createTableSQL);
             System.out.println("comment_table created successfully.");
@@ -47,8 +48,8 @@ public class CommentDAO {
             return;
         }
 		
-		LocalDate commentDate = comment.getDate();
-		String commentText = comment.getText();
+		LocalDate commDate = comment.getDate();
+		String commText = comment.getText();
 		int id = ticketID;
 		
 		try (Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db")) {
@@ -56,9 +57,9 @@ public class CommentDAO {
 
 	          try (PreparedStatement preparedStatement = connect.prepareStatement(insert)) {
 	              preparedStatement.setInt(1, id);
-	              preparedStatement.setDate(2, java.sql.Date.valueOf(commentDate));
-	              preparedStatement.setString(3, commentText);
-
+	              preparedStatement.setDate(2, java.sql.Date.valueOf(commDate));
+	              preparedStatement.setString(3, commText);
+	              
 	              preparedStatement.executeUpdate();
 	              System.out.println("Data inserted");
 	          } catch (SQLException e) {
@@ -95,5 +96,34 @@ public class CommentDAO {
 	        }
 	        System.out.println("Retrieved comments: " + comments);
 	        return comments;
+	}
+	
+	public static List<Integer> getCommentTicketIDs(){
+		List<Integer> commentTicketIDs = new ArrayList<>();
+		
+		try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.err.println("SQLite JDBC driver not found.");
+            e.printStackTrace();
+            return commentTicketIDs;
+        }
+		
+		try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+	            Statement statement = connection.createStatement()) {
+	            String selectSQL = "SELECT ticketID FROM comment_table";
+	            ResultSet resultSet = statement.executeQuery(selectSQL);
+
+	            while (resultSet.next()) {
+	                int commentTicketID = resultSet.getInt("projectID");
+	                commentTicketIDs.add(commentTicketID);
+	            }
+	        } catch (SQLException e) {
+	            System.out.println("Failed: " + e.getMessage());
+	            e.printStackTrace();
+	        }
+		System.out.println("Retrieved comment ticket id's: " + commentTicketIDs);
+		return commentTicketIDs;
+		
 	}
 }

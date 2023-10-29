@@ -166,7 +166,7 @@ public class TicketDAO {
         }
 
         try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT id FROM ticket_table WHERE ticketName = ?")) {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT id FROM ticket_table WHERE ticketName = ?")) {
             preparedStatement.setString(1, ticketName);
 
             ResultSet resultSet = preparedStatement.executeQuery();
