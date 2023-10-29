@@ -4,11 +4,16 @@ import java.io.IOException;
 import java.net.URL;
 
 import application.CommonObjs;
+import application.Main;
+import application.data_access_objects.TicketDAO;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class CommentListController {
+	public TicketDAO ticketDAO;
 	private CommonObjs commonObjs = CommonObjs.getInstance();
 	
 	public void createCommentOp() {
@@ -36,11 +41,14 @@ public class CommentListController {
 	}
 	
 	public void Back() {
-		URL url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
-
+		ticketDAO = Main.ticketDao;
+		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/TicketBox.fxml");
+		URL url = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
+	    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
+	    
         try {
-            AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
-
+            AnchorPane pane1 = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
+            VBox box1 = (VBox) FXMLLoader.load(url);
             HBox mainBox = commonObjs.getMainBox();
 
             // Checks if there is already a child in mainBox, and if so, removes  it
@@ -50,6 +58,26 @@ public class CommentListController {
 
             // Adds pane1 to the mainBox
             mainBox.getChildren().add(pane1);
+            
+            VBox ticketList = commonObjs.getTicketList();
+
+			System.out.println(ticketList);
+			ticketList.getChildren().clear();
+			    
+			    
+			for (int ticketID : ticketDAO.getTicketIDs()) {
+				int ticketProjectID = ticketDAO.getTicketProjectByID(ticketID);
+				String ticketName = ticketDAO.getTicketNameByID(ticketID);
+				if (ticketProjectID == commonObjs.getCurrentProject()) {
+					System.out.println(commonObjs.getCurrentProject());
+					
+					Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
+					ticketButton.setText(ticketName);
+					box1.getChildren().add(ticketButton);
+				}
+			}
+			
+			pane1.getChildren().add(box1);
         } catch(IOException e) {
             e.printStackTrace();
         }
