@@ -231,5 +231,30 @@ public class TicketDAO {
         }
         return ticketProject;
     }
+	public static String getTicketDescByID(int ticketID) {
+		String ticketDesc = null;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.err.println("SQLite JDBC driver not found.");
+            e.printStackTrace();
+            return ticketDesc;
+        }
+
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT ticketDescription FROM ticket_table WHERE id = ?")) {
+            preparedStatement.setInt(1, ticketID);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                ticketDesc = resultSet.getString("ticketDescription");
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve project ID from the database: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return ticketDesc;
+	}
 	
 }
