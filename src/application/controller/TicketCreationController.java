@@ -90,11 +90,12 @@ public class TicketCreationController {
 			for (int ticketID : ticketDAO.getTicketIDs()) {
 				int ticketProjectID = ticketDAO.getTicketProjectByID(ticketID);
 				String ticketName = ticketDAO.getTicketNameByID(ticketID);
+				String ticketDesc = ticketDAO.getTicketDescByID(ticketID);
 				if (ticketProjectID == commonObjs.getCurrentProject()) {
 					System.out.println(commonObjs.getCurrentProject());
 					
 					Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
-					ticketButton.setText(ticketName);
+					ticketButton.setText("Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
 					box1.getChildren().add(ticketButton);
 				}
 			}

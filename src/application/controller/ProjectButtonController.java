@@ -40,9 +40,10 @@ public class ProjectButtonController {
 			for (int ticketID : Main.ticketDao.getTicketIDs()) {
 				int ticketProjectID = Main.ticketDao.getTicketProjectByID(ticketID);
 				String ticketName = Main.ticketDao.getTicketNameByID(ticketID);
+				String ticketDesc = Main.ticketDao.getTicketDescByID(ticketID);
 				if (ticketProjectID == commonObjs.getCurrentProject()) {
 					Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
-					ticketButton.setText(ticketName);
+					ticketButton.setText("Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
 					ticketList.getChildren().add(ticketButton);
 				}
 			}
