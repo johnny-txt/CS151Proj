@@ -188,4 +188,107 @@ public class ProjectDAO {
         }
         return projectID;
     }
+	
+	// Retrieves a list of project IDs from ticket table
+		public static List<Integer> getProjectIDs(){
+			List<Integer> projectIDs = new ArrayList<>();
+			
+			// Attempts to load driver
+			try {
+	            Class.forName("org.sqlite.JDBC");
+	        } catch (ClassNotFoundException e) {
+	            System.err.println("SQLite JDBC driver not found.");
+	            e.printStackTrace();
+	            return projectIDs;
+	        }
+			
+			// Connects to database
+			try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+		            Statement statement = connection.createStatement()) {
+		            
+	        		// Query to select all project IDs from ticket table
+					String selectSQL = "SELECT id FROM project_table";
+		            ResultSet resultSet = statement.executeQuery(selectSQL);
+		            
+		            // Iterates through set and retrieves the project IDs one by one, adding to list
+		            while (resultSet.next()) {
+		                int ticketID = resultSet.getInt("id");
+		                projectIDs.add(ticketID);
+		            }
+		        
+			// Handles exception
+			} catch (SQLException e) {
+		            System.out.println("Failed to retrieve project names from the database: " + e.getMessage());
+		            e.printStackTrace();
+		        }
+			System.out.println("Retrieved project id's: " + projectIDs);
+			return projectIDs;
+		}
+		
+		// Retrieve the name of project from project table based on project ID
+		public static String getProjectNameByID(int projectID) {
+	        String projectName = null;
+	        
+	        // Attempt to load driver
+	        try {
+	            Class.forName("org.sqlite.JDBC");
+	        } catch (ClassNotFoundException e) {
+	            System.err.println("SQLite JDBC driver not found.");
+	            e.printStackTrace();
+	            return projectName;
+	        }
+	        
+	        // Connect to database
+	        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+	            
+	        	// Query to select name of ticket with the specified ID from ticket table
+	        	PreparedStatement preparedStatement = connection.prepareStatement("SELECT projectName FROM project_table WHERE id = ?")) {
+	            preparedStatement.setInt(1, projectID);
+	            ResultSet resultSet = preparedStatement.executeQuery();
+	            
+	            // If set contains a row, means ticket with specified ID was found
+	            if (resultSet.next()) {
+	                projectName = resultSet.getString("projectName");
+	            }
+	        
+	        // Error message if failed to retrieve project name
+	        } catch (SQLException e) {
+	            System.out.println("Failed to retrieve project name from the database: " + e.getMessage());
+	            e.printStackTrace();
+	        }
+	        return projectName;
+	    }
+		
+		// Retrieve the desc of project from ticket table based on project ID
+		public static String getProjectDescByID(int projectID) {
+			String projDesc = null;
+			
+			// Attempt to load driver
+	        try {
+	            Class.forName("org.sqlite.JDBC");
+	        } catch (ClassNotFoundException e) {
+	            System.err.println("SQLite JDBC driver not found.");
+	            e.printStackTrace();
+	            return projDesc;
+	        }
+	        
+	        // Connects to database
+	        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+	        	// Query to select description of ticket with the specified ID from ticket table
+	        	PreparedStatement preparedStatement = connection.prepareStatement("SELECT projectDescription FROM project_table WHERE id = ?")) {
+	            preparedStatement.setInt(1, projectID);
+	            ResultSet resultSet = preparedStatement.executeQuery();
+	            
+	            // If set contains a row, means ticket with specified ID was found
+	            if (resultSet.next()) {
+	                projDesc = resultSet.getString("projectDescription");
+	            }
+	            
+	        // Error message if failed to retrieve ticket description
+	        } catch (SQLException e) {
+	            System.out.println("Failed to retrieve project description from the database: " + e.getMessage());
+	            e.printStackTrace();
+	        }
+	        return projDesc;
+		}
 }
