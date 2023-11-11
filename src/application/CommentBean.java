@@ -1,5 +1,4 @@
 package application;
-import java.time.LocalDate;
 
 public class CommentBean {
 	private String timestamp;
