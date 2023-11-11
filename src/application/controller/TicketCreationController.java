@@ -78,6 +78,7 @@ public class TicketCreationController {
 	    try {
 	    	
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(projectBoxUrl);
+	        VBox box1 = (VBox) FXMLLoader.load(url);
 
 	        HBox mainBox = commonObjs.getMainBox();
 
@@ -107,12 +108,12 @@ public class TicketCreationController {
 					// Create a button for the ticket and add it to box1
 					Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
 					ticketButton.setText("Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
-					ticketList.getChildren().add(ticketButton);
+					box1.getChildren().add(ticketButton);
 				}
 			}
 			
 			// Add view of tickets associated to the project to pane1
-			pane1.getChildren().add(ticketList);
+			pane1.getChildren().add(box1);
         
          // Handle any exception that may occur during the view loading process
 	     } catch (IOException e) {
@@ -131,6 +132,7 @@ public class TicketCreationController {
 			
 			// Load AnchorPane for the ProjectBox view
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
+            VBox box1 = (VBox) FXMLLoader.load(url);
 			
 			// Retrieve the mainBox from commonObjs
 			HBox mainBox = commonObjs.getMainBox();
@@ -158,11 +160,11 @@ public class TicketCreationController {
 					// Create a button for the ticket and add it to box1
 					Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
 					ticketButton.setText("Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
-					ticketList.getChildren().add(ticketButton);
+					box1.getChildren().add(ticketButton);
 				}
 			}
 			
-			pane1.getChildren().add(ticketList);
+			pane1.getChildren().add(box1);
 		
 		// Handles exceptions
 		} catch(IOException e) {

@@ -14,7 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class TicketListController {
+public class AllTicketList {
 	private CommonObjs commonObjs = CommonObjs.getInstance();
 	
 	public TicketDAO ticketDAO;
@@ -51,12 +51,31 @@ public class TicketListController {
 			e.printStackTrace();
 		}
 	}
+	public void Back() {
+        URL url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
+
+        try {
+            AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
+
+            HBox mainBox = commonObjs.getMainBox();
+
+            // Checks if there is already a child in mainBox, and if so, removes  it
+            if(mainBox.getChildren().size() > 1) {
+                mainBox.getChildren().remove(1);
+            }
+
+            // Adds pane1 to the mainBox
+            mainBox.getChildren().add(pane1);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
 	
 	public void Search() {
 		
 		// URL for the "ProjectBox.fxml" file
 		String query = SearchBar.getText();
-		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/ProjectBox.fxml");
+		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/AllTickets.fxml");
 	    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 		try {
 			
