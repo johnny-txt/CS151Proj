@@ -55,7 +55,7 @@ public class ProjectListController {
 	public void Search() {
 		String query = SearchBar.getText();
 		URL projectBoxUrl = getClass().getClassLoader().getResource("view/ProjectList.fxml");
-	    URL projectUrl = getClass().getClassLoader().getResource("view/projectButton.fxml");
+	    URL projectUrl = getClass().getClassLoader().getResource("view/ProjectButton.fxml");
 	    try {
 	    	
 	    	AnchorPane projectBox = (AnchorPane) FXMLLoader.load(projectBoxUrl);
@@ -63,21 +63,20 @@ public class ProjectListController {
 	    	HBox mainBox = commonObjs.getMainBox();
 	    	
 	    	if (mainBox.getChildren().size() > 1) {
-	    		mainBox.getChildren().remove(1);
+	    		mainBox.getChildren().remove(0);
 	    	}
 	    	
-	    	mainBox.getChildren().add(projectBox);
+	    	mainBox.getChildren().add(0, projectBox);
 	    	
-	    	AnchorPane projectList = commonObjs.getProjectList();
+	    	VBox projectList = commonObjs.getList();
 	    	projectList.getChildren().clear();
 	    	
 	    	for (int projectID : projectDAO.getProjectIDs()) {
 	    		String projectName = projectDAO.getProjectNameByID(projectID);
 				String projectDesc = projectDAO.getProjectDescByID(projectID);
 	    	
-				// Check if the ticket belongs to the current project
-				if (projectID == commonObjs.getCurrentProject()) {
-					System.out.println(commonObjs.getCurrentProject());
+				
+				if (projectName.contains(query)) {
 					
 					// Create a button for the ticket and add it to box1
 					Button projectButton = (Button) FXMLLoader.load(projectUrl);
@@ -86,6 +85,7 @@ public class ProjectListController {
 				}
 	    	}
 	    	
+	    	// Adds VBox on top of AnchorPane
 	    	projectBox.getChildren().add(projectList);
 	    } catch(IOException e) {
 			e.printStackTrace();
