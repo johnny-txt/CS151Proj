@@ -73,6 +73,8 @@ public class ProjectButtonController {
 	        
 	        // Add the new view (ProjectCreation with tickets) to the mainBox
 	        mainBox.getChildren().add(pane1);
+	        
+	        System.out.println("Current Project: " + commonObjs.getCurrentProject());
 			    
 		} catch (IOException e) {
 			// Handles any exception that may occur during the view loading process

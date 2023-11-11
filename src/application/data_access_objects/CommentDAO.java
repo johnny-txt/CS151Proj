@@ -236,6 +236,39 @@ public class CommentDAO {
         return commentTicket;
     }
 	
+	public static int getCommentProjectByID(int commentID) {
+        int commentProject = -1;
+
+        // Attempt to load driver
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.err.println("SQLite JDBC driver not found.");
+            e.printStackTrace();
+            return commentProject;
+        }
+        
+        // Connect to database
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT projectID FROM comment_table WHERE id = ?")) {
+            
+        	// Query to select the ticketID associated with the comment with specified ID from comment table
+        	preparedStatement.setInt(1, commentID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            // If set contains a row, means comment with specified ID was found
+            if (resultSet.next()) {
+            	commentProject = resultSet.getInt("projectID");
+            }
+        
+        // Handles exceptions
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve project ID from the database: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return commentProject;
+    }
+	
 	// Retrieves the comment text from ticket table
 	public static String getCommentByID(int commentID) {
         String comment = null;
