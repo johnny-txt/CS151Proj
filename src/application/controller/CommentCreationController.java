@@ -118,7 +118,6 @@ public class CommentCreationController {
 		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/TicketBox.fxml");
 		try {
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
-			VBox ticketList = commonObjs.getTicketList();
 			
 			HBox mainBox = commonObjs.getMainBox();
 			
@@ -130,20 +129,21 @@ public class CommentCreationController {
 		    commentList.getChildren().clear();
 		    
 		    for (int commentID : commentDAO.getCommentIDs()) {
-				int commentTicketID = commentDAO.getCommentTicketByID(commentID);
+		    	int commentTicketID = commentDAO.getCommentTicketByID(commentID);
+				int commentProjectID = commentDAO.getCommentProjectByID(commentID);
 				String commentText = commentDAO.getCommentByID(commentID);
 				
-				if (commentTicketID == commonObjs.getCurrentTicket()) {
+				if (commentProjectID == commonObjs.getCurrentProject() && commentTicketID == commonObjs.getCurrentTicket()) {
 					
 					Text commentTxt = new Text();
 					commentTxt.setText(commentText);
-					ticketList.getChildren().add(commentTxt);
+					commentList.getChildren().add(commentTxt);
 				}
 			}
 			
 			// Adds pane1 to the mainBox
 			mainBox.getChildren().add(pane1);
-			pane1.getChildren().add(ticketList);
+			pane1.getChildren().add(commentList);
 		} catch (IOException e) {
 			// Handles any exception that may occur during the view loading process
 			e.printStackTrace();
