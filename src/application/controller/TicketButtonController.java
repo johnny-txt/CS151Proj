@@ -18,30 +18,43 @@ public class TicketButtonController {
 	@FXML
 	private Button ticketButton;
 	
-	@FXML 
-	public void openTicket() {
-		// Gets URL of the "ProjectCreation.fxml" file and loads the JavaFx scene graph
-		URL url = getClass().getClassLoader().getResource("view/TicketBox.fxml");
+	// Method triggered when teh ticketButton is clicked
+	@FXML public void openTicket() {
+		
+	    // Gets the URL of the "TicketBox.fxml" file for displaying box for comment creation
+		URL url = getClass().getClassLoader().getResource("view/TicketBox.fxml"); //Rename to CommentBox?
+		
+	    // Gets the URL of the "ProjectTicketList.fxml" file for displaying a list of ticket comments
 		URL commentListUrl = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
 
 		try {
+			// Set the current ticket ID in CommonObjs based on the clicked ticketButton
 			commonObjs.setCurrentTicket(commonObjs.getTicketList().getChildren().indexOf(ticketButton) + 1);
 			System.out.println(commonObjs.getCurrentTicket());
 			
-			// Loads and AnchorPane for the ProjectCreation view
+	        // Load the AnchorPane for displaying page for comment creation
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
+			
+			// Load and set up the VBox for displaying comments
 			VBox commentList = (VBox) FXMLLoader.load(commentListUrl);
 			commonObjs.setCommentList(commentList);
+			
 			
 			commentList = commonObjs.getCommentList();
 		    commentList.getChildren().clear();
 		    
+		    // Iterate through all comment IDs in the database
 		    for (int commentID : Main.commentDao.getCommentIDs()) {
-				int commentTicketID = Main.commentDao.getCommentTicketByID(commentID);
+				
+		    	// Retrieve projectID, ticketID, and text for each comment
+		    	// get ticketprojectID here
+		    	int commentTicketID = Main.commentDao.getCommentTicketByID(commentID);
 				String commentText = Main.commentDao.getCommentByID(commentID);
 				
+				// Check if the comment belongs to the current ticket (maybe project too)
 				if (commentTicketID == commonObjs.getCurrentTicket()) {
 					
+					// Load the text of the comment
 					Text commentTxt = new Text();
 					commentTxt.setText(commentText);
 					commentList.getChildren().add(commentTxt);
@@ -49,13 +62,16 @@ public class TicketButtonController {
 			}
 			
 			pane1.getChildren().add(commentList);
-
+			
+			// Access the main HBox for CommonObjs
 	        HBox mainBox = commonObjs.getMainBox();
-
+	        
+	        // Remove the existing view from mainBox
 	        if (mainBox.getChildren().size() > 1) {
 	            mainBox.getChildren().remove(1);
 	        }
-
+	        
+	        //
 	        mainBox.getChildren().add(pane1);
 			    
 		} catch (IOException e) {
