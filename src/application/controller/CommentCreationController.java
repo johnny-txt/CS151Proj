@@ -7,9 +7,7 @@ import java.time.format.DateTimeFormatter;
 
 import application.CommentBean;
 import application.CommonObjs;
-import application.Main;
 import application.data_access_objects.CommentDAO;
-import application.data_access_objects.TicketDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextArea;
@@ -28,6 +26,7 @@ public class CommentCreationController {
 	@FXML
 	private TextArea description;
 	
+	// Initialize the timestamp with the current date and time
 	public void initialize() {
 	    LocalDateTime currentDateTime = LocalDateTime.now();
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); 
@@ -35,24 +34,30 @@ public class CommentCreationController {
 	    
 	    timestamp.setText(formattedDateTime);
 	}
-	
+    // Create an instance of CommonObjs to use for whole application
 	private CommonObjs commonObjs = CommonObjs.getInstance();
 	
-	@FXML
-	public void createNewCommentOp() {
+	// Method triggered when "Create Comment" operation is clicked
+	@FXML public void createNewCommentOp() {
 		commentDAO = new CommentDAO();
+		
+		// Extract details from the input fields
 		String tName = "";
 		String time = timestamp.getText();
 		String desc = description.getText();
 		
+		// Check if any of the fields is empty
 		if (tName == null || time == null || desc.isEmpty()) {
 			return;
 		}
 		
+		// Retrieve project and ticket IDs associated with the current comment
+		int projectID = commonObjs.getCurrentProject();
 		int ticketID = commonObjs.getCurrentTicket();
+		
+		// Create a new comment and insert it to database
 		CommentBean comment = new CommentBean(time, desc);
-
-		commentDAO.insertComment(comment, ticketID);
+		commentDAO.insertComment(comment, projectID, ticketID);
 		
 		URL url = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
 //	    URL commentUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
@@ -63,49 +68,60 @@ public class CommentCreationController {
 	        VBox box1 = (VBox) FXMLLoader.load(url);
 
 	        HBox mainBox = commonObjs.getMainBox();
-
+	        
+	        // If there is a view page, remove it
 	        if (mainBox.getChildren().size() > 1) {
 	            mainBox.getChildren().remove(1);
 	        }
-
+	        
+	        // Add new view page to mainBox
 	        mainBox.getChildren().add(pane1);
-
-			    VBox commentList = commonObjs.getCommentList();
-			    commentList.getChildren().clear();
-			    
-			    for (int commentID : commentDAO.getCommentIDs()) {
-					int commentTicketID = commentDAO.getCommentTicketByID(commentID);
-					String commentText = commentDAO.getCommentByID(commentID);
-					
-					if (commentTicketID == commonObjs.getCurrentTicket()) {
-						
-						Text commentTxt = new Text();
-						commentTxt.setText(commentText);
-						box1.getChildren().add(commentTxt);
-					}
-				}
+	        
+	        // Retrieve the commentList from commonObjs
+			VBox commentList = commonObjs.getCommentList();
+			
+			// Clear the existing content of commentList
+			commentList.getChildren().clear();
+			
+			// Loop through all comment IDs in the database
+			for (int commentID : commentDAO.getCommentIDs()) {
+				int commentTicketID = commentDAO.getCommentTicketByID(commentID);
+				String commentText = commentDAO.getCommentByID(commentID);
 				
-				pane1.getChildren().add(box1);
+				// Check if the comment belongs to the current ticket (maybe current project)
+				if (commentTicketID == commonObjs.getCurrentTicket()) {
+					
+					// Create a Text node for the comment and add to box1
+					Text commentTxt = new Text();
+					commentTxt.setText(commentText);
+					box1.getChildren().add(commentTxt);
+				}
+			}
+			
+			// Add box1 to pane1
+			pane1.getChildren().add(box1);
         
+         // Handle any exception that may occur during the view loading process
 	     } catch (IOException e) {
 	          e.printStackTrace();
 	     }
 
 	}
 	
-	@FXML
-	public void cancelNewCommentOp() {
+    // Method triggered when "Cancel Comment" operation is clicked
+	@FXML public void cancelNewCommentOp() {
+		
+		// Gets URL of the "TicketCommentList.fxml" file to load list of comments for list
 		URL url = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
+		
+		// Gets URL of the "TicketBox.fxml" file to load comment creation page
 		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/TicketBox.fxml");
 		try {
-			// Loads and AnchorPane for the HomepageWelcome view
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
 			VBox box1 = (VBox) FXMLLoader.load(url);
 			
-			// Retrieve the mainBox from the commonObjs instance
 			HBox mainBox = commonObjs.getMainBox();
 			
-			// Checks if there is already a child in mainBox, and if so, removes  it
 			if(mainBox.getChildren().size() > 1) {
 				mainBox.getChildren().remove(1);
 			}
