@@ -15,7 +15,10 @@ import application.CommentBean;
 
 public class CommentDAO {
 	
+	// Create database table for comments
 	public void createCommentTable() {
+		
+		// Attempt to load sqlite driver
 		try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
@@ -23,23 +26,32 @@ public class CommentDAO {
             e.printStackTrace();
             return;
         }
-
+		
+		// Connection to the database
         try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
-             Statement statement = connection.createStatement()) {
-            String createTableSQL = "CREATE TABLE IF NOT EXISTS comment_table (" +
+            Statement statement = connection.createStatement()) {
+            
+        	// Create table with 5 columns (id, projectID, ticketID, time, text) if doesn't exist
+        	String createTableSQL = "CREATE TABLE IF NOT EXISTS comment_table (" +
                     "id INTEGER PRIMARY KEY, " +
+                    "projectID INTEGER, " +
             		"ticketID INTEGER, " +
                     "timeStamp TEXT, " +
             		"commentText TEXT" +
                     ")";
             statement.executeUpdate(createTableSQL);
             System.out.println("comment_table created successfully.");
+        
+        // Handles exceptions
         } catch (SQLException e) {
             System.out.println("Failed to create comment_table: " + e.getMessage());
         }
 	}
 	
-	public void insertComment(CommentBean comment, int ticketID) {
+	// Inserting a new ticket into the ticket table
+	public void insertComment(CommentBean comment, int projectID, int ticketID) {
+		
+		// Attempt to load driver
 		try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
@@ -48,31 +60,44 @@ public class CommentDAO {
             return;
         }
 		
+		// Get comment information
 		String timestamp = comment.getTimestamp();
 		String commText = comment.getText();
-		int id = ticketID;
 		
+		// Get ID of project and ticket the comment is associated with
+		int pID = projectID;
+		int tID = ticketID;
+		
+		// Connect to database
 		try (Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db")) {
-	          String insert = "INSERT INTO comment_table (ticketID, timeStamp, commentText) VALUES (?, ?, ?)";
-
-	          try (PreparedStatement preparedStatement = connect.prepareStatement(insert)) {
-	              preparedStatement.setInt(1, id);
-	              preparedStatement.setString(2, timestamp);
-	              preparedStatement.setString(3, commText);
+	          
+			// Inserts comment into comment table
+			String insert = "INSERT INTO comment_table (projectID, ticketID, timeStamp, commentText) VALUES (?, ?, ?, ?)";
+	        try (PreparedStatement preparedStatement = connect.prepareStatement(insert)) {
+	        	preparedStatement.setInt(1, pID);
+	            preparedStatement.setInt(2, tID);
+	            preparedStatement.setString(3, timestamp);
+	            preparedStatement.setString(4, commText);
 	              
-	              preparedStatement.executeUpdate();
-	              System.out.println("Data inserted");
-	          } catch (SQLException e) {
-	              System.out.println("Failed to execute the SQL statement: " + e.getMessage());
-	          }
+	            preparedStatement.executeUpdate();
+	            System.out.println("Data inserted");
+	        
+	        // Error message if insertion failed
+	        } catch (SQLException e) {
+	        	System.out.println("Failed to execute the SQL statement: " + e.getMessage());
+	        }
+		
+		// Handles exceptions
 		} catch (SQLException e) {
 			System.out.println("Failed to connect to the database: " + e.getMessage());
 	    }
 	}
 	
+	// Retrieves a list of comments from the comment table
 	public static List<String> getComments(){
 		List<String> comments = new ArrayList<>();
 		
+		// Attempts to load driver
 		try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
@@ -81,15 +106,21 @@ public class CommentDAO {
             return comments;
         }
 		
+		// Connects to database
 		try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
-	             Statement statement = connection.createStatement()) {
-	            String selectSQL = "SELECT commentText FROM comment_table";
+	            Statement statement = connection.createStatement()) {
+	            
+				// Query to select all comment texts from comment table
+				String selectSQL = "SELECT commentText FROM comment_table";
 	            ResultSet resultSet = statement.executeQuery(selectSQL);
-
+	            
+	            // Iterates through set and retrieves the ticket names one by one, adding to list
 	            while (resultSet.next()) {
 	                String commentText = resultSet.getString("projectName");
 	                comments.add(commentText);
 	            }
+	            
+	        // Handles exception
 	        } catch (SQLException e) {
 	            System.out.println("Failed to retrieve comments from the database: " + e.getMessage());
 	            e.printStackTrace();
@@ -98,9 +129,11 @@ public class CommentDAO {
 	        return comments;
 	}
 	
+	// Retrieves list of TicketIDs associated with comments
 	public static List<Integer> getCommentTicketIDs(){
 		List<Integer> commentTicketIDs = new ArrayList<>();
 		
+		// Attempts to load driver
 		try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
@@ -109,16 +142,22 @@ public class CommentDAO {
             return commentTicketIDs;
         }
 		
+		// Connect to database
 		try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
 	            Statement statement = connection.createStatement()) {
-	            String selectSQL = "SELECT ticketID FROM comment_table";
+	            
+				// Query to select ticket IDs associated with comments from comment table
+				String selectSQL = "SELECT ticketID FROM comment_table";
 	            ResultSet resultSet = statement.executeQuery(selectSQL);
-
+	            
+	            // Iterates through set and retrieves ticket IDs associated with comments, adding each ID to list
 	            while (resultSet.next()) {
 	                int commentTicketID = resultSet.getInt("projectID");
 	                commentTicketIDs.add(commentTicketID);
 	            }
-	        } catch (SQLException e) {
+	        
+	        // Error message if failed to retrieve comments
+			} catch (SQLException e) {
 	            System.out.println("Failed: " + e.getMessage());
 	            e.printStackTrace();
 	        }
@@ -127,26 +166,33 @@ public class CommentDAO {
 		
 	}
 	
+	// Retrieves a list of comment IDs from comment table
 	public static List<Integer> getCommentIDs(){
 		List<Integer> commentIDs = new ArrayList<>();
 		
+		// Attempts to load driver
 		try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
-            System.err.println("SQLite JDBC driver not found.");
+        	System.err.println("SQLite JDBC driver not found.");
             e.printStackTrace();
             return commentIDs;
         }
-		
+		// Connects to database
 		try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
 	            Statement statement = connection.createStatement()) {
-	            String selectSQL = "SELECT id FROM comment_table";
+	            
+				// Query to select all comment IDs from comment table
+				String selectSQL = "SELECT id FROM comment_table";
 	            ResultSet resultSet = statement.executeQuery(selectSQL);
-
+	            
+	            // Iterates through set and retrieves the comment IDs one by one, adding to list
 	            while (resultSet.next()) {
 	                int commentID = resultSet.getInt("id");
 	                commentIDs.add(commentID);
 	            }
+	        
+	        // Handle exceptions
 	        } catch (SQLException e) {
 	            System.out.println("Failed to retrieve ticket names from the database: " + e.getMessage());
 	            e.printStackTrace();
@@ -156,9 +202,11 @@ public class CommentDAO {
 		
 	}
 	
+	// Retrieve the ticket ID associated with a comment from comment table
 	public static int getCommentTicketByID(int commentID) {
         int commentTicket = -1;
 
+        // Attempt to load driver
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
@@ -166,15 +214,21 @@ public class CommentDAO {
             e.printStackTrace();
             return commentTicket;
         }
-
+        
+        // Connect to database
         try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT ticketID FROM comment_table WHERE id = ?")) {
-            preparedStatement.setInt(1, commentID);
-
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT ticketID FROM comment_table WHERE id = ?")) {
+            
+        	// Query to select the ticketID associated with the comment with specified ID from comment table
+        	preparedStatement.setInt(1, commentID);
             ResultSet resultSet = preparedStatement.executeQuery();
+            
+            // If set contains a row, means comment with specified ID was found
             if (resultSet.next()) {
             	commentTicket = resultSet.getInt("ticketID");
             }
+        
+        // Handles exceptions
         } catch (SQLException e) {
             System.out.println("Failed to retrieve project ID from the database: " + e.getMessage());
             e.printStackTrace();
@@ -182,9 +236,11 @@ public class CommentDAO {
         return commentTicket;
     }
 	
+	// Retrieves the comment text from ticket table
 	public static String getCommentByID(int commentID) {
         String comment = null;
-
+        
+        // Attempt to load driver
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
@@ -192,17 +248,23 @@ public class CommentDAO {
             e.printStackTrace();
             return comment;
         }
-
+        
+        // Connect to database
         try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT commentText FROM comment_table WHERE id = ?")) {
+            
+            // Query to select text of comment with the specified ID from comment table
+        	PreparedStatement preparedStatement = connection.prepareStatement("SELECT commentText FROM comment_table WHERE id = ?")) {
             preparedStatement.setInt(1, commentID);
-
             ResultSet resultSet = preparedStatement.executeQuery();
+            
+            // If set contains a row, means ticket with specified ID was found
             if (resultSet.next()) {
                 comment = resultSet.getString("commentText");
             }
+        
+        // Error message if failed to retrieve comment text
         } catch (SQLException e) {
-            System.out.println("Failed to retrieve project ID from the database: " + e.getMessage());
+            System.out.println("Failed to retrieve comment text from the database: " + e.getMessage());
             e.printStackTrace();
         }
         return comment;
