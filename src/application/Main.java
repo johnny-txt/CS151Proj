@@ -6,59 +6,69 @@ import java.util.List;
 import application.data_access_objects.CommentDAO;
 import application.data_access_objects.ProjectDAO;
 import application.data_access_objects.TicketDAO;
-// Import necessary JavaFX classes for building the application
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 
-
+/**
+ * The Main class serves as the entry point for the application.
+ * It initializes the database tables, loads the main user interface, and configures the primary stage.
+ */
 public class Main extends Application {
 	public static ProjectDAO projDao;
 	public static TicketDAO ticketDao;
 	public static CommentDAO commentDao;
+	
 	// Start method is entry point for JavaFx applications
 	@Override
 	public void start(Stage primaryStage) {
+		
+        // Initialize data access objects for projects, tickets, and comments
 		projDao = new ProjectDAO();
 	    projDao.createProjectTable();
 	    ticketDao = new TicketDAO();
 	    ticketDao.createTicketTable();
 	    commentDao = new CommentDAO();
 	    commentDao.createCommentTable();
-		try {
-			// Loads the main user interface layout from "Main.fxml" file
-			HBox mainBox = (HBox)FXMLLoader.load(getClass().getClassLoader().getResource("view/Main.fxml"));
+		
+	    try {
+	    	
+	    	// Load the main user interface layout from the "Main.fxml" file
+	    	HBox mainBox = (HBox)FXMLLoader.load(getClass().getClassLoader().getResource("view/Main.fxml"));
 			
-			// Create a new scene and associates it with the main user interface
-			Scene scene = new Scene(mainBox);
+	    	// Create a new scene and set it for the primary stage
+	    	Scene scene = new Scene(mainBox);
 			
-			// Adds CSS stylesheet to the scene
-			scene.getStylesheets().add(getClass().getClassLoader().getResource("css/application.css").toExternalForm());
+	    	// Add a CSS stylesheet to the scene for styling
+	    	scene.getStylesheets().add(getClass().getClassLoader().getResource("css/application.css").toExternalForm());
 			
-			// Sets the primary stage scene and makes it visible
+			// Set the primary stage scene and make it visible
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
-			// Initialize and configure a shared instance of CommonObjs
+			// Initialize a shared instance of CommonObjs for accessing common objects across the application
 			CommonObjs commonObjs = CommonObjs.getInstance();
 			
+			// Sets the mainBox HBox in the CommonObjs instance
 			commonObjs.setMainBox(mainBox);
 			
+			// Load and set up the ProjectList view (empty list at first with project creation button)
 			URL url = getClass().getClassLoader().getResource("view/ProjectList.fxml");
 			AnchorPane pane = (AnchorPane) FXMLLoader.load(url);
 			commonObjs.setProjectList(pane);
 			mainBox.getChildren().add(pane);
 			
+			// Load and set up the HomePageWelcome view (homepage)
 			url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
 			pane = (AnchorPane) FXMLLoader.load(url);
 			mainBox.getChildren().add(pane);
 			
+			// Load and set up the List view (where existing projects appear)
 			url = getClass().getClassLoader().getResource("view/List.fxml");
 			VBox list = (VBox) FXMLLoader.load(url);
 			commonObjs.setList(list);
@@ -69,12 +79,14 @@ public class Main extends Application {
 			commonObjs.setList(ticketList);
 			*/
 			
-			//To test looking at db
+			// Access common objects from CommonObjs instance
 			VBox coolList = commonObjs.getList();
 			AnchorPane lol = commonObjs.getProjectList();
 			
+			// Retrieve project names from database
 			List<String> projNames = ProjectDAO.getProjectNames();
 			
+			// Loads the projects in button form
 			URL urlButton = getClass().getClassLoader().getResource("view/ProjectButton.fxml");
 			for (String name : projNames) {
 				Button projectButton = (Button) FXMLLoader.load(urlButton);
@@ -82,20 +94,22 @@ public class Main extends Application {
 				coolList.getChildren().add(projectButton);
 			}
 			
+            // Ensure that project names are displayed in the UI if projects exist
 		    if (projNames.size() > 0 && lol.getChildren().size() < 3) {
 		    	lol.getChildren().add(coolList);
 	    	}
 			
 		} catch(Exception e) {
-			// Handles exceptions that may occur when starting application
 			e.printStackTrace();
 		}
 	}
 	
+	// Static method to add a project to the database
 	public static void addProj(ProjectBean proj) {
 		projDao.insertProject(proj);
 	}
 	
+	// Main method launches the JavaFx application
 	public static void main(String[] args) {
 		launch(args);
 	}
