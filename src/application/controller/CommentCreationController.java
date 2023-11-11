@@ -65,7 +65,6 @@ public class CommentCreationController {
 		
 		try {
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
-	        VBox box1 = (VBox) FXMLLoader.load(url);
 
 	        HBox mainBox = commonObjs.getMainBox();
 	        
@@ -95,12 +94,12 @@ public class CommentCreationController {
 					// Create a Text node for the comment and add to box1
 					Text commentTxt = new Text();
 					commentTxt.setText(commentText);
-					box1.getChildren().add(commentTxt);
+					commentList.getChildren().add(commentTxt);
 				}
 			}
 			
 			// Add box1 to pane1
-			pane1.getChildren().add(box1);
+			pane1.getChildren().add(commentList);
         
          // Handle any exception that may occur during the view loading process
 	     } catch (IOException e) {
@@ -119,7 +118,7 @@ public class CommentCreationController {
 		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/TicketBox.fxml");
 		try {
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
-			VBox box1 = (VBox) FXMLLoader.load(url);
+			VBox ticketList = commonObjs.getTicketList();
 			
 			HBox mainBox = commonObjs.getMainBox();
 			
@@ -138,13 +137,13 @@ public class CommentCreationController {
 					
 					Text commentTxt = new Text();
 					commentTxt.setText(commentText);
-					box1.getChildren().add(commentTxt);
+					ticketList.getChildren().add(commentTxt);
 				}
 			}
 			
 			// Adds pane1 to the mainBox
 			mainBox.getChildren().add(pane1);
-			pane1.getChildren().add(box1);
+			pane1.getChildren().add(ticketList);
 		} catch (IOException e) {
 			// Handles any exception that may occur during the view loading process
 			e.printStackTrace();
