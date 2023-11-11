@@ -49,10 +49,11 @@ public class TicketButtonController {
 		    	// Retrieve projectID, ticketID, and text for each comment
 		    	// get ticketprojectID here
 		    	int commentTicketID = Main.commentDao.getCommentTicketByID(commentID);
+		    	int commentProjectID = Main.commentDao.getCommentProjectByID(commentID);
 				String commentText = Main.commentDao.getCommentByID(commentID);
 				
 				// Check if the comment belongs to the current ticket (maybe project too)
-				if (commentTicketID == commonObjs.getCurrentTicket()) {
+				if (commentProjectID == commonObjs.getCurrentProject() && commentTicketID == commonObjs.getCurrentTicket()) {
 					
 					// Load the text of the comment
 					Text commentTxt = new Text();
@@ -73,6 +74,8 @@ public class TicketButtonController {
 	        
 	        //
 	        mainBox.getChildren().add(pane1);
+	        
+	        System.out.println("Current Ticket: " + commonObjs.getCurrentTicket());
 			    
 		} catch (IOException e) {
 			// Handles any exception that may occur during the view loading process

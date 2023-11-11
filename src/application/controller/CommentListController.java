@@ -48,7 +48,6 @@ public class CommentListController {
 	    
         try {
             AnchorPane pane1 = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
-            VBox box1 = (VBox) FXMLLoader.load(url);
             HBox mainBox = commonObjs.getMainBox();
 
             // Checks if there is already a child in mainBox, and if so, removes  it
@@ -74,11 +73,11 @@ public class CommentListController {
 					
 					Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
 					ticketButton.setText("Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
-					box1.getChildren().add(ticketButton);
+					ticketList.getChildren().add(ticketButton);
 				}
 			}
 			
-			pane1.getChildren().add(box1);
+			pane1.getChildren().add(ticketList);
         } catch(IOException e) {
             e.printStackTrace();
         }

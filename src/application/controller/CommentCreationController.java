@@ -86,10 +86,11 @@ public class CommentCreationController {
 			// Loop through all comment IDs in the database
 			for (int commentID : commentDAO.getCommentIDs()) {
 				int commentTicketID = commentDAO.getCommentTicketByID(commentID);
+				int commentProjectID = commentDAO.getCommentProjectByID(commentID);
 				String commentText = commentDAO.getCommentByID(commentID);
 				
 				// Check if the comment belongs to the current ticket (maybe current project)
-				if (commentTicketID == commonObjs.getCurrentTicket()) {
+				if (commentProjectID == commonObjs.getCurrentProject() && commentTicketID == commonObjs.getCurrentTicket()) {
 					
 					// Create a Text node for the comment and add to box1
 					Text commentTxt = new Text();
