@@ -123,16 +123,16 @@ public class TicketCreationController {
 	
     // Method triggered when "Cancel Ticket" operation is performed
 	@FXML public void cancelNewTicketOp() {
-		// URL for the "ProjectBox.fxml" file
-		URL url = getClass().getClassLoader().getResource("view/ProjectBox.fxml"); // Change name to TicketBox maybe
 		
+		// URL for the "ProjectBox.fxml" file
+		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/ProjectBox.fxml");
+		URL url = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
+	    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 		try {
 			
 			// Load AnchorPane for the ProjectBox view
-			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
-			
-			// Add the ticketList to pane1
-			pane1.getChildren().add(commonObjs.getTicketList());
+			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
+            VBox box1 = (VBox) FXMLLoader.load(url);
 			
 			// Retrieve the mainBox from commonObjs
 			HBox mainBox = commonObjs.getMainBox();
@@ -142,8 +142,29 @@ public class TicketCreationController {
 				mainBox.getChildren().remove(1);
 			}
 			
-			// Add new page to mainBox
-			mainBox.getChildren().add(pane1);
+			// Adds pane1 to the mainBox
+            mainBox.getChildren().add(pane1);
+            
+			VBox ticketList = commonObjs.getTicketList();
+			ticketList.getChildren().clear();
+			
+			for (int ticketID : ticketDAO.getTicketIDs()) {
+				int ticketProjectID = ticketDAO.getTicketProjectByID(ticketID);
+				String ticketName = ticketDAO.getTicketNameByID(ticketID);
+				String ticketDesc = ticketDAO.getTicketDescByID(ticketID);
+				
+				// Check if the ticket belongs to the current project
+				if (ticketProjectID == commonObjs.getCurrentProject()) {
+					System.out.println(commonObjs.getCurrentProject());
+					
+					// Create a button for the ticket and add it to box1
+					Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
+					ticketButton.setText("Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
+					box1.getChildren().add(ticketButton);
+				}
+			}
+			
+			pane1.getChildren().add(box1);
 		
 		// Handles exceptions
 		} catch(IOException e) {
