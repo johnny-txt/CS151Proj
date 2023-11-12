@@ -5,6 +5,8 @@ import java.net.URL;
 
 import application.CommonObjs;
 import application.Main;
+import application.data_access_objects.ProjectDAO;
+import application.data_access_objects.TicketDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -46,10 +48,12 @@ public class ProjectButtonController {
 			pane1.getChildren().add(commonObjs.getTicketList());
 			
 			// Iterate through all ticket IDs in the database
+			
 			for (int ticketID : Main.ticketDao.getTicketIDs()) {
 				
 				// Retrieve project ID, name, and description for each ticket
 				int ticketProjectID = Main.ticketDao.getTicketProjectByID(ticketID);
+				String projectName = ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(ticketID));
 				String ticketName = Main.ticketDao.getTicketNameByID(ticketID);
 				String ticketDesc = Main.ticketDao.getTicketDescByID(ticketID);
 				
@@ -58,7 +62,7 @@ public class ProjectButtonController {
 					
 					// Load and set up a Button for the ticket
 					Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
-					ticketButton.setText("Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
+					ticketButton.setText("Project: " + projectName + "     Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
 					ticketList.getChildren().add(ticketButton);
 				}
 			}

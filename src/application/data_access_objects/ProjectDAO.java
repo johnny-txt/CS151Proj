@@ -188,4 +188,37 @@ public class ProjectDAO {
         }
         return projectID;
     }
+	
+	public static String getProjectNameByID(int projectID) {
+        String projectName = null;
+        
+        // Attempt to load driver
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.err.println("SQLite JDBC driver not found.");
+            e.printStackTrace();
+            return projectName;
+        }
+        
+        // Connect to database
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+            
+        	// Query to select name of ticket with the specified ID from ticket table
+        	PreparedStatement preparedStatement = connection.prepareStatement("SELECT projectName FROM project_table WHERE id = ?")) {
+            preparedStatement.setInt(1, projectID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            // If set contains a row, means ticket with specified ID was found
+            if (resultSet.next()) {
+                projectName = resultSet.getString("projectName");
+            }
+        
+        // Error message if failed to retrieve ticket name
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve project name from the database: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return projectName;
+    }
 }

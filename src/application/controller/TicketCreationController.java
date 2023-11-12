@@ -96,8 +96,10 @@ public class TicketCreationController {
 			ticketList.getChildren().clear();
 			    
 			// Loop through all ticket IDs in the database
+			
 			for (int ticketID : ticketDAO.getTicketIDs()) {
 				int ticketProjectID = ticketDAO.getTicketProjectByID(ticketID);
+				String projectName = ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(ticketID));
 				String ticketName = ticketDAO.getTicketNameByID(ticketID);
 				String ticketDesc = ticketDAO.getTicketDescByID(ticketID);
 				
@@ -107,7 +109,7 @@ public class TicketCreationController {
 					
 					// Create a button for the ticket and add it to box1
 					Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
-					ticketButton.setText("Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
+					ticketButton.setText("Project: " + projectName + "     Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
 					box1.getChildren().add(ticketButton);
 				}
 			}
@@ -150,6 +152,7 @@ public class TicketCreationController {
 			
 			for (int ticketID : ticketDAO.getTicketIDs()) {
 				int ticketProjectID = ticketDAO.getTicketProjectByID(ticketID);
+				String projectName = ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(ticketID));
 				String ticketName = ticketDAO.getTicketNameByID(ticketID);
 				String ticketDesc = ticketDAO.getTicketDescByID(ticketID);
 				
@@ -159,7 +162,7 @@ public class TicketCreationController {
 					
 					// Create a button for the ticket and add it to box1
 					Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
-					ticketButton.setText("Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
+					ticketButton.setText("Project: " + projectName + "     Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
 					box1.getChildren().add(ticketButton);
 				}
 			}

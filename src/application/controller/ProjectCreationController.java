@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import application.CommonObjs;
 import application.Main;
 import application.ProjectBean;
+import application.data_access_objects.ProjectDAO;
 import application.data_access_objects.TicketDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -78,10 +79,11 @@ public class ProjectCreationController {
 					ticketList.getChildren().clear();
 					
 					for (int ticketID : TicketDAO.getTicketIDs()) {
+						String projectName = ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(ticketID));
 						String ticketName = TicketDAO.getTicketNameByID(ticketID);
 						String ticketDesc = TicketDAO.getTicketDescByID(ticketID);
 						Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
-						ticketButton.setText("Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
+						ticketButton.setText("Project: " + projectName + "     Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
 						ticketList.getChildren().add(ticketButton);
 					}
 				ticketBox.getChildren().add(ticketList);
@@ -150,10 +152,11 @@ public class ProjectCreationController {
 					ticketList.getChildren().clear();
 					
 					for (int ticketID : TicketDAO.getTicketIDs()) {
+						String projectName = ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(ticketID));
 						String ticketName = TicketDAO.getTicketNameByID(ticketID);
 						String ticketDesc = TicketDAO.getTicketDescByID(ticketID);
 						Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
-						ticketButton.setText("Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
+						ticketButton.setText("Project: " + projectName + "     Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
 						ticketList.getChildren().add(ticketButton);
 					}
 				ticketBox.getChildren().add(ticketList);

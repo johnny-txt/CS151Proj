@@ -5,6 +5,7 @@ import java.net.URL;
 
 import application.CommonObjs;
 import application.Main;
+import application.data_access_objects.ProjectDAO;
 import application.data_access_objects.TicketDAO;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -63,16 +64,16 @@ public class CommentListController {
 			System.out.println(ticketList);
 			ticketList.getChildren().clear();
 			    
-			    
 			for (int ticketID : ticketDAO.getTicketIDs()) {
 				int ticketProjectID = ticketDAO.getTicketProjectByID(ticketID);
+				String projectName = ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(ticketID));
 				String ticketName = ticketDAO.getTicketNameByID(ticketID);
 				String ticketDesc = ticketDAO.getTicketDescByID(ticketID);
 				if (ticketProjectID == commonObjs.getCurrentProject()) {
 					System.out.println(commonObjs.getCurrentProject());
 					
 					Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
-					ticketButton.setText("Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
+					ticketButton.setText("Project: " + projectName + "     Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
 					ticketList.getChildren().add(ticketButton);
 				}
 			}

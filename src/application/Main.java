@@ -86,12 +86,14 @@ public class Main extends Application {
 					ticketList.getChildren().clear();
 					
 					for (int ticketID : TicketDAO.getTicketIDs()) {
+						String projectName = ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(ticketID));
 						String ticketName = TicketDAO.getTicketNameByID(ticketID);
 						String ticketDesc = TicketDAO.getTicketDescByID(ticketID);
 						Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
-						ticketButton.setText("Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
+						ticketButton.setText("Project: " + projectName + "     Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
 						ticketList.getChildren().add(ticketButton);
 					}
+					
 				ticketBox.getChildren().add(ticketList);
 			}
 			

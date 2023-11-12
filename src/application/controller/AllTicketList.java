@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import application.CommonObjs;
+import application.data_access_objects.ProjectDAO;
 import application.data_access_objects.TicketDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -96,8 +97,10 @@ public class AllTicketList {
 			VBox ticketList = commonObjs.getTicketList();
 			ticketList.getChildren().clear();
 			
+			
 			for (int ticketID : ticketDAO.getTicketIDs()) {
 				int ticketProjectID = ticketDAO.getTicketProjectByID(ticketID);
+				String projectName = ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(ticketID));
 				String ticketName = ticketDAO.getTicketNameByID(ticketID);
 				String ticketDesc = ticketDAO.getTicketDescByID(ticketID);
 				
@@ -106,7 +109,7 @@ public class AllTicketList {
 					
 					// Create a button for the ticket and add it to box1
 					Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
-					ticketButton.setText("Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
+					ticketButton.setText("Project: " + projectName + "     Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
 					ticketList.getChildren().add(ticketButton);
 				}
 			}
