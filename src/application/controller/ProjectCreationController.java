@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import application.CommonObjs;
 import application.Main;
 import application.ProjectBean;
+import application.data_access_objects.TicketDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -44,7 +45,7 @@ public class ProjectCreationController {
 		
 		try {
 			// Loads and AnchorPane for the HomepageWelcome view
-			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
+			AnchorPane pane = (AnchorPane) FXMLLoader.load(url);
 			
 			// Retrieve the mainBox from the commonObjs instance
 			HBox mainBox = commonObjs.getMainBox();
@@ -55,7 +56,36 @@ public class ProjectCreationController {
 			}
 			
 			// Adds pane1 to the mainBox
-			mainBox.getChildren().add(pane1);
+			if (TicketDAO.getTicketIDs().isEmpty()){
+				url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
+				pane = (AnchorPane) FXMLLoader.load(url);
+				mainBox.getChildren().add(pane);
+			}
+			else {
+				URL ticketBoxUrl = getClass().getClassLoader().getResource("view/AllTickets.fxml");
+			    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
+			    URL ticketListUrl = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
+					
+					// Load AnchorPane for the ProjectBox view
+					AnchorPane ticketBox = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
+					
+					
+					// Adds pane1 to the mainBox
+		            mainBox.getChildren().add(ticketBox);
+		            
+					VBox ticketList = (VBox) FXMLLoader.load(ticketListUrl);
+					commonObjs.setTicketList(ticketList);
+					ticketList.getChildren().clear();
+					
+					for (int ticketID : TicketDAO.getTicketIDs()) {
+						String ticketName = TicketDAO.getTicketNameByID(ticketID);
+						String ticketDesc = TicketDAO.getTicketDescByID(ticketID);
+						Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
+						ticketButton.setText("Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
+						ticketList.getChildren().add(ticketButton);
+					}
+				ticketBox.getChildren().add(ticketList);
+			}
 		} catch (IOException e) {
 			// Handles any exception that may occur during the view loading process
 			e.printStackTrace();
@@ -87,7 +117,7 @@ public class ProjectCreationController {
 	    try {
 	        
             // Load an AnchorPane for the HomePageWelcome view
-	    	AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
+	    	AnchorPane pane = (AnchorPane) FXMLLoader.load(url);
 
             // Retrieve the mainBox from the commonObjs instance
 	        HBox mainBox = commonObjs.getMainBox();
@@ -98,7 +128,36 @@ public class ProjectCreationController {
 	        }
 	        
 	        // Add the new page
-	        mainBox.getChildren().add(pane1);
+	        if (TicketDAO.getTicketIDs().isEmpty()){
+				url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
+				pane = (AnchorPane) FXMLLoader.load(url);
+				mainBox.getChildren().add(pane);
+			}
+			else {
+				URL ticketBoxUrl = getClass().getClassLoader().getResource("view/AllTickets.fxml");
+			    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
+			    URL ticketListUrl = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
+					
+					// Load AnchorPane for the ProjectBox view
+					AnchorPane ticketBox = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
+					
+					
+					// Adds pane1 to the mainBox
+		            mainBox.getChildren().add(ticketBox);
+		            
+					VBox ticketList = (VBox) FXMLLoader.load(ticketListUrl);
+					commonObjs.setTicketList(ticketList);
+					ticketList.getChildren().clear();
+					
+					for (int ticketID : TicketDAO.getTicketIDs()) {
+						String ticketName = TicketDAO.getTicketNameByID(ticketID);
+						String ticketDesc = TicketDAO.getTicketDescByID(ticketID);
+						Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
+						ticketButton.setText("Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
+						ticketList.getChildren().add(ticketButton);
+					}
+				ticketBox.getChildren().add(ticketList);
+			}
 	        
 	        // Adjust the project list display in the GUI
 			AnchorPane lol = commonObjs.getProjectList();
