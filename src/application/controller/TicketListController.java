@@ -52,6 +52,55 @@ public class TicketListController {
 		}
 	}
 	
+	public void Back() {
+        URL url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
+
+        try {
+            AnchorPane pane = (AnchorPane) FXMLLoader.load(url);
+
+            HBox mainBox = commonObjs.getMainBox();
+
+            // Checks if there is already a child in mainBox, and if so, removes  it
+            if(mainBox.getChildren().size() > 1) {
+                mainBox.getChildren().remove(1);
+            }
+
+            if (ticketDAO.getTicketIDs().isEmpty()){
+				url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
+				pane = (AnchorPane) FXMLLoader.load(url);
+				mainBox.getChildren().add(pane);
+			}
+			else {
+				URL ticketBoxUrl = getClass().getClassLoader().getResource("view/AllTickets.fxml");
+			    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
+			    URL ticketListUrl = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
+					
+					// Load AnchorPane for the ProjectBox view
+					AnchorPane ticketBox = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
+					
+					
+					// Adds pane1 to the mainBox
+		            mainBox.getChildren().add(ticketBox);
+		            
+					VBox ticketList = (VBox) FXMLLoader.load(ticketListUrl);
+					commonObjs.setTicketList(ticketList);
+					ticketList.getChildren().clear();
+					
+					for (int ticketID : TicketDAO.getTicketIDs()) {
+						String ticketName = TicketDAO.getTicketNameByID(ticketID);
+						String ticketDesc = TicketDAO.getTicketDescByID(ticketID);
+						Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
+						ticketButton.setText("Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
+						ticketList.getChildren().add(ticketButton);
+					}
+				ticketBox.getChildren().add(ticketList);
+			}
+            
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+	
 	public void Search() {
 		
 		// URL for the "ProjectBox.fxml" file
