@@ -5,6 +5,7 @@ import java.net.URL;
 
 import application.CommonObjs;
 import application.Main;
+import application.data_access_objects.TicketDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -30,6 +31,7 @@ public class TicketButtonController {
 		try {
 			// Set the current ticket ID in CommonObjs based on the clicked ticketButton
 			commonObjs.setCurrentTicket(commonObjs.getTicketList().getChildren().indexOf(ticketButton) + 1);
+			commonObjs.setCurrentProject(TicketDAO.getTicketProjectByID(commonObjs.getCurrentTicket()));
 			System.out.println(commonObjs.getCurrentTicket());
 			
 	        // Load the AnchorPane for displaying page for comment creation

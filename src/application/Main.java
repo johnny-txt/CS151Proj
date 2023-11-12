@@ -64,9 +64,39 @@ public class Main extends Application {
 			mainBox.getChildren().add(pane);
 			
 			// Load and set up the HomePageWelcome view (homepage)
-			url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
-			pane = (AnchorPane) FXMLLoader.load(url);
-			mainBox.getChildren().add(pane);
+			if (ticketDao.getTicketIDs().isEmpty()){
+				url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
+				pane = (AnchorPane) FXMLLoader.load(url);
+				mainBox.getChildren().add(pane);
+			}
+			else {
+				URL ticketBoxUrl = getClass().getClassLoader().getResource("view/AllTickets.fxml");
+			    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
+			    URL ticketListUrl = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
+					
+					// Load AnchorPane for the ProjectBox view
+					AnchorPane ticketBox = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
+					
+					
+					// Adds pane1 to the mainBox
+		            mainBox.getChildren().add(ticketBox);
+		            
+					VBox ticketList = (VBox) FXMLLoader.load(ticketListUrl);
+					commonObjs.setTicketList(ticketList);
+					ticketList.getChildren().clear();
+					
+					for (int ticketID : TicketDAO.getTicketIDs()) {
+						String projectName = ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(ticketID));
+						String ticketName = TicketDAO.getTicketNameByID(ticketID);
+						String ticketDesc = TicketDAO.getTicketDescByID(ticketID);
+						Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
+						ticketButton.setText("Project: " + projectName + "     Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
+						ticketList.getChildren().add(ticketButton);
+					}
+					
+				ticketBox.getChildren().add(ticketList);
+			}
+			
 			
 			// Load and set up the List view (where existing projects appear)
 			url = getClass().getClassLoader().getResource("view/List.fxml");
@@ -78,6 +108,7 @@ public class Main extends Application {
 			VBox ticketList = (VBox) FXMLLoader.load(url);
 			commonObjs.setList(ticketList);
 			*/
+			
 			
 			// Access common objects from CommonObjs instance
 			VBox coolList = commonObjs.getList();
