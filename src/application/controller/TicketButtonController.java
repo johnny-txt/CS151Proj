@@ -31,7 +31,7 @@ public class TicketButtonController {
 		try {
 			// Set the current ticket ID in CommonObjs based on the clicked ticketButton
 			commonObjs.setCurrentTicket(commonObjs.getTicketList().getChildren().indexOf(ticketButton) + 1);
-			commonObjs.setCurrentProject(TicketDAO.getTicketProjectByID(commonObjs.getCurrentTicket()));
+			//commonObjs.setCurrentProject(TicketDAO.getTicketProjectByID(commonObjs.getCurrentTicket()));
 			System.out.println(commonObjs.getCurrentTicket());
 			
 	        // Load the AnchorPane for displaying page for comment creation
