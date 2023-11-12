@@ -170,7 +170,7 @@ public class ProjectCreationController {
 			VBox coolList = commonObjs.getList();
 			
 			// If the project list in lol is empty, add coolList to it
-			if (lol.getChildren().size() < 3) {
+			if (lol.getChildren().size() < 5) {
 				lol.getChildren().add(coolList);
 			}
 			

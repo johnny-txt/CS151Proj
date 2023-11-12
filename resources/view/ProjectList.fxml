@@ -2,11 +2,14 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane fx:id="ProjectList" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: SILVER;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.ProjectListController">
    <children>
       <Label fx:id="EmptyListText" layoutX="25.0" layoutY="166.0" text="Create a new project by&#10;entering project infromation" textAlignment="CENTER" />
-      <Button layoutX="15.0" layoutY="346.0" mnemonicParsing="false" onAction="#CreateProjectOperation" prefHeight="40.0" prefWidth="170.0" style="-fx-background-color: ROYALBLUE;" text="Create" textFill="WHITE" />
+      <Button layoutX="56.0" layoutY="367.0" mnemonicParsing="false" onAction="#CreateProjectOperation" prefHeight="20.0" prefWidth="86.0" style="-fx-background-color: ROYALBLUE;" text="Create" textFill="WHITE" />
+      <TextField fx:id="SearchBar" layoutX="10.0" layoutY="334.0" />
+      <Button fx:id="SeachButton" layoutX="159.0" layoutY="334.0" mnemonicParsing="false" onAction="#Search" prefHeight="24.0" prefWidth="29.0" style="-fx-background-color: ROYALBLUE;" text="Q" textFill="WHITE" />
    </children>
 </AnchorPane>

@@ -3,7 +3,7 @@ package application.controller;
 import java.io.IOException;
 import java.net.URL;
 
-import application.CommonObjs;
+import application.Cots_page
 import application.data_access_objects.ProjectDAO;
 import application.data_access_objects.TicketDAO;
 import javafx.fxml.FXML;
@@ -129,7 +129,7 @@ public class TicketListController {
 			ticketList.getChildren().clear();
 			
 			
-			for (int ticketID : ticketDAO.getTicketIDs()) {
+      for (int ticketID : ticketDAO.getTicketIDs()) {
 				String projectName = ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(ticketID));
 				String ticketName = ticketDAO.getTicketNameByID(ticketID);
 				String ticketDesc = ticketDAO.getTicketDescByID(ticketID);
@@ -151,4 +151,6 @@ public class TicketListController {
 			e.printStackTrace();
 		}
 	}
+
 }
+
