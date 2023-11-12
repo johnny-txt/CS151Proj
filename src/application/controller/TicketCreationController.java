@@ -127,7 +127,7 @@ public class TicketCreationController {
 	@FXML public void cancelNewTicketOp() {
 		
 		// URL for the "ProjectBox.fxml" file
-		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/ProjectBox.fxml");
+		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/AllTickets.fxml");
 		URL url = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
 	    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 		try {
@@ -156,8 +156,6 @@ public class TicketCreationController {
 				String ticketName = ticketDAO.getTicketNameByID(ticketID);
 				String ticketDesc = ticketDAO.getTicketDescByID(ticketID);
 				
-				// Check if the ticket belongs to the current project
-				if (ticketProjectID == commonObjs.getCurrentProject()) {
 					System.out.println(commonObjs.getCurrentProject());
 					
 					// Create a button for the ticket and add it to box1
@@ -165,7 +163,6 @@ public class TicketCreationController {
 					ticketButton.setText("Project: " + projectName + "     Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
 					box1.getChildren().add(ticketButton);
 				}
-			}
 			
 			pane1.getChildren().add(box1);
 		
