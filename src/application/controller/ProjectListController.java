@@ -80,7 +80,7 @@ public class ProjectListController {
 					
 					// Create a button for the ticket and add it to box1
 					Button projectButton = (Button) FXMLLoader.load(projectUrl);
-					projectButton.setText("Project Name: " + projectName + "     Desc: " + projectDesc);
+					projectButton.setText(projectName);
 					projectList.getChildren().add(projectButton);
 				}
 	    	}
