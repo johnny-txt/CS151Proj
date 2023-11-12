@@ -109,6 +109,7 @@ public class Main extends Application {
 			commonObjs.setList(ticketList);
 			*/
 			
+			
 			// Access common objects from CommonObjs instance
 			VBox coolList = commonObjs.getList();
 			AnchorPane lol = commonObjs.getProjectList();
