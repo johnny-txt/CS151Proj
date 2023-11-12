@@ -126,7 +126,7 @@ public class Main extends Application {
 			}
 			
             // Ensure that project names are displayed in the UI if projects exist
-		    if (projNames.size() > 0 && lol.getChildren().size() < 3) {
+		    if (projNames.size() > 0 && lol.getChildren().size() < 5) {
 		    	lol.getChildren().add(coolList);
 	    	}
 			

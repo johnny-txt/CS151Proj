@@ -127,7 +127,7 @@ public class TicketListController {
             
 			VBox ticketList = commonObjs.getTicketList();
 			ticketList.getChildren().clear();
-			
+
 			
 			for (int ticketID : ticketDAO.getTicketIDs()) {
 				int ticketProjectID = ticketDAO.getTicketProjectByID(ticketID);

@@ -298,7 +298,7 @@ public class TicketDAO {
         return ticketProject;
     }
 	
-	// Retrieve the name of ticket from ticket table based on ticket ID
+	// Retrieve the description of ticket from ticket table based on ticket ID
 	public static String getTicketDescByID(int ticketID) {
 		String ticketDesc = null;
 		
