@@ -105,7 +105,7 @@ public class AllTicketList {
 				String ticketDesc = ticketDAO.getTicketDescByID(ticketID);
 				
 				// Check if the ticket belongs to the current project
-				if (ticketName.contains(query)) {
+				if (ticketName.contains(query) || projectName.contains(query)) {
 					
 					// Create a button for the ticket and add it to box1
 					Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
