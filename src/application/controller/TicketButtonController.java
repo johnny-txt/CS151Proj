@@ -32,7 +32,7 @@ public class TicketButtonController {
 			// Set the current ticket ID in CommonObjs based on the clicked ticketButton
 			commonObjs.setCurrentTicket(commonObjs.getTicketList().getChildren().indexOf(ticketButton) + 1);
 			//commonObjs.setCurrentProject(TicketDAO.getTicketProjectByID(commonObjs.getCurrentTicket()));
-			System.out.println(commonObjs.getCurrentTicket());
+			
 			
 	        // Load the AnchorPane for displaying page for comment creation
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
@@ -76,7 +76,7 @@ public class TicketButtonController {
 	        
 	        //
 	        mainBox.getChildren().add(pane1);
-	        
+	        System.out.println("Current Project: " + commonObjs.getCurrentProject());
 	        System.out.println("Current Ticket: " + commonObjs.getCurrentTicket());
 			    
 		} catch (IOException e) {
