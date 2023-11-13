@@ -53,7 +53,7 @@ public class AllTicketList {
 		}
 	}
 	public void Back() {
-        URL url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
+        URL url = getClass().getClassLoader().getResource("view/HomePage.fxml");
 
         try {
             AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
@@ -76,12 +76,12 @@ public class AllTicketList {
 		
 		// URL for the "ProjectBox.fxml" file
 		String query = SearchBar.getText();
-		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/AllTickets.fxml");
+		URL allTickets = getClass().getClassLoader().getResource("view/AllTickets.fxml");
 	    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 		try {
 			
 			// Load AnchorPane for the ProjectBox view
-			AnchorPane ticketBox = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
+			AnchorPane ticketBox = (AnchorPane) FXMLLoader.load(allTickets);
 			
 			// Retrieve the mainBox from commonObjs
 			HBox mainBox = commonObjs.getMainBox();

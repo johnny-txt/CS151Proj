@@ -71,13 +71,13 @@ public class TicketCreationController {
 		TicketBean ticket = new TicketBean(projectID, tName, desc);
 		ticketDAO.insertTicket(ticket, projectID);
 		
-		URL projectBoxUrl = getClass().getClassLoader().getResource("view/ProjectBox.fxml");
+		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/TicketBox.fxml");
 		URL url = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
 	    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 	
 	    try {
 	    	
-			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(projectBoxUrl);
+			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
 	        VBox box1 = (VBox) FXMLLoader.load(url);
 
 	        HBox mainBox = commonObjs.getMainBox();
@@ -127,13 +127,13 @@ public class TicketCreationController {
 	@FXML public void cancelNewTicketOp() {
 		
 		// URL for the "ProjectBox.fxml" file
-		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/AllTickets.fxml");
+		URL allTickets = getClass().getClassLoader().getResource("view/AllTickets.fxml");
 		URL url = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
 	    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 		try {
 			
 			// Load AnchorPane for the ProjectBox view
-			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
+			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(allTickets);
             VBox box1 = (VBox) FXMLLoader.load(url);
 			
 			// Retrieve the mainBox from commonObjs
