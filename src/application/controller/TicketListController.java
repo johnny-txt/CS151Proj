@@ -169,6 +169,7 @@ public class TicketListController {
 			}
 			
 			int projectID = commonObjs.getCurrentProject();
+			System.out.println(projectID);
 			
 			// Retrieve project information by name
 			String projectName = ProjectDAO.getProjectNameByID(projectID);
@@ -176,6 +177,8 @@ public class TicketListController {
 	        //LocalDate projectDate = ProjectDAO.getProjectDateByID(projectID);
 			
 			// Set project information in CommonObjs
+			commonObjs.setCurrentProject(projectID);
+			System.out.println(projectID);
 	        commonObjs.setProjectName(projectName);
 	        commonObjs.setProjectDesc(projectDesc);
 			
