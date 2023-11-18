@@ -107,7 +107,7 @@ public class TicketListController {
 		
 		// URL for the "ProjectBox.fxml" file
 		String query = SearchBar.getText();
-		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/TicketBox.fxml");
+		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/ProjectBox.fxml");
 	    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 		try {
 			
