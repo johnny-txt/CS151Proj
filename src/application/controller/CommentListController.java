@@ -43,8 +43,8 @@ public class CommentListController {
 	
 	public void Back() {
 		ticketDAO = Main.ticketDao;
-		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/ProjectBox.fxml");
-		URL url = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
+		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/TicketBox.fxml");
+//		URL url = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
 	    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 	    
         try {

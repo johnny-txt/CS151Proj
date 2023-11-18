@@ -42,7 +42,7 @@ public class ProjectCreationController {
 	@FXML public void cancelNewProjectOp() {
 		
 		// Gets URL of the "HomePageWelcome.fxml" file and loads the JavaFx scene graph
-		URL url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
+		URL url = getClass().getClassLoader().getResource("view/HomePage.fxml");
 		
 		try {
 			// Loads and AnchorPane for the HomepageWelcome view
@@ -58,17 +58,17 @@ public class ProjectCreationController {
 			
 			// Adds pane1 to the mainBox
 			if (TicketDAO.getTicketIDs().isEmpty()){
-				url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
+				url = getClass().getClassLoader().getResource("view/HomePage.fxml");
 				pane = (AnchorPane) FXMLLoader.load(url);
 				mainBox.getChildren().add(pane);
 			}
 			else {
-				URL ticketBoxUrl = getClass().getClassLoader().getResource("view/AllTickets.fxml");
+				URL allTickets = getClass().getClassLoader().getResource("view/AllTickets.fxml");
 			    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 			    URL ticketListUrl = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
 					
 					// Load AnchorPane for the ProjectBox view
-					AnchorPane ticketBox = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
+					AnchorPane ticketBox = (AnchorPane) FXMLLoader.load(allTickets);
 					
 					
 					// Adds pane1 to the mainBox
@@ -113,7 +113,7 @@ public class ProjectCreationController {
 	    Main.addProj(proj);
 
 	    // Continue with page change
-	    URL url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
+	    URL url = getClass().getClassLoader().getResource("view/HomePage.fxml");
 	    URL buttonUrl = getClass().getClassLoader().getResource("view/ProjectButton.fxml");
 	    
 	    try {
@@ -131,17 +131,17 @@ public class ProjectCreationController {
 	        
 	        // Add the new page
 	        if (TicketDAO.getTicketIDs().isEmpty()){
-				url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
+				url = getClass().getClassLoader().getResource("view/HomePage.fxml");
 				pane = (AnchorPane) FXMLLoader.load(url);
 				mainBox.getChildren().add(pane);
 			}
 			else {
-				URL ticketBoxUrl = getClass().getClassLoader().getResource("view/AllTickets.fxml");
+				URL allTickets = getClass().getClassLoader().getResource("view/AllTickets.fxml");
 			    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 			    URL ticketListUrl = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
 					
 					// Load AnchorPane for the ProjectBox view
-					AnchorPane ticketBox = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
+					AnchorPane ticketBox = (AnchorPane) FXMLLoader.load(allTickets);
 					
 					
 					// Adds pane1 to the mainBox
