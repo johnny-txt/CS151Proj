@@ -33,9 +33,9 @@ public class EditProjectController {
 	
 	// updates date when editing a project (fix later)
 	public void initialize() {
-		name.setText(commonObjs.getProjectName());
+		name.setText(ProjectDAO.getProjectNameByID(commonObjs.getCurrentProject()));
 		date.setValue(LocalDate.now());
-		description.setText(commonObjs.getProjectDesc());
+		description.setText(ProjectDAO.getProjectDescByID(commonObjs.getCurrentProject()));
 	}
 		
 		
