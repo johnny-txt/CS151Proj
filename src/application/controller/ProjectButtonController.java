@@ -60,13 +60,13 @@ public class ProjectButtonController {
 			
 			// Iterate through all ticket IDs in the database
 			
-			for (int ticketID : Main.ticketDao.getTicketIDs()) {
+			for (int ticketID : TicketDAO.getTicketIDs()) {
 				
 				// Retrieve project ID, name, and description for each ticket
-				int ticketProjectID = Main.ticketDao.getTicketProjectByID(ticketID);
+				int ticketProjectID = TicketDAO.getTicketProjectByID(ticketID);
 				projectName = ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(ticketID));
-				String ticketName = Main.ticketDao.getTicketNameByID(ticketID);
-				String ticketDesc = Main.ticketDao.getTicketDescByID(ticketID);
+				String ticketName = TicketDAO.getTicketNameByID(ticketID);
+				String ticketDesc = TicketDAO.getTicketDescByID(ticketID);
 				
 				// Check if the ticket belongs to the current project
 				if (ticketProjectID == commonObjs.getCurrentProject()) {

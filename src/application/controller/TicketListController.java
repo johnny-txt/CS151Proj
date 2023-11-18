@@ -3,6 +3,7 @@ package application.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 
 import application.CommonObjs;
 import application.data_access_objects.ProjectDAO;
@@ -190,4 +191,100 @@ public class TicketListController {
 			e.printStackTrace();
 		}
 	}
+	
+	public void deleteProject() {
+		URL url = getClass().getClassLoader().getResource("view/HomePage.fxml");
+
+        try {
+        	System.out.println(commonObjs.getCurrentProject());
+        	ProjectDAO.deleteProj(commonObjs.getCurrentProject());
+        	commonObjs.setCurrentProject(0);
+        	
+            AnchorPane pane = (AnchorPane) FXMLLoader.load(url);
+
+            HBox mainBox = commonObjs.getMainBox();
+
+            // Checks if there is already a child in mainBox, and if so, removes  it
+            if(mainBox.getChildren().size() > 1) {
+                mainBox.getChildren().remove(1);
+            }
+
+            if (ticketDAO.getTicketIDs().isEmpty()){
+            	VBox coolList = commonObjs.getList();
+				coolList.getChildren().clear();
+				AnchorPane lol = commonObjs.getProjectList();
+				
+				// Retrieve project names from database
+				List<String> projNames = ProjectDAO.getProjectNames();
+				
+				// Loads the projects in button form
+				URL urlButton = getClass().getClassLoader().getResource("view/ProjectButton.fxml");
+				for (String name : projNames) {
+					Button projectButton = (Button) FXMLLoader.load(urlButton);
+				    projectButton.setText(name);
+					coolList.getChildren().add(projectButton);
+				}
+				
+	            // Ensure that project names are displayed in the UI if projects exist
+			    if (projNames.size() > 0 && lol.getChildren().size() < 5) {
+			    	lol.getChildren().add(coolList);
+		    	}
+            	
+				url = getClass().getClassLoader().getResource("view/HomePage.fxml");
+				pane = (AnchorPane) FXMLLoader.load(url);
+				mainBox.getChildren().add(pane);
+			}
+			else {
+				
+				VBox coolList = commonObjs.getList();
+				coolList.getChildren().clear();
+				AnchorPane lol = commonObjs.getProjectList();
+				
+				// Retrieve project names from database
+				List<String> projNames = ProjectDAO.getProjectNames();
+				
+				// Loads the projects in button form
+				URL urlButton = getClass().getClassLoader().getResource("view/ProjectButton.fxml");
+				for (String name : projNames) {
+					Button projectButton = (Button) FXMLLoader.load(urlButton);
+				    projectButton.setText(name);
+					coolList.getChildren().add(projectButton);
+				}
+				
+	            // Ensure that project names are displayed in the UI if projects exist
+			    if (projNames.size() > 0 && lol.getChildren().size() < 5) {
+			    	lol.getChildren().add(coolList);
+		    	}
+			    
+				URL allTickets = getClass().getClassLoader().getResource("view/AllTickets.fxml");
+			    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
+			    URL ticketListUrl = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
+					
+					// Load AnchorPane for the ProjectBox view
+					AnchorPane ticketBox = (AnchorPane) FXMLLoader.load(allTickets);
+					
+					
+					// Adds pane1 to the mainBox
+		            mainBox.getChildren().add(ticketBox);
+		            
+					VBox ticketList = (VBox) FXMLLoader.load(ticketListUrl);
+					commonObjs.setTicketList(ticketList);
+					ticketList.getChildren().clear();
+					
+					for (int ticketID : TicketDAO.getTicketIDs()) {
+						String projectName = ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(ticketID));
+						String ticketName = TicketDAO.getTicketNameByID(ticketID);
+						String ticketDesc = TicketDAO.getTicketDescByID(ticketID);
+						Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
+						ticketButton.setText("Project: " + projectName + "     Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
+						ticketList.getChildren().add(ticketButton);
+					}
+				ticketBox.getChildren().add(ticketList);
+			}
+            
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

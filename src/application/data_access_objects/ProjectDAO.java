@@ -301,12 +301,13 @@ public class ProjectDAO {
 	            return;
 	        }
 			
-			String query = "DELETE id FROM project_table WHERE projectID = ?";
-			try (Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db");
+			String query = "DELETE FROM project_table WHERE id = ?";
+			try(Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db");
 				PreparedStatement preparedStatement = connect.prepareStatement(query)){
-		        preparedStatement.setInt(1, projectID);
-		     	
+			    preparedStatement.setInt(1, projectID);
+			    preparedStatement.execute();
 			}
+
 			catch (SQLException e) {
 	            System.out.println("Failed to delete project from the database: " + e.getMessage());
 	            e.printStackTrace();
