@@ -28,6 +28,15 @@ public class TicketListController {
 	
 	@FXML public TextField SearchBar;
 	
+	@FXML public Label projectName;
+	
+	@FXML public Label projectDescription;
+	
+	public void initialize() {
+		projectName.setText("Project: " + ProjectDAO.getProjectNameByID(commonObjs.getCurrentProject()));
+		projectDescription.setText("Description: " + ProjectDAO.getProjectDescByID(commonObjs.getCurrentProject()));
+	}
+	
 	public void CreateTicketOperation() {
 		// Gets URL of the "ProjectCreation.fxml" file and loads the JavaFx scene graph
 		URL url = getClass().getClassLoader().getResource("view/TicketCreation.fxml");
