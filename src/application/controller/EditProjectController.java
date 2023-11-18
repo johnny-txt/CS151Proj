@@ -3,6 +3,7 @@ package application.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 
 import application.CommonObjs;
 import application.Main;
@@ -14,13 +15,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class EditProjectController {
+	@FXML
+	private Label projectName;
+	
 	@FXML
 	private TextField name;
 	
@@ -37,6 +43,7 @@ public class EditProjectController {
 	// updates date when editing a project (fix later)
 	public void initialize() {
 		name.setText(ProjectDAO.getProjectNameByID(commonObjs.getCurrentProject()));
+		projectName.setText(ProjectDAO.getProjectNameByID(commonObjs.getCurrentProject()));
 		date.setValue(LocalDate.now());
 		description.setText(ProjectDAO.getProjectDescByID(commonObjs.getCurrentProject()));
 	}
@@ -49,15 +56,13 @@ public class EditProjectController {
 		String desc = description.getText();
 		  
 		// Check if any of the fields is empty
-		if (projName.isEmpty() || theDate == null || desc.isEmpty()) {
-			return;
-		}
 		
-		int projectID = ProjectDAO.getProjectIDByName(projName);
+		int projectID = commonObjs.getCurrentProject();
 		
-	    ProjectDAO.updateName(projectID, projName);
-
-	    ProjectDAO.updateDesc(projectID, desc);
+		//ProjectDAO.updateName(projectID, projName);
+		//ProjectDAO.updateDesc(projectID, desc);
+		
+	    ProjectDAO.updateProject(projectID, projName, theDate, desc);
 	   
 		// Continue with page change
 		URL url = getClass().getClassLoader().getResource("view/HomePage.fxml");
@@ -109,28 +114,25 @@ public class EditProjectController {
 				ticketBox.getChildren().add(ticketList);
 			}
 			        
-			// Adjust the project list display in the GUI
-			AnchorPane lol = commonObjs.getProjectList();
-			Node emptyListText = lol.getChildren().get(0);
-			emptyListText.setVisible(false);
-
 			VBox coolList = commonObjs.getList();
-
-			// If the project list in lol is empty, add coolList to it
-			if (lol.getChildren().size() < 5) {
-			    lol.getChildren().add(coolList);
+			coolList.getChildren().clear();
+			AnchorPane lol = commonObjs.getProjectList();
+			
+			// Retrieve project names from database
+			List<String> projNames = ProjectDAO.getProjectNames();
+			
+			// Loads the projects in button form
+			URL urlButton = getClass().getClassLoader().getResource("view/ProjectButton.fxml");
+			for (String name : projNames) {
+				Button projectButton = (Button) FXMLLoader.load(urlButton);
+			    projectButton.setText(name);
+				coolList.getChildren().add(projectButton);
 			}
-
-			// Find the existing button in coolList that corresponds to the project
-			for (Node node : coolList.getChildren()) {
-			    if (node instanceof Button) {
-			        Button button = (Button) node;
-			        if (button.getText().equals(projName)) {
-			            button.setText(projName);
-			            break;
-			        }
-			    }
-			}
+			
+            // Ensure that project names are displayed in the UI if projects exist
+		    if (projNames.size() > 0 && lol.getChildren().size() < 5) {
+		    	lol.getChildren().add(coolList);
+	    	}
 
 		        
 		// Handles any exception that may occur during the view loading process

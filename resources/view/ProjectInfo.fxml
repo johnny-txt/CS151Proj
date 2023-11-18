@@ -13,7 +13,7 @@
       <Button fx:id="Cancel" layoutX="40.0" layoutY="331.0" mnemonicParsing="false" onAction="#cancel" prefHeight="37.0" prefWidth="130.0" style="-fx-background-color: FIREBRICK;" text="Cancel" textFill="WHITE" />
       <Button fx:id="Save" layoutX="245.0" layoutY="331.0" mnemonicParsing="false" onAction="#saveProject" prefHeight="37.0" prefWidth="130.0" style="-fx-background-color: ROYALBLUE;" text="Save" textFill="WHITE" />
       <DatePicker fx:id="date" layoutX="40.0" layoutY="161.0" />
-      <Label fx:id="projName" layoutX="34.0" layoutY="26.0" text="Project Name">
+      <Label fx:id="projectName" layoutX="34.0" layoutY="26.0" text="Project Name">
          <font>
             <Font size="30.0" />
          </font>

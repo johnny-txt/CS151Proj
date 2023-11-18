@@ -54,11 +54,10 @@ public class ProjectListController {
 	
 	public void Search() {
 		String query = SearchBar.getText();
-		URL projectBoxUrl = getClass().getClassLoader().getResource("view/ProjectList.fxml");
 	    URL projectUrl = getClass().getClassLoader().getResource("view/ProjectButton.fxml");
 	    try {
 	    	
-	    	AnchorPane projectBox = (AnchorPane) FXMLLoader.load(projectBoxUrl);
+	    	AnchorPane projectBox = commonObjs.getProjectList();
 	    
 	    	HBox mainBox = commonObjs.getMainBox();
 	    	
@@ -86,7 +85,7 @@ public class ProjectListController {
 	    	}
 	    	
 	    	// Adds VBox on top of AnchorPane
-	    	projectBox.getChildren().add(projectList);
+	    	projectBox.getChildren().set(4, projectList);
 	    } catch(IOException e) {
 			e.printStackTrace();
 		}
