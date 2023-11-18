@@ -4,7 +4,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="ProjectBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: GRAY;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.TicketListController">
+<AnchorPane fx:id="ProjectBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: GRAY;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.AllTicketListController">
    <children>
       <Button fx:id="CreateTicketButton" layoutX="212.0" layoutY="362.0" mnemonicParsing="false" onAction="#CreateTicketOperation" prefHeight="25.0" prefWidth="181.0" style="-fx-background-color: ROYALBLUE;" text="Create Ticket" textFill="WHITE" />
       <TextField fx:id="SearchBar" layoutX="6.0" layoutY="362.0" prefHeight="27.0" prefWidth="167.0" promptText="SearchTickets" />
