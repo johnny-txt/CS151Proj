@@ -40,15 +40,8 @@ public class ProjectButtonController {
 	        // Set the current project ID in CommonObjs based on the clicked projectButton
 			String projectName = projectButton.getText();
 			
-			List<String> nameList = ProjectDAO.getProjectNames();
-			
-			for (int i = 0; i < nameList.size(); i++) {
-				if(projectName.equals(nameList.get(i))) {
-					commonObjs.setCurrentProject(i + 1);
-				}
-			}
-			
-			
+			commonObjs.setCurrentProject(ProjectDAO.getProjectIDByName(projectName));
+
 	        // Load the AnchorPane for displaying page for ticket creation
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
 			

@@ -312,6 +312,30 @@ public class ProjectDAO {
 	            System.out.println("Failed to delete project from the database: " + e.getMessage());
 	            e.printStackTrace();
 	        }
+			
+			query = "DELETE FROM ticket_table WHERE projectID = ?";
+			try(Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db");
+					PreparedStatement preparedStatement = connect.prepareStatement(query)){
+				    preparedStatement.setInt(1, projectID);
+				    preparedStatement.execute();
+				}
+
+				catch (SQLException e) {
+		            System.out.println("Failed to delete project from the database: " + e.getMessage());
+		            e.printStackTrace();
+		        }
+			
+			query = "DELETE FROM comment_table WHERE projectID = ?";
+			try(Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db");
+					PreparedStatement preparedStatement = connect.prepareStatement(query)){
+				    preparedStatement.setInt(1, projectID);
+				    preparedStatement.execute();
+				}
+
+				catch (SQLException e) {
+		            System.out.println("Failed to delete project from the database: " + e.getMessage());
+		            e.printStackTrace();
+		        }
 		} 
 		
 		public static void updateDesc(int projectID, String updatedDesc) {// Attempt to load sqlite driver
