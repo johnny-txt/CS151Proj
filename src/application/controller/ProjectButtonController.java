@@ -28,7 +28,7 @@ public class ProjectButtonController {
 	@FXML public void openProject() {
 		
 	    // Gets the URL of the "ProjectBox.fxml" file for displaying box for ticket creation
-		URL url = getClass().getClassLoader().getResource("view/TicketBox.fxml");
+		URL url = getClass().getClassLoader().getResource("view/ProjectBox.fxml");
 		
 	    // Gets the URL of the "ProjectTicketList.fxml" file for displaying a list of project tickets
 		URL ticketListUrl = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
