@@ -61,7 +61,7 @@ public class CommentCreationController {
 		
 //		URL url = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
 //	    URL commentUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
-		URL commentBoxUrl = getClass().getClassLoader().getResource("view/CommentBox.fxml");
+		URL commentBoxUrl = getClass().getClassLoader().getResource("view/TicketBox.fxml");
 		
 		try {
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(commentBoxUrl);
@@ -115,7 +115,7 @@ public class CommentCreationController {
 //		URL url = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
 		
 		// Gets URL of the "TicketBox.fxml" file to load comment creation page
-		URL commentBoxUrl = getClass().getClassLoader().getResource("view/CommentBox.fxml");
+		URL commentBoxUrl = getClass().getClassLoader().getResource("view/TicketBox.fxml");
 		try {
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(commentBoxUrl);
 			

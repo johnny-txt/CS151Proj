@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="ProjectBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: GRAY;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.TicketListController">
+   <children>
+      <Button fx:id="CreateTicketButton" layoutX="287.0" layoutY="360.0" mnemonicParsing="false" onAction="#CreateTicketOperation" prefHeight="26.0" prefWidth="74.0" style="-fx-background-color: ROYALBLUE;" text="Create Ticket" textFill="WHITE" />
+      <Button fx:id="Back" layoutX="43.0" layoutY="361.0" mnemonicParsing="false" onAction="#Back" prefHeight="21.0" prefWidth="74.0" style="-fx-background-color: FIREBRICK;" text="Back" textFill="WHITE" />
+   </children>
+</AnchorPane>

@@ -25,7 +25,7 @@ public class TicketButtonController {
 	@FXML public void openTicket() {
 		
 	    // Gets the URL of the "TicketBox.fxml" file for displaying box for comment creation
-		URL url = getClass().getClassLoader().getResource("view/CommentBox.fxml");
+		URL url = getClass().getClassLoader().getResource("view/TicketBox.fxml");
 		
 	    // Gets the URL of the "ProjectTicketList.fxml" file for displaying a list of ticket comments
 		URL commentListUrl = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
