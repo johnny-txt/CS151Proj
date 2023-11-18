@@ -41,13 +41,7 @@ public class TicketButtonController {
 			
 			List<String> nameList = TicketDAO.getTicketNames();
 			
-			for (int i = 0; i < nameList.size(); i++) {
-				System.out.println(ticketName + " =? " + nameList.get(i));
-				if(ticketName.equals(nameList.get(i))) {
-					commonObjs.setCurrentTicket(i + 1);
-				}
-			}
-			
+			commonObjs.setCurrentTicket(TicketDAO.getTicketIDByName(ticketName));
 			commonObjs.setCurrentProject(TicketDAO.getTicketProjectByID(commonObjs.getCurrentTicket()));
 			
 			

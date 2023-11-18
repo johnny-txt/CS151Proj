@@ -40,15 +40,8 @@ public class ProjectButtonController {
 	        // Set the current project ID in CommonObjs based on the clicked projectButton
 			String projectName = projectButton.getText();
 			
-			List<String> nameList = ProjectDAO.getProjectNames();
-			
-			for (int i = 0; i < nameList.size(); i++) {
-				if(projectName.equals(nameList.get(i))) {
-					commonObjs.setCurrentProject(i + 1);
-				}
-			}
-			
-			
+			commonObjs.setCurrentProject(ProjectDAO.getProjectIDByName(projectName));
+
 	        // Load the AnchorPane for displaying page for ticket creation
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
 			
@@ -60,13 +53,13 @@ public class ProjectButtonController {
 			
 			// Iterate through all ticket IDs in the database
 			
-			for (int ticketID : Main.ticketDao.getTicketIDs()) {
+			for (int ticketID : TicketDAO.getTicketIDs()) {
 				
 				// Retrieve project ID, name, and description for each ticket
-				int ticketProjectID = Main.ticketDao.getTicketProjectByID(ticketID);
+				int ticketProjectID = TicketDAO.getTicketProjectByID(ticketID);
 				projectName = ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(ticketID));
-				String ticketName = Main.ticketDao.getTicketNameByID(ticketID);
-				String ticketDesc = Main.ticketDao.getTicketDescByID(ticketID);
+				String ticketName = TicketDAO.getTicketNameByID(ticketID);
+				String ticketDesc = TicketDAO.getTicketDescByID(ticketID);
 				
 				// Check if the ticket belongs to the current project
 				if (ticketProjectID == commonObjs.getCurrentProject()) {
