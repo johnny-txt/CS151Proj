@@ -2,6 +2,7 @@ package application.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 
 import application.CommonObjs;
 import application.data_access_objects.ProjectDAO;
@@ -149,6 +150,40 @@ public class TicketListController {
 		
 		// Handles exceptions
 		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void editProject() {
+		URL url = getClass().getClassLoader().getResource("view/ProjectInfo.fxml");
+		
+		try {
+			// Loads and AnchorPane for the ProjectCreation view
+			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
+			
+			HBox mainBox = commonObjs.getMainBox();
+			
+			// Checks if there is already a child in mainBox, and if so, removes  it
+			if(mainBox.getChildren().size() > 1) {
+				mainBox.getChildren().remove(1);
+			}
+			
+			int projectID = commonObjs.getCurrentProject();
+			
+			// Retrieve project information by name
+			String projectName = ProjectDAO.getProjectNameByID(projectID);
+			String projectDesc = ProjectDAO.getProjectDescByID(projectID);
+	        //LocalDate projectDate = ProjectDAO.getProjectDateByID(projectID);
+			
+			// Set project information in CommonObjs
+	        commonObjs.setProjectName(projectName);
+	        commonObjs.setProjectDesc(projectDesc);
+			
+	        // Adds pane1 to the mainBox
+			mainBox.getChildren().add(pane1);
+			
+		} catch (IOException e) {
+			// Handles any exception that may occur during the view loading process
 			e.printStackTrace();
 		}
 	}
