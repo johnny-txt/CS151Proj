@@ -26,6 +26,9 @@ public class CommonObjs {
     // Fields to store the currently selected project and ticket IDs
     private int currentProjectID;
     private int currentTicketID;
+    
+    private String projectName;
+    private String projectDesc;
 
     // Instantiates CommonObjs only within this class
     private CommonObjs() {}
@@ -107,4 +110,24 @@ public class CommonObjs {
     public void setCurrentTicket(int id) {
         this.currentTicketID = id;
     }
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+		
+	}
+	
+	public String getProjectName() {
+		return projectName;
+		
+	}
+
+	public void setProjectDesc(String projectDesc) {
+		this.projectDesc = projectDesc;
+		
+	}
+	
+	public String getProjectDesc() {
+		return projectDesc;
+		
+	}
 }

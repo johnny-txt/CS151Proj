@@ -7,5 +7,6 @@
    <children>
       <Button fx:id="CreateTicketButton" layoutX="287.0" layoutY="360.0" mnemonicParsing="false" onAction="#CreateTicketOperation" prefHeight="26.0" prefWidth="74.0" style="-fx-background-color: ROYALBLUE;" text="Create Ticket" textFill="WHITE" />
       <Button fx:id="Back" layoutX="43.0" layoutY="361.0" mnemonicParsing="false" onAction="#Back" prefHeight="21.0" prefWidth="74.0" style="-fx-background-color: FIREBRICK;" text="Back" textFill="WHITE" />
+      <Button fx:id="EditProjectButton" layoutX="182.0" layoutY="360.0" mnemonicParsing="false" onAction="#editProject" text="Edit" />
    </children>
 </AnchorPane>
