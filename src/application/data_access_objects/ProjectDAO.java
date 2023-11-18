@@ -190,196 +190,222 @@ public class ProjectDAO {
     }
 	
 	// Retrieves a list of project IDs from ticket table
-		public static List<Integer> getProjectIDs(){
-			List<Integer> projectIDs = new ArrayList<>();
-			
-			// Attempts to load driver
-			try {
-	            Class.forName("org.sqlite.JDBC");
-	        } catch (ClassNotFoundException e) {
-	            System.err.println("SQLite JDBC driver not found.");
-	            e.printStackTrace();
-	            return projectIDs;
-	        }
-			
-			// Connects to database
-			try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
-		            Statement statement = connection.createStatement()) {
-		            
-	        		// Query to select all project IDs from ticket table
-					String selectSQL = "SELECT id FROM project_table";
-		            ResultSet resultSet = statement.executeQuery(selectSQL);
-		            
-		            // Iterates through set and retrieves the project IDs one by one, adding to list
-		            while (resultSet.next()) {
-		                int ticketID = resultSet.getInt("id");
-		                projectIDs.add(ticketID);
-		            }
-		        
-			// Handles exception
-			} catch (SQLException e) {
-		            System.out.println("Failed to retrieve project names from the database: " + e.getMessage());
-		            e.printStackTrace();
-		        }
-			System.out.println("Retrieved project id's: " + projectIDs);
+	public static List<Integer> getProjectIDs(){
+		List<Integer> projectIDs = new ArrayList<>();
+		// Attempts to load driver
+		try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e) {
+			System.err.println("SQLite JDBC driver not found.");
+			e.printStackTrace();
 			return projectIDs;
 		}
-		
-		// Retrieve the name of project from project table based on project ID
-		public static String getProjectNameByID(int projectID) {
-	        String projectName = null;
-	        
-	        // Attempt to load driver
-	        try {
-	            Class.forName("org.sqlite.JDBC");
-	        } catch (ClassNotFoundException e) {
-	            System.err.println("SQLite JDBC driver not found.");
-	            e.printStackTrace();
-	            return projectName;
-	        }
-	        
-	        // Connect to database
-	        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
-	            
-	        	// Query to select name of ticket with the specified ID from ticket table
-	        	PreparedStatement preparedStatement = connection.prepareStatement("SELECT projectName FROM project_table WHERE id = ?")) {
-	            preparedStatement.setInt(1, projectID);
-	            ResultSet resultSet = preparedStatement.executeQuery();
-	            
-	            // If set contains a row, means ticket with specified ID was found
-	            if (resultSet.next()) {
-	                projectName = resultSet.getString("projectName");
-	            }
-	        
-	        // Error message if failed to retrieve project name
-	        } catch (SQLException e) {
-	            System.out.println("Failed to retrieve project name from the database: " + e.getMessage());
-	            e.printStackTrace();
-	        }
-	        return projectName;
-	    }
-		
-		// Retrieve the desc of project from ticket table based on project ID
-		public static String getProjectDescByID(int projectID) {
-			String projDesc = null;
 			
-			// Attempt to load driver
-	        try {
-	            Class.forName("org.sqlite.JDBC");
-	        } catch (ClassNotFoundException e) {
-	            System.err.println("SQLite JDBC driver not found.");
-	            e.printStackTrace();
-	            return projDesc;
-	        }
-	        
-	        // Connects to database
-	        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
-	        	// Query to select description of ticket with the specified ID from ticket table
-	        	PreparedStatement preparedStatement = connection.prepareStatement("SELECT projectDescription FROM project_table WHERE id = ?")) {
-	            preparedStatement.setInt(1, projectID);
-	            ResultSet resultSet = preparedStatement.executeQuery();
-	            
-	            // If set contains a row, means ticket with specified ID was found
-	            if (resultSet.next()) {
-	                projDesc = resultSet.getString("projectDescription");
-	            }
-	            
-	        // Error message if failed to retrieve ticket description
-	        } catch (SQLException e) {
-	            System.out.println("Failed to retrieve project description from the database: " + e.getMessage());
-	            e.printStackTrace();
-	        }
-	        return projDesc;
-		}
-		public static void deleteProj(int projectID) {
-			// Attempt to load sqlite driver
-			try {
-	            Class.forName("org.sqlite.JDBC");
-	        } catch (ClassNotFoundException e) {
-	            System.err.println("SQLite JDBC driver not found.");
-	            e.printStackTrace();
-	            return;
-	        }
-			
-			String query = "DELETE FROM project_table WHERE id = ?";
-			try(Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db");
-				PreparedStatement preparedStatement = connect.prepareStatement(query)){
-			    preparedStatement.setInt(1, projectID);
-			    preparedStatement.execute();
+		// Connects to database
+		try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+				Statement statement = connection.createStatement()) {
+		            
+			// Query to select all project IDs from ticket table
+			String selectSQL = "SELECT id FROM project_table";
+			ResultSet resultSet = statement.executeQuery(selectSQL);
+		            
+			// Iterates through set and retrieves the project IDs one by one, adding to list
+			while (resultSet.next()) {
+				int ticketID = resultSet.getInt("id");
+				projectIDs.add(ticketID);
 			}
 
-			catch (SQLException e) {
-	            System.out.println("Failed to delete project from the database: " + e.getMessage());
-	            e.printStackTrace();
-	        }
-			
-			query = "DELETE FROM ticket_table WHERE projectID = ?";
-			try(Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db");
-					PreparedStatement preparedStatement = connect.prepareStatement(query)){
-				    preparedStatement.setInt(1, projectID);
-				    preparedStatement.execute();
-				}
-
-				catch (SQLException e) {
-		            System.out.println("Failed to delete project from the database: " + e.getMessage());
-		            e.printStackTrace();
-		        }
-			
-			query = "DELETE FROM comment_table WHERE projectID = ?";
-			try(Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db");
-					PreparedStatement preparedStatement = connect.prepareStatement(query)){
-				    preparedStatement.setInt(1, projectID);
-				    preparedStatement.execute();
-				}
-
-				catch (SQLException e) {
-		            System.out.println("Failed to delete project from the database: " + e.getMessage());
-		            e.printStackTrace();
-		        }
-		} 
+			// Handles exception
+		} catch (SQLException e) {
+			System.out.println("Failed to retrieve project names from the database: " + e.getMessage());
+			e.printStackTrace();
+		}
+		System.out.println("Retrieved project id's: " + projectIDs);
+		return projectIDs;
+	}
 		
-		public static void updateDesc(int projectID, String updatedDesc) {
-		    try {
-		        Class.forName("org.sqlite.JDBC");
-		    } catch (ClassNotFoundException e) {
-		        System.err.println("SQLite JDBC driver not found.");
-		        e.printStackTrace();
-		        return;
-		    }
-		    try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
-		         // Query to update description of project with the specified ID
-		         PreparedStatement preparedStatement = connection.prepareStatement("UPDATE project_table SET projectDescription = ? WHERE id = ?")) {
-		        preparedStatement.setString(1, updatedDesc);
-		        preparedStatement.setInt(2, projectID);
-		        int rowsUpdated = preparedStatement.executeUpdate(); // Execute the update
-		        System.out.println("Updated project description. Rows affected: " + rowsUpdated);
-		    } catch (SQLException e) {
-		        System.out.println("Failed to update project description in the database: " + e.getMessage());
-		        e.printStackTrace();
-		    }
+		// Retrieve the name of project from project table based on project ID
+	public static String getProjectNameByID(int projectID) {
+		String projectName = null;
+
+		// Attempt to load driver
+		try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e) {
+			System.err.println("SQLite JDBC driver not found.");
+			e.printStackTrace();
+			return projectName;
+		}
+	        
+		// Connect to database
+		try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+				// Query to select name of ticket with the specified ID from ticket table
+			PreparedStatement preparedStatement = connection.prepareStatement("SELECT projectName FROM project_table WHERE id = ?")) {
+				preparedStatement.setInt(1, projectID);
+				ResultSet resultSet = preparedStatement.executeQuery();
+	            // If set contains a row, means ticket with specified ID was found
+				if (resultSet.next()) {
+					projectName = resultSet.getString("projectName");
+				}
+	        
+	        // Error message if failed to retrieve project name
+			} catch (SQLException e) {
+				System.out.println("Failed to retrieve project name from the database: " + e.getMessage());
+				e.printStackTrace();
+			}
+			return projectName;
+	}
+		
+		// Retrieve the desc of project from ticket table based on project ID
+	public static String getProjectDescByID(int projectID) {
+		String projDesc = null;
+		// Attempt to load driver
+		try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e) {
+			System.err.println("SQLite JDBC driver not found.");
+			e.printStackTrace();
+			return projDesc;
 		}
 
-		public static void updateName(int projectID, String updatedName) {
-		    try {
-		        Class.forName("org.sqlite.JDBC");
-		    } catch (ClassNotFoundException e) {
-		        System.err.println("SQLite JDBC driver not found.");
-		        e.printStackTrace();
-		        return;
-		    }
-		    try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db")) {
-		        // Query to update project name with the specified ID
-		        String updateQuery = "UPDATE project_table SET projectName = ? WHERE id = ?";
-		        try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
-		            preparedStatement.setString(1, updatedName);
-		            preparedStatement.setInt(2, projectID);
-		            int rowsUpdated = preparedStatement.executeUpdate(); // Execute the update
-		            System.out.println("Updated project name. Rows affected: " + rowsUpdated);
-		        }
-		    } catch (SQLException e) {
-		        System.out.println("Failed to update project name in the database: " + e.getMessage());
-		        e.printStackTrace();
-		    }
+		// Connects to database
+		try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+				// Query to select description of ticket with the specified ID from ticket table
+				PreparedStatement preparedStatement = connection.prepareStatement("SELECT projectDescription FROM project_table WHERE id = ?")) {
+			preparedStatement.setInt(1, projectID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			// If set contains a row, means ticket with specified ID was found
+			if (resultSet.next()) {
+				projDesc = resultSet.getString("projectDescription");
+			}
+
+			// Error message if failed to retrieve ticket description
+		} catch (SQLException e) {
+			System.out.println("Failed to retrieve project description from the database: " + e.getMessage());
+			e.printStackTrace();
 		}
+		return projDesc;
+	}
+	public static void deleteProj(int projectID) {
+		// Attempt to load sqlite driver
+		try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e) {
+			System.err.println("SQLite JDBC driver not found.");
+			e.printStackTrace();
+			return;
+		}
+
+		String query = "DELETE FROM project_table WHERE id = ?";
+		try(Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db");
+				PreparedStatement preparedStatement = connect.prepareStatement(query)){
+			preparedStatement.setInt(1, projectID);
+			preparedStatement.execute();
+		}
+		catch (SQLException e) {
+			System.out.println("Failed to delete project from the database: " + e.getMessage());
+			e.printStackTrace();
+		}
+
+		query = "DELETE FROM ticket_table WHERE projectID = ?";
+		try(Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db");
+				PreparedStatement preparedStatement = connect.prepareStatement(query)){
+			preparedStatement.setInt(1, projectID);
+			preparedStatement.execute();
+		}
+
+		catch (SQLException e) {
+			System.out.println("Failed to delete project from the database: " + e.getMessage());
+			e.printStackTrace();
+		}
+
+		query = "DELETE FROM comment_table WHERE projectID = ?";
+		try(Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db");
+				PreparedStatement preparedStatement = connect.prepareStatement(query)){
+			preparedStatement.setInt(1, projectID);
+			preparedStatement.execute();
+		}
+		catch (SQLException e) {
+			System.out.println("Failed to delete project from the database: " + e.getMessage());
+			e.printStackTrace();
+		}
+	} 
+		
+	public static void updateDesc(int projectID, String updatedDesc) {
+		try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e) {
+			System.err.println("SQLite JDBC driver not found.");
+			e.printStackTrace();
+			return;
+		}
+		try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+				// Query to update description of project with the specified ID
+				PreparedStatement preparedStatement = connection.prepareStatement("UPDATE project_table SET projectDescription = ? WHERE id = ?")) {
+			preparedStatement.setString(1, updatedDesc);
+			preparedStatement.setInt(2, projectID);
+			int rowsUpdated = preparedStatement.executeUpdate(); // Execute the update
+			System.out.println("Updated project description. Rows affected: " + rowsUpdated);
+		} catch (SQLException e) {
+			System.out.println("Failed to update project description in the database: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+		
+	public static void updateName(int projectID, String updatedName) {
+		try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e) {
+			System.err.println("SQLite JDBC driver not found.");
+			e.printStackTrace();
+			return;
+		}
+		try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+				// Query to update description of project with the specified ID
+				PreparedStatement preparedStatement = connection.prepareStatement("UPDATE project_table SET projectName = ? WHERE id = ?")) {
+			preparedStatement.setString(1, updatedName);
+			preparedStatement.setInt(2, projectID);
+			int rowsUpdated = preparedStatement.executeUpdate(); // Execute the update
+			System.out.println("Updated project description. Rows affected: " + rowsUpdated);
+		} catch (SQLException e) {
+			System.out.println("Failed to update project description in the database: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	public static void updateProject(int projectID, String updatedName, LocalDate updatedDate, String updatedDesc) {
+		// Attempt to load driver
+		try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e) {
+			System.err.println("SQLite JDBC driver not found.");
+			e.printStackTrace();
+			return;
+		}
+  	  
+		// Connect to database
+		try (Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db")) {
+          
+  		  // Inserts project into project table
+			String update = "UPDATE project_table SET projectName = ?, projectDate = ?, projectDescription = ? WHERE id = ?";
+			try (PreparedStatement preparedStatement = connect.prepareStatement(update)) {
+				preparedStatement.setString(1, updatedName);
+				preparedStatement.setDate(2, java.sql.Date.valueOf(updatedDate));
+				preparedStatement.setString(3, updatedDesc);
+				preparedStatement.setInt(4, projectID);
+				preparedStatement.executeUpdate();
+				System.out.println("Data updated");
+          
+				// Error message if insertion failed
+			} catch (SQLException e) {
+				System.out.println("Failed to execute the SQL statement: " + e.getMessage());
+			}
+			// Handles exceptions
+		} catch (SQLException e) {
+			System.out.println("Failed to connect to the database: " + e.getMessage());
+		}
+	}
 }
 
