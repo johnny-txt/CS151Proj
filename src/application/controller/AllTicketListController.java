@@ -2,6 +2,8 @@ package application.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.util.List;
 
 import application.CommonObjs;
 import application.data_access_objects.ProjectDAO;
@@ -15,7 +17,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class AllTicketList {
+public class AllTicketListController {
 	private CommonObjs commonObjs = CommonObjs.getInstance();
 	
 	public TicketDAO ticketDAO;
@@ -25,6 +27,7 @@ public class AllTicketList {
 	@FXML public Label EmptyListText;
 	
 	@FXML public TextField SearchBar;
+	
 	
 	public void CreateTicketOperation() {
 		// Gets URL of the "ProjectCreation.fxml" file and loads the JavaFx scene graph
@@ -52,11 +55,12 @@ public class AllTicketList {
 			e.printStackTrace();
 		}
 	}
+	
 	public void Back() {
         URL url = getClass().getClassLoader().getResource("view/HomePage.fxml");
 
         try {
-            AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
+            AnchorPane pane = (AnchorPane) FXMLLoader.load(url);
 
             HBox mainBox = commonObjs.getMainBox();
 
@@ -65,8 +69,38 @@ public class AllTicketList {
                 mainBox.getChildren().remove(1);
             }
 
-            // Adds pane1 to the mainBox
-            mainBox.getChildren().add(pane1);
+            if (ticketDAO.getTicketIDs().isEmpty()){
+				url = getClass().getClassLoader().getResource("view/HomePage.fxml");
+				pane = (AnchorPane) FXMLLoader.load(url);
+				mainBox.getChildren().add(pane);
+			}
+			else {
+				URL allTickets = getClass().getClassLoader().getResource("view/AllTickets.fxml");
+			    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
+			    URL ticketListUrl = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
+					
+					// Load AnchorPane for the ProjectBox view
+					AnchorPane ticketBox = (AnchorPane) FXMLLoader.load(allTickets);
+					
+					
+					// Adds pane1 to the mainBox
+		            mainBox.getChildren().add(ticketBox);
+		            
+					VBox ticketList = (VBox) FXMLLoader.load(ticketListUrl);
+					commonObjs.setTicketList(ticketList);
+					ticketList.getChildren().clear();
+					
+					for (int ticketID : TicketDAO.getTicketIDs()) {
+						String projectName = ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(ticketID));
+						String ticketName = TicketDAO.getTicketNameByID(ticketID);
+						String ticketDesc = TicketDAO.getTicketDescByID(ticketID);
+						Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
+						ticketButton.setText("Project: " + projectName + "     Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
+						ticketList.getChildren().add(ticketButton);
+					}
+				ticketBox.getChildren().add(ticketList);
+			}
+            
         } catch(IOException e) {
             e.printStackTrace();
         }
@@ -76,12 +110,12 @@ public class AllTicketList {
 		
 		// URL for the "ProjectBox.fxml" file
 		String query = SearchBar.getText();
-		URL allTickets = getClass().getClassLoader().getResource("view/AllTickets.fxml");
+		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/ProjectBox.fxml");
 	    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 		try {
 			
 			// Load AnchorPane for the ProjectBox view
-			AnchorPane ticketBox = (AnchorPane) FXMLLoader.load(allTickets);
+			AnchorPane ticketBox = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
 			
 			// Retrieve the mainBox from commonObjs
 			HBox mainBox = commonObjs.getMainBox();
@@ -96,7 +130,7 @@ public class AllTicketList {
             
 			VBox ticketList = commonObjs.getTicketList();
 			ticketList.getChildren().clear();
-			
+
 			
 			for (int ticketID : ticketDAO.getTicketIDs()) {
 				int ticketProjectID = ticketDAO.getTicketProjectByID(ticketID);
