@@ -338,43 +338,48 @@ public class ProjectDAO {
 		        }
 		} 
 		
-		public static void updateDesc(int projectID, String updatedDesc) {// Attempt to load sqlite driver
-			try {
-	            Class.forName("org.sqlite.JDBC");
-	        } catch (ClassNotFoundException e) {
-	            System.err.println("SQLite JDBC driver not found.");
-	            e.printStackTrace();
-	            return;
-	        }
-			try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
-		        	// Query to select description of ticket with the specified ID from ticket table
-		        	PreparedStatement preparedStatement = connection.prepareStatement("UPDATE project_table SET projectDescription = ? WHERE projectID = ?")) {
-				    preparedStatement.setString(1, updatedDesc);
-		            preparedStatement.setInt(2, projectID);		           		          		  
-		        } catch (SQLException e) {
-		            System.out.println("Failed to retrieve project description from the database: " + e.getMessage());
-		            e.printStackTrace();
-		        }	
+		public static void updateDesc(int projectID, String updatedDesc) {
+		    try {
+		        Class.forName("org.sqlite.JDBC");
+		    } catch (ClassNotFoundException e) {
+		        System.err.println("SQLite JDBC driver not found.");
+		        e.printStackTrace();
+		        return;
+		    }
+		    try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+		         // Query to update description of project with the specified ID
+		         PreparedStatement preparedStatement = connection.prepareStatement("UPDATE project_table SET projectDescription = ? WHERE id = ?")) {
+		        preparedStatement.setString(1, updatedDesc);
+		        preparedStatement.setInt(2, projectID);
+		        int rowsUpdated = preparedStatement.executeUpdate(); // Execute the update
+		        System.out.println("Updated project description. Rows affected: " + rowsUpdated);
+		    } catch (SQLException e) {
+		        System.out.println("Failed to update project description in the database: " + e.getMessage());
+		        e.printStackTrace();
+		    }
 		}
-		
-		public static void updateName(int projectID, String newName) {// Attempt to load sqlite driver
-			try {
-	            Class.forName("org.sqlite.JDBC");
-	        } catch (ClassNotFoundException e) {
-	            System.err.println("SQLite JDBC driver not found.");
-	            e.printStackTrace();
-	            return;
-	        }
-			try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
-		        	// Query to select description of ticket with the specified ID from ticket table
-		        	PreparedStatement preparedStatement = connection.prepareStatement("UPDATE project_table SET projectName = ? WHERE projectID = ?")) {
-				    preparedStatement.setString(1, newName);
-		            preparedStatement.setInt(2, projectID);		           		          		  
-		        } catch (SQLException e) {
-		            System.out.println("Failed to retrieve project description from the database: " + e.getMessage());
-		            e.printStackTrace();
-		        }	
-		
+
+		public static void updateName(int projectID, String updatedName) {
+		    try {
+		        Class.forName("org.sqlite.JDBC");
+		    } catch (ClassNotFoundException e) {
+		        System.err.println("SQLite JDBC driver not found.");
+		        e.printStackTrace();
+		        return;
+		    }
+		    try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db")) {
+		        // Query to update project name with the specified ID
+		        String updateQuery = "UPDATE project_table SET projectName = ? WHERE id = ?";
+		        try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+		            preparedStatement.setString(1, updatedName);
+		            preparedStatement.setInt(2, projectID);
+		            int rowsUpdated = preparedStatement.executeUpdate(); // Execute the update
+		            System.out.println("Updated project name. Rows affected: " + rowsUpdated);
+		        }
+		    } catch (SQLException e) {
+		        System.out.println("Failed to update project name in the database: " + e.getMessage());
+		        e.printStackTrace();
+		    }
 		}
 }
 
