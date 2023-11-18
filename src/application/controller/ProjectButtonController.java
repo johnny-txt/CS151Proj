@@ -2,6 +2,7 @@ package application.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 import application.CommonObjs;
 import application.Main;
@@ -9,6 +10,7 @@ import application.data_access_objects.ProjectDAO;
 import application.data_access_objects.TicketDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -26,7 +28,7 @@ public class ProjectButtonController {
 	@FXML public void openProject() {
 		
 	    // Gets the URL of the "ProjectBox.fxml" file for displaying box for ticket creation
-		URL url = getClass().getClassLoader().getResource("view/ProjectBox.fxml"); //Rename to TicketBox?
+		URL url = getClass().getClassLoader().getResource("view/TicketBox.fxml");
 		
 	    // Gets the URL of the "ProjectTicketList.fxml" file for displaying a list of project tickets
 		URL ticketListUrl = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
@@ -36,7 +38,16 @@ public class ProjectButtonController {
 		
 		try {
 	        // Set the current project ID in CommonObjs based on the clicked projectButton
-			commonObjs.setCurrentProject(commonObjs.getList().getChildren().indexOf(projectButton) + 1);
+			String projectName = projectButton.getText();
+			
+			List<String> nameList = ProjectDAO.getProjectNames();
+			
+			for (int i = 0; i < nameList.size(); i++) {
+				if(projectName.equals(nameList.get(i))) {
+					commonObjs.setCurrentProject(i + 1);
+				}
+			}
+			
 			
 	        // Load the AnchorPane for displaying page for ticket creation
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
@@ -53,7 +64,7 @@ public class ProjectButtonController {
 				
 				// Retrieve project ID, name, and description for each ticket
 				int ticketProjectID = Main.ticketDao.getTicketProjectByID(ticketID);
-				String projectName = ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(ticketID));
+				projectName = ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(ticketID));
 				String ticketName = Main.ticketDao.getTicketNameByID(ticketID);
 				String ticketDesc = Main.ticketDao.getTicketDescByID(ticketID);
 				

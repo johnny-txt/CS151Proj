@@ -2,9 +2,11 @@ package application.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 import application.CommonObjs;
 import application.Main;
+import application.data_access_objects.ProjectDAO;
 import application.data_access_objects.TicketDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,15 +25,30 @@ public class TicketButtonController {
 	@FXML public void openTicket() {
 		
 	    // Gets the URL of the "TicketBox.fxml" file for displaying box for comment creation
-		URL url = getClass().getClassLoader().getResource("view/TicketBox.fxml"); //Rename to CommentBox?
+		URL url = getClass().getClassLoader().getResource("view/TicketBox.fxml");
 		
 	    // Gets the URL of the "ProjectTicketList.fxml" file for displaying a list of ticket comments
 		URL commentListUrl = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
 
 		try {
 			// Set the current ticket ID in CommonObjs based on the clicked ticketButton
-			commonObjs.setCurrentTicket(commonObjs.getTicketList().getChildren().indexOf(ticketButton) + 1);
-			//commonObjs.setCurrentProject(TicketDAO.getTicketProjectByID(commonObjs.getCurrentTicket()));
+			
+			String ticketName = ticketButton.getText();
+
+			ticketName = ticketName.substring(ticketName.indexOf("Ticket Name: ") + 13);
+			ticketName = ticketName.substring(0, ticketName.indexOf("     "));
+			
+			
+			List<String> nameList = TicketDAO.getTicketNames();
+			
+			for (int i = 0; i < nameList.size(); i++) {
+				System.out.println(ticketName + " =? " + nameList.get(i));
+				if(ticketName.equals(nameList.get(i))) {
+					commonObjs.setCurrentTicket(i + 1);
+				}
+			}
+			
+			commonObjs.setCurrentProject(TicketDAO.getTicketProjectByID(commonObjs.getCurrentTicket()));
 			
 			
 	        // Load the AnchorPane for displaying page for comment creation

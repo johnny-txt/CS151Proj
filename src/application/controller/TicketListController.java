@@ -55,7 +55,7 @@ public class TicketListController {
 	}
 	
 	public void Back() {
-        URL url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
+        URL url = getClass().getClassLoader().getResource("view/HomePage.fxml");
 
         try {
             AnchorPane pane = (AnchorPane) FXMLLoader.load(url);
@@ -68,17 +68,17 @@ public class TicketListController {
             }
 
             if (ticketDAO.getTicketIDs().isEmpty()){
-				url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
+				url = getClass().getClassLoader().getResource("view/HomePage.fxml");
 				pane = (AnchorPane) FXMLLoader.load(url);
 				mainBox.getChildren().add(pane);
 			}
 			else {
-				URL ticketBoxUrl = getClass().getClassLoader().getResource("view/AllTickets.fxml");
+				URL allTickets = getClass().getClassLoader().getResource("view/AllTickets.fxml");
 			    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 			    URL ticketListUrl = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
 					
 					// Load AnchorPane for the ProjectBox view
-					AnchorPane ticketBox = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
+					AnchorPane ticketBox = (AnchorPane) FXMLLoader.load(allTickets);
 					
 					
 					// Adds pane1 to the mainBox

@@ -63,9 +63,9 @@ public class Main extends Application {
 			commonObjs.setProjectList(pane);
 			mainBox.getChildren().add(pane);
 			
-			// Load and set up the HomePageWelcome view (homepage)
+			// Load and set up the HomePage view (homepage)
 			if (ticketDao.getTicketIDs().isEmpty()){
-				url = getClass().getClassLoader().getResource("view/HomePageWelcome.fxml");
+				url = getClass().getClassLoader().getResource("view/HomePage.fxml");
 				pane = (AnchorPane) FXMLLoader.load(url);
 				mainBox.getChildren().add(pane);
 			}
@@ -99,7 +99,7 @@ public class Main extends Application {
 			
 			
 			// Load and set up the List view (where existing projects appear)
-			url = getClass().getClassLoader().getResource("view/List.fxml");
+			url = getClass().getClassLoader().getResource("view/AllProjectsList.fxml");
 			VBox list = (VBox) FXMLLoader.load(url);
 			commonObjs.setList(list);
 			

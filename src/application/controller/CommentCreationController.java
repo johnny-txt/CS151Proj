@@ -59,12 +59,12 @@ public class CommentCreationController {
 		CommentBean comment = new CommentBean(time, desc);
 		commentDAO.insertComment(comment, projectID, ticketID);
 		
-		URL url = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
+//		URL url = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
 //	    URL commentUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
-		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/TicketBox.fxml");
+		URL commentBoxUrl = getClass().getClassLoader().getResource("view/TicketBox.fxml");
 		
 		try {
-			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
+			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(commentBoxUrl);
 
 	        HBox mainBox = commonObjs.getMainBox();
 	        
@@ -112,12 +112,12 @@ public class CommentCreationController {
 	@FXML public void cancelNewCommentOp() {
 		
 		// Gets URL of the "TicketCommentList.fxml" file to load list of comments for list
-		URL url = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
+//		URL url = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
 		
 		// Gets URL of the "TicketBox.fxml" file to load comment creation page
-		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/TicketBox.fxml");
+		URL commentBoxUrl = getClass().getClassLoader().getResource("view/TicketBox.fxml");
 		try {
-			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
+			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(commentBoxUrl);
 			
 			HBox mainBox = commonObjs.getMainBox();
 			
