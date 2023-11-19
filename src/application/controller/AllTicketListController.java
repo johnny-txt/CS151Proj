@@ -109,7 +109,7 @@ public class AllTicketListController {
 	public void Search() {
 		
 		// URL for the "ProjectBox.fxml" file
-		String query = SearchBar.getText();
+		String query = SearchBar.getText().toLowerCase();
 		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/ProjectBox.fxml");
 	    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 		try {
@@ -139,7 +139,7 @@ public class AllTicketListController {
 				String ticketDesc = ticketDAO.getTicketDescByID(ticketID);
 				
 				// Check if the ticket belongs to the current project
-				if (ticketName.contains(query) || projectName.contains(query)) {
+				if (ticketName.toLowerCase().contains(query) || projectName.toLowerCase().contains(query)) {
 					
 					// Create a button for the ticket and add it to box1
 					Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
