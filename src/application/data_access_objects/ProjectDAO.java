@@ -331,49 +331,6 @@ public class ProjectDAO {
 			e.printStackTrace();
 		}
 	} 
-		
-	public static void updateDesc(int projectID, String updatedDesc) {
-		try {
-			Class.forName("org.sqlite.JDBC");
-		} catch (ClassNotFoundException e) {
-			System.err.println("SQLite JDBC driver not found.");
-			e.printStackTrace();
-			return;
-		}
-		try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
-				// Query to update description of project with the specified ID
-				PreparedStatement preparedStatement = connection.prepareStatement("UPDATE project_table SET projectDescription = ? WHERE id = ?")) {
-			preparedStatement.setString(1, updatedDesc);
-			preparedStatement.setInt(2, projectID);
-			int rowsUpdated = preparedStatement.executeUpdate(); // Execute the update
-			System.out.println("Updated project description. Rows affected: " + rowsUpdated);
-		} catch (SQLException e) {
-			System.out.println("Failed to update project description in the database: " + e.getMessage());
-			e.printStackTrace();
-		}
-	}
-
-		
-	public static void updateName(int projectID, String updatedName) {
-		try {
-			Class.forName("org.sqlite.JDBC");
-		} catch (ClassNotFoundException e) {
-			System.err.println("SQLite JDBC driver not found.");
-			e.printStackTrace();
-			return;
-		}
-		try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
-				// Query to update description of project with the specified ID
-				PreparedStatement preparedStatement = connection.prepareStatement("UPDATE project_table SET projectName = ? WHERE id = ?")) {
-			preparedStatement.setString(1, updatedName);
-			preparedStatement.setInt(2, projectID);
-			int rowsUpdated = preparedStatement.executeUpdate(); // Execute the update
-			System.out.println("Updated project description. Rows affected: " + rowsUpdated);
-		} catch (SQLException e) {
-			System.out.println("Failed to update project description in the database: " + e.getMessage());
-			e.printStackTrace();
-		}
-	}
 	
 	public static void updateProject(int projectID, String updatedName, LocalDate updatedDate, String updatedDesc) {
 		// Attempt to load driver

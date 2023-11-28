@@ -330,4 +330,69 @@ public class TicketDAO {
         }
         return ticketDesc;
 	}
+
+	public static void updateTicket(int ticketID, String updatedName, String updatedDesc) {
+		
+		try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e) {
+			System.err.println("SQLite JDBC driver not found.");
+			e.printStackTrace();
+			return;
+		}
+		
+		// Connect to database
+		try (Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db")) {
+		          
+			// Inserts project into project table
+			String update = "UPDATE ticket_table SET ticketName = ?, ticketDescription = ? WHERE id = ?";
+			try (PreparedStatement preparedStatement = connect.prepareStatement(update)) {
+				preparedStatement.setString(1, updatedName);
+				preparedStatement.setString(2, updatedDesc);
+				preparedStatement.setInt(3, ticketID);
+				preparedStatement.executeUpdate();
+				System.out.println("Data updated");
+		          
+				// Error message if insertion failed
+			} catch (SQLException e) {
+				System.out.println("Failed to execute the SQL statement: " + e.getMessage());
+			}
+			// Handles exceptions
+		} catch (SQLException e) {
+			System.out.println("Failed to connect to the database: " + e.getMessage());
+		}
+	}
+
+	public static void deleteTicket(int ticketID) {
+		// Attempt to load sqlite driver
+		try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e) {
+			System.err.println("SQLite JDBC driver not found.");
+			e.printStackTrace();
+			return;
+		}
+		
+		String query = "DELETE FROM ticket_table WHERE id = ?";
+		try(Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db");
+				PreparedStatement preparedStatement = connect.prepareStatement(query)){
+			preparedStatement.setInt(1, ticketID);
+			preparedStatement.execute();
+		}
+		catch (SQLException e) {
+			System.out.println("Failed to delete ticket from the database: " + e.getMessage());
+			e.printStackTrace();
+		}
+		
+		query = "DELETE FROM comment_table WHERE ticketID = ?";
+		try(Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db");
+				PreparedStatement preparedStatement = connect.prepareStatement(query)){
+			preparedStatement.setInt(1, ticketID);
+			preparedStatement.execute();
+		}
+		catch (SQLException e) {
+			System.out.println("Failed to delete ticket from the database: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
 }
