@@ -9,8 +9,10 @@ import application.Main;
 import application.data_access_objects.CommentDAO;
 import application.data_access_objects.ProjectDAO;
 import application.data_access_objects.TicketDAO;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -23,6 +25,15 @@ public class CommentListController {
 	public CommentDAO commentDAO;
 	
 	private CommonObjs commonObjs = CommonObjs.getInstance();
+	
+	@FXML private Label ticketName;
+	
+	@FXML private Label ticketDescription;
+	
+	public void initialize() {
+		ticketName.setText("Ticket: " + TicketDAO.getTicketNameByID(commonObjs.getCurrentTicket()));
+		ticketDescription.setText("Description: " + TicketDAO.getTicketDescByID(commonObjs.getCurrentTicket()));
+	}
 	
 	public void createCommentOp() {
 		URL url = getClass().getClassLoader().getResource("view/CommentCreation.fxml");
