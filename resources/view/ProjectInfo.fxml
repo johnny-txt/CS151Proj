@@ -19,7 +19,7 @@
          </font>
       </Label>
       <Label layoutX="40.0" layoutY="84.0" text="Name" />
-      <Label layoutX="39.0" layoutY="144.0" text="Start Date" />
+      <Label layoutX="39.0" layoutY="144.0" text="Edit Date" />
       <Label layoutX="42.0" layoutY="206.0" text="Description" />
       <TextField fx:id="name" layoutX="40.0" layoutY="101.0" />
       <TextArea fx:id="description" layoutX="40.0" layoutY="223.0" prefHeight="87.0" prefWidth="335.0" />
