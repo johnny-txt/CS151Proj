@@ -407,5 +407,38 @@ public class ProjectDAO {
 			System.out.println("Failed to connect to the database: " + e.getMessage());
 		}
 	}
+
+	public static LocalDate getProjectDateByID(int projectID) {
+		LocalDate projDate = null;
+		// Attempt to load driver
+		try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e) {
+			System.err.println("SQLite JDBC driver not found.");
+			e.printStackTrace();
+			return projDate;
+		}
+
+		// Connects to database
+		try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+				// Query to select description of ticket with the specified ID from ticket table
+				PreparedStatement preparedStatement = connection.prepareStatement("SELECT projectDate FROM project_table WHERE id = ?")) {
+			preparedStatement.setInt(1, projectID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			// If set contains a row, means ticket with specified ID was found
+			if (resultSet.next()) {
+				java.sql.Date sqlDate = resultSet.getDate("projectDate");
+	            
+	            projDate = sqlDate.toLocalDate();
+			}
+
+			// Error message if failed to retrieve ticket description
+		} catch (SQLException e) {
+			System.out.println("Failed to retrieve project description from the database: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return projDate;
+	}
 }
 

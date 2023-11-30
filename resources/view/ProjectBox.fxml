@@ -10,7 +10,8 @@
       <Button fx:id="Back" layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#Back" prefHeight="25.0" prefWidth="127.0" style="-fx-background-color: FIREBRICK;" text="Back" textFill="WHITE" />
       <Button fx:id="EditProjectButton" layoutX="200.0" layoutY="361.0" mnemonicParsing="false" onAction="#editProject" prefWidth="60.0" text="Edit" />
       <Button fx:id="DeleteProjectButton" layoutX="140.0" layoutY="361.0" mnemonicParsing="false" onAction="#deleteProject" prefWidth="60.0" text="Delete" />
-      <Label fx:id="projectDescription" layoutX="14.0" layoutY="344.0" text="Description" />
-      <Label fx:id="projectName" layoutX="14.0" layoutY="327.0" text="Project Name" />
+      <Label fx:id="projectDescription" layoutX="14.0" layoutY="342.0" text="Description" />
+      <Label fx:id="projectName" layoutX="14.0" layoutY="325.0" text="Project Name" />
+      <Label fx:id="date" layoutX="260.0" layoutY="325.0" text="Date" />
    </children>
 </AnchorPane>

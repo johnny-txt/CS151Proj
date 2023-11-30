@@ -30,10 +30,13 @@ public class TicketListController {
 	
 	@FXML public Label projectName;
 	
+	@FXML public Label date;
+	
 	@FXML public Label projectDescription;
 	
 	public void initialize() {
 		projectName.setText("Project: " + ProjectDAO.getProjectNameByID(commonObjs.getCurrentProject()));
+		date.setText("Date: " + ProjectDAO.getProjectDateByID(commonObjs.getCurrentProject()));
 		projectDescription.setText("Description: " + ProjectDAO.getProjectDescByID(commonObjs.getCurrentProject()));
 	}
 	
