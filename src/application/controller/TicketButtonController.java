@@ -66,7 +66,9 @@ public class TicketButtonController {
 		    	int commentTicketID = Main.commentDao.getCommentTicketByID(commentID);
 		    	int commentProjectID = Main.commentDao.getCommentProjectByID(commentID);
 				String commentText = Main.commentDao.getCommentByID(commentID);
+				String commentTime = Main.commentDao.getTimestampForComment(commentID);
 				commonObjs.setCommentText(commentText);
+				commonObjs.setCommentTime(commentTime);
 				
 				// Check if the comment belongs to the current ticket (maybe project too)
 				if (commentProjectID == commonObjs.getCurrentProject() && commentTicketID == commonObjs.getCurrentTicket()) {

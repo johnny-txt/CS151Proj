@@ -33,6 +33,8 @@ public class CommonObjs {
     
     private String commentText;
 
+	private String commentTimestamp;
+
     // Instantiates CommonObjs only within this class
     private CommonObjs() {}
 
@@ -150,6 +152,15 @@ public class CommonObjs {
 	
 	public String getCommentText() {
 		return commentText;
+		
+	}
+
+	public void setCommentTime(String commentTimeStamp) {
+		this.commentTimestamp = commentTimeStamp;
+	}
+	
+	public String getCommentTime() {
+		return commentTimestamp;
 		
 	}
 }

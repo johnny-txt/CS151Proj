@@ -392,4 +392,37 @@ public class CommentDAO {
 			System.out.println("Failed to connect to the database: " + e.getMessage());
 		}
 	}
+	
+	public static String getTimestampForComment(int commentID) {
+		String time = null;
+        
+        // Attempt to load driver
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.err.println("SQLite JDBC driver not found.");
+            e.printStackTrace();
+            return time;
+        }
+        
+        // Connect to database
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+            
+            // Query to select text of comment with the specified ID from comment table
+        	PreparedStatement preparedStatement = connection.prepareStatement("SELECT timeStamp FROM comment_table WHERE id = ?")) {
+            preparedStatement.setInt(1, commentID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            // If set contains a row, means ticket with specified ID was found
+            if (resultSet.next()) {
+                time = resultSet.getString("timeStamp");
+            }
+        
+        // Error message if failed to retrieve comment timestamp
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve comment timestamp from the database: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return time;
+	}
 }
