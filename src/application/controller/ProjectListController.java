@@ -53,7 +53,7 @@ public class ProjectListController {
 	}
 	
 	public void Search() {
-		String query = SearchBar.getText();
+		String query = SearchBar.getText().toLowerCase();
 	    URL projectUrl = getClass().getClassLoader().getResource("view/ProjectButton.fxml");
 	    try {
 	    	
@@ -75,7 +75,7 @@ public class ProjectListController {
 				String projectDesc = projectDAO.getProjectDescByID(projectID);
 	    	
 				
-				if (projectName.contains(query)) {
+				if (projectName.toLowerCase().contains(query)) {
 					
 					// Create a button for the ticket and add it to box1
 					Button projectButton = (Button) FXMLLoader.load(projectUrl);
