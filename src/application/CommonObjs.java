@@ -26,6 +26,7 @@ public class CommonObjs {
     // Fields to store the currently selected project and ticket IDs
     private int currentProjectID;
     private int currentTicketID;
+    private int currentCommentID;
     
     private String projectName;
     private String projectDesc;
@@ -128,6 +129,15 @@ public class CommonObjs {
 	
 	public String getProjectDesc() {
 		return projectDesc;
+		
+	}
+	
+	public int getCurrentComment() {
+		return currentCommentID;
+	}
+	
+	public void setCurrentComment(int id) {
+		this.currentCommentID = id;;
 		
 	}
 }
