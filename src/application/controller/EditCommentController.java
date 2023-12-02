@@ -37,7 +37,6 @@ public class EditCommentController {
 	    
 	    timestamp.setText(formattedDateTime);
 	    
-	    int commentID = CommentDAO.getCommentID(commonObjs.getCurrentProject(), commonObjs.getCurrentTicket(), commonObjs.getCommentText());
 	    description.setText(commonObjs.getCommentText());
 	}
 	
@@ -74,19 +73,26 @@ public class EditCommentController {
 	        // Clear the ticketList
 	        commentList.getChildren().clear();
 
-	        for (int commentID1 : CommentDAO.getCommentIDs()) {
-	        	int commentTicketID = Main.commentDao.getCommentTicketByID(commentID1);
+	        for (int commentID1 : Main.commentDao.getCommentIDs()) {
+				
+		    	// Retrieve projectID, ticketID, and text for each comment
+		    	// get ticketprojectID here
+		    	int commentTicketID = Main.commentDao.getCommentTicketByID(commentID1);
 		    	int commentProjectID = Main.commentDao.getCommentProjectByID(commentID1);
 				String commentText = Main.commentDao.getCommentByID(commentID1);
+				String commentTime = Main.commentDao.getTimestampForComment(commentID1);
 				commonObjs.setCommentText(commentText);
-
-	            // Check if the ticket belongs to the current project
-	            if (commentTicketID == commonObjs.getCurrentTicket()) {
-	            	// Load the text of the comment
+				commonObjs.setCommentTime(commentTime);
+				
+				// Check if the comment belongs to the current ticket (maybe project too)
+				if (commentProjectID == commonObjs.getCurrentProject() && commentTicketID == commonObjs.getCurrentTicket()) {
+					
+					// Load the text of the comment
 					AnchorPane commentDisplay = (AnchorPane) FXMLLoader.load(displayCommentUrl);
 					commentList.getChildren().add(commentDisplay);
-	            }
-	        }
+				}
+			}
+
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
@@ -115,15 +121,21 @@ public class EditCommentController {
 			VBox commentList = commonObjs.getCommentList();
 			commentList.getChildren().clear();
 					
-			for (int commentID : commentDAO.getCommentIDs()) {
-				int commentTicketID = commentDAO.getCommentTicketByID(commentID);
-				int commentProjectID = commentDAO.getCommentProjectByID(commentID);
-				String commentText = commentDAO.getCommentByID(commentID);
-				commonObjs.setCommentText(commentText);
+			for (int commentID1 : Main.commentDao.getCommentIDs()) {
 				
-				// Check if the comment belongs to the current ticket (maybe current project)
+		    	// Retrieve projectID, ticketID, and text for each comment
+		    	// get ticketprojectID here
+		    	int commentTicketID = Main.commentDao.getCommentTicketByID(commentID1);
+		    	int commentProjectID = Main.commentDao.getCommentProjectByID(commentID1);
+				String commentText = Main.commentDao.getCommentByID(commentID1);
+				String commentTime = Main.commentDao.getTimestampForComment(commentID1);
+				commonObjs.setCommentText(commentText);
+				commonObjs.setCommentTime(commentTime);
+				
+				// Check if the comment belongs to the current ticket (maybe project too)
 				if (commentProjectID == commonObjs.getCurrentProject() && commentTicketID == commonObjs.getCurrentTicket()) {
 					
+					// Load the text of the comment
 					AnchorPane commentDisplay = (AnchorPane) FXMLLoader.load(commentUrl);
 					commentList.getChildren().add(commentDisplay);
 				}

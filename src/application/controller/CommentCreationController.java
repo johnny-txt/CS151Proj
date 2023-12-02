@@ -88,7 +88,9 @@ public class CommentCreationController {
 				int commentTicketID = commentDAO.getCommentTicketByID(commentID);
 				int commentProjectID = commentDAO.getCommentProjectByID(commentID);
 				String commentText = commentDAO.getCommentByID(commentID);
+				String commentTime = commentDAO.getTimestampForComment(commentID);
 				commonObjs.setCommentText(commentText);
+				commonObjs.setCommentTime(commentTime);
 				
 				// Check if the comment belongs to the current ticket (maybe current project)
 				if (commentProjectID == commonObjs.getCurrentProject() && commentTicketID == commonObjs.getCurrentTicket()) {
