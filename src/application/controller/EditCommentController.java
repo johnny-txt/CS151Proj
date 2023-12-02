@@ -7,9 +7,11 @@ import java.time.format.DateTimeFormatter;
 
 import application.CommonObjs;
 import application.data_access_objects.CommentDAO;
+import application.data_access_objects.ProjectDAO;
 import application.data_access_objects.TicketDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -39,6 +41,51 @@ public class EditCommentController {
 	
 	public void save() {
 	    String newDesc = description.getText();
+	    
+	    int commentID = commonObjs.getCurrentComment();
+	    
+	    CommentDAO.updateComment(commentID, timestamp.getText(), newDesc);
+	    
+	    URL ticketBox = getClass().getClassLoader().getResource("view/TicketBox.fxml");
+	    URL ticketListUrl = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
+	    URL displayComment = getClass().getClassLoader().getResource("view/CommentDisplay.fxml");
+	    
+	    try {
+	        // Load AnchorPane for the AllTickets view
+	        AnchorPane pane = (AnchorPane) FXMLLoader.load(ticketBox);
+	        VBox ticketList = (VBox) FXMLLoader.load(ticketListUrl);
+
+	        // Retrieve the mainBox from commonObjs
+	        HBox mainBox = commonObjs.getMainBox();
+
+	        // If there is a view page in mainBox, remove it
+	        if (mainBox.getChildren().size() > 1) {
+	            mainBox.getChildren().remove(1);
+	        }
+
+	        // Adds the AllTickets view to the mainBox
+	        mainBox.getChildren().add(pane);
+
+	        // Add the ticketList to the AllTickets view
+	        pane.getChildren().add(ticketList);
+
+	        // Clear the ticketList
+	        ticketList.getChildren().clear();
+
+	        for (int commentID1 : CommentDAO.getCommentIDs()) {
+	            int commentTicketID = CommentDAO.getCommentTicketByID(commentID1);
+//	            String projectName = ProjectDAO.getProjectNameByID(ticketProjectID);
+//	            String ticketName = TicketDAO.getTicketNameByID(ticketID1);
+//	            String ticketDesc = TicketDAO.getTicketDescByID(ticketID1);
+
+	            // Check if the ticket belongs to the current project
+	            if (commentTicketID == commonObjs.getCurrentTicket()) {
+	                
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 	
 	public void cancel() {
