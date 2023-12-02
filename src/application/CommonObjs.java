@@ -30,6 +30,8 @@ public class CommonObjs {
     
     private String projectName;
     private String projectDesc;
+    
+    private String commentText;
 
     // Instantiates CommonObjs only within this class
     private CommonObjs() {}
@@ -138,6 +140,16 @@ public class CommonObjs {
 	
 	public void setCurrentComment(int id) {
 		this.currentCommentID = id;;
+		
+	}
+	
+	public void setCommentText(String commentText) {
+		this.commentText = commentText;
+		
+	}
+	
+	public String getCommentText() {
+		return commentText;
 		
 	}
 }

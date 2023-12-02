@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import application.CommonObjs;
+import application.Main;
 import application.data_access_objects.CommentDAO;
 import application.data_access_objects.ProjectDAO;
 import application.data_access_objects.TicketDAO;
@@ -21,9 +22,9 @@ import javafx.scene.text.Text;
 
 public class EditCommentController {
 	
-	@FXML private TextField timestamp;
+	@FXML public TextField timestamp;
 	
-	@FXML private TextArea description;
+	@FXML public TextArea description;
 	
 	private CommonObjs commonObjs = CommonObjs.getInstance();
 	
@@ -36,7 +37,8 @@ public class EditCommentController {
 	    
 	    timestamp.setText(formattedDateTime);
 	    
-	    //description.setText(CommentDAO.getCommentDescByID(commonObjs.getCurrentComment()));
+	    int commentID = CommentDAO.getCommentID(commonObjs.getCurrentProject(), commonObjs.getCurrentTicket(), commonObjs.getCommentText());
+	    description.setText(commonObjs.getCommentText());
 	}
 	
 	public void save() {
@@ -47,13 +49,13 @@ public class EditCommentController {
 	    CommentDAO.updateComment(commentID, timestamp.getText(), newDesc);
 	    
 	    URL ticketBox = getClass().getClassLoader().getResource("view/TicketBox.fxml");
-	    URL ticketListUrl = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
-	    URL displayComment = getClass().getClassLoader().getResource("view/CommentDisplay.fxml");
+	    URL commentListUrl = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
+	    URL displayCommentUrl = getClass().getClassLoader().getResource("view/CommentDisplay.fxml");
 	    
 	    try {
 	        // Load AnchorPane for the AllTickets view
 	        AnchorPane pane = (AnchorPane) FXMLLoader.load(ticketBox);
-	        VBox ticketList = (VBox) FXMLLoader.load(ticketListUrl);
+	        VBox commentList = (VBox) FXMLLoader.load(commentListUrl);
 
 	        // Retrieve the mainBox from commonObjs
 	        HBox mainBox = commonObjs.getMainBox();
@@ -67,20 +69,22 @@ public class EditCommentController {
 	        mainBox.getChildren().add(pane);
 
 	        // Add the ticketList to the AllTickets view
-	        pane.getChildren().add(ticketList);
+	        pane.getChildren().add(commentList);
 
 	        // Clear the ticketList
-	        ticketList.getChildren().clear();
+	        commentList.getChildren().clear();
 
 	        for (int commentID1 : CommentDAO.getCommentIDs()) {
-	            int commentTicketID = CommentDAO.getCommentTicketByID(commentID1);
-//	            String projectName = ProjectDAO.getProjectNameByID(ticketProjectID);
-//	            String ticketName = TicketDAO.getTicketNameByID(ticketID1);
-//	            String ticketDesc = TicketDAO.getTicketDescByID(ticketID1);
+	        	int commentTicketID = Main.commentDao.getCommentTicketByID(commentID1);
+		    	int commentProjectID = Main.commentDao.getCommentProjectByID(commentID1);
+				String commentText = Main.commentDao.getCommentByID(commentID1);
+				commonObjs.setCommentText(commentText);
 
 	            // Check if the ticket belongs to the current project
 	            if (commentTicketID == commonObjs.getCurrentTicket()) {
-	                
+	            	// Load the text of the comment
+					AnchorPane commentDisplay = (AnchorPane) FXMLLoader.load(displayCommentUrl);
+					commentList.getChildren().add(commentDisplay);
 	            }
 	        }
 	    } catch (IOException e) {
@@ -96,7 +100,6 @@ public class EditCommentController {
 			
 			// Load AnchorPane for the ProjectBox view
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
-		    VBox box1 = (VBox) FXMLLoader.load(url);
 					
 			// Retrieve the mainBox from commonObjs
 			HBox mainBox = commonObjs.getMainBox();
@@ -116,6 +119,7 @@ public class EditCommentController {
 				int commentTicketID = commentDAO.getCommentTicketByID(commentID);
 				int commentProjectID = commentDAO.getCommentProjectByID(commentID);
 				String commentText = commentDAO.getCommentByID(commentID);
+				commonObjs.setCommentText(commentText);
 				
 				// Check if the comment belongs to the current ticket (maybe current project)
 				if (commentProjectID == commonObjs.getCurrentProject() && commentTicketID == commonObjs.getCurrentTicket()) {
