@@ -6,6 +6,7 @@ import java.util.List;
 
 import application.CommonObjs;
 import application.Main;
+import application.data_access_objects.CommentDAO;
 import application.data_access_objects.ProjectDAO;
 import application.data_access_objects.TicketDAO;
 import javafx.fxml.FXML;
@@ -16,35 +17,31 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-public class TicketButtonController {
+public class CommentDisplayController {
 	private CommonObjs commonObjs = CommonObjs.getInstance();
 	@FXML
-	private Button ticketButton;
+	public Button commentEdit;
+	public Button commentDelete;
+	public Text commentText;
 	
-	// Method triggered when teh ticketButton is clicked
-	@FXML public void openTicket() {
-		
-	    // Gets the URL of the "TicketBox.fxml" file for displaying box for comment creation
+	public void initialize() {
+		commentText.setText(commonObjs.getCommentText());
+	}
+	
+	// Method triggered when the ticketButton is clicked
+	@FXML public void editComment() {
+		System.out.println(commentText.getText());
+	}
+	public void changeCommentText(String newText) {
+		commentText.setText(newText);
+	}
+	@FXML public void deleteComment() {
 		URL url = getClass().getClassLoader().getResource("view/TicketBox.fxml");
-		
-	    // Gets the URL of the "ProjectTicketList.fxml" file for displaying a list of ticket comments
 		URL commentListUrl = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
 		
-		URL commentDisplayUrl = getClass().getClassLoader().getResource("view/CommentDisplay.fxml");
-
 		try {
-			// Set the current ticket ID in CommonObjs based on the clicked ticketButton
-			
-			String ticketName = ticketButton.getText();
-
-			ticketName = ticketName.substring(ticketName.indexOf("Ticket Name: ") + 13);
-			ticketName = ticketName.substring(0, ticketName.indexOf("     "));
-			
-			
-			List<String> nameList = TicketDAO.getTicketNames();
-			
-			commonObjs.setCurrentTicket(TicketDAO.getTicketIDByName(ticketName));
-			commonObjs.setCurrentProject(TicketDAO.getTicketProjectByID(commonObjs.getCurrentTicket()));
+        	int commentId = CommentDAO.getCommentID(commonObjs.getCurrentProject(), commonObjs.getCurrentTicket(), commentText.getText());
+        	CommentDAO.deleteComment(commentId);
 			
 			
 	        // Load the AnchorPane for displaying page for comment creation
@@ -66,14 +63,14 @@ public class TicketButtonController {
 		    	int commentTicketID = Main.commentDao.getCommentTicketByID(commentID);
 		    	int commentProjectID = Main.commentDao.getCommentProjectByID(commentID);
 				String commentText = Main.commentDao.getCommentByID(commentID);
-				commonObjs.setCommentText(commentText);
 				
 				// Check if the comment belongs to the current ticket (maybe project too)
 				if (commentProjectID == commonObjs.getCurrentProject() && commentTicketID == commonObjs.getCurrentTicket()) {
 					
 					// Load the text of the comment
-					AnchorPane commentDisplay = (AnchorPane) FXMLLoader.load(commentDisplayUrl);
-					commentList.getChildren().add(commentDisplay);
+					Text commentTxt = new Text();
+					commentTxt.setText(commentText);
+					commentList.getChildren().add(commentTxt);
 				}
 			}
 			
@@ -91,10 +88,10 @@ public class TicketButtonController {
 	        mainBox.getChildren().add(pane1);
 	        System.out.println("Current Project: " + commonObjs.getCurrentProject());
 	        System.out.println("Current Ticket: " + commonObjs.getCurrentTicket());
-			    
 		} catch (IOException e) {
 			// Handles any exception that may occur during the view loading process
 			e.printStackTrace();
 		}
 	}
+
 }

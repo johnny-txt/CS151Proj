@@ -139,7 +139,9 @@ public class CommentListController {
 	}
 	
 	public void deleteTicket() {
-		URL url = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
+		URL url = getClass().getClassLoader().getResource("view/TicketBox.fxml");
+		URL ticketListUrl = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
+		URL ticketButtonUrl = getClass().getClassLoader().getResource("view/TicketButton.fxml");
 		
 		try {
         	System.out.println(commonObjs.getCurrentTicket());
@@ -203,7 +205,7 @@ public class CommentListController {
 //		    	}
 			    
 				URL allTickets = getClass().getClassLoader().getResource("view/AllTickets.fxml");
-			    URL ticketListUrl = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
+			    ticketListUrl = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
 					
 				// Load AnchorPane for the ProjectBox view
 				AnchorPane ticketBox = (AnchorPane) FXMLLoader.load(allTickets);

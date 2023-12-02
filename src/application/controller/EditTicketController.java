@@ -47,7 +47,7 @@ public class EditTicketController {
 	    
 	    TicketDAO.updateTicket(ticketID, newTicketName, newDesc);
 
-	    URL allTicketsUrl = getClass().getClassLoader().getResource("view/AllTickets.fxml");
+	    URL allTicketsUrl = getClass().getClassLoader().getResource("view/ProjectBox.fxml");
 	    URL ticketListUrl = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
 	    URL ticketButtonUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+
+
+<AnchorPane maxHeight="30.0" maxWidth="400.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.CommentDisplayController">
+   <children>
+      <Text fx:id="commentText" layoutX="14.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+      <Button fx:id="commentDelete" layoutX="357.0" layoutY="2.0" mnemonicParsing="false" onAction="#deleteComment" prefHeight="25.0" prefWidth="29.0" style="-fx-background-color: FIREBRICK;" text="X" />
+      <Button fx:id="commentEdit" layoutX="321.0" layoutY="2.0" mnemonicParsing="false" onAction="#editComment" prefHeight="25.0" prefWidth="29.0" style="-fx-background-color: ROYALBLUE;" text="✎" textAlignment="CENTER" />
+   </children>
+</AnchorPane>
