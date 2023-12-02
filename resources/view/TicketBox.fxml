@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: GRAY;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.CommentListController">
+<AnchorPane fx:id="ProjectBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: GRAY;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.CommentListController">
    <children>
-      <Button fx:id="AddComment" layoutX="247.0" layoutY="359.0" mnemonicParsing="false" onAction="#createCommentOp" prefHeight="27.0" prefWidth="138.0" style="-fx-background-color: ROYALBLUE;" text="Add Comment" textFill="WHITE" />
-      <Button fx:id="Back" layoutX="14.0" layoutY="360.0" mnemonicParsing="false" onAction="#Back" prefHeight="26.0" prefWidth="64.0" style="-fx-background-color: FIREBRICK;" text="Back" textFill="WHITE" />
+      <Button layoutX="259.0" layoutY="361.0" mnemonicParsing="false" onAction="#createCommentOp" prefHeight="26.0" prefWidth="127.0" style="-fx-background-color: ROYALBLUE;" text="Add Comment" textFill="WHITE" />
+      <Button fx:id="Back" layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#Back" prefHeight="25.0" prefWidth="127.0" style="-fx-background-color: FIREBRICK;" text="Back" textFill="WHITE" />
+      <Button fx:id="EditTicketButton" layoutX="200.0" layoutY="361.0" mnemonicParsing="false" onAction="#editTicket" prefWidth="60.0" text="Edit" />
+      <Button fx:id="DeleteTicketButton" layoutX="140.0" layoutY="361.0" mnemonicParsing="false" onAction="#deleteTicket" prefWidth="60.0" text="Delete" />
+      <Label fx:id="ticketDescription" layoutX="14.0" layoutY="344.0" text="Description" />
+      <Label fx:id="ticketName" layoutX="14.0" layoutY="327.0" text="Ticket Name" />
    </children>
 </AnchorPane>
