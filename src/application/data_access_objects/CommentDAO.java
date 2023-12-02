@@ -328,7 +328,7 @@ public class CommentDAO {
 
             // If set contains a row, means comment with specified ID was found
             if (resultSet.next()) {
-                //commentTicket = resultSet.getInt("ticketID");
+                commentId = resultSet.getInt("id");
             }
 
         // Handles exceptions
@@ -350,29 +350,6 @@ public class CommentDAO {
 		}
 
 		String query = "DELETE FROM comment_table WHERE id = ?";
-		try(Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db");
-				PreparedStatement preparedStatement = connect.prepareStatement(query)){
-			preparedStatement.setInt(1, commentID);
-			preparedStatement.execute();
-		}
-		catch (SQLException e) {
-			System.out.println("Failed to delete comment from the database: " + e.getMessage());
-			e.printStackTrace();
-		}
-
-		query = "DELETE FROM comment_table WHERE commentID = ?";
-		try(Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db");
-				PreparedStatement preparedStatement = connect.prepareStatement(query)){
-			preparedStatement.setInt(1, commentID);
-			preparedStatement.execute();
-		}
-
-		catch (SQLException e) {
-			System.out.println("Failed to comment project from the database: " + e.getMessage());
-			e.printStackTrace();
-		}
-
-		query = "DELETE FROM comment_table WHERE projectID = ?";
 		try(Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db");
 				PreparedStatement preparedStatement = connect.prepareStatement(query)){
 			preparedStatement.setInt(1, commentID);

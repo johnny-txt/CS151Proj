@@ -8,6 +8,7 @@ import application.CommonObjs;
 import application.data_access_objects.CommentDAO;
 import application.data_access_objects.ProjectDAO;
 import application.data_access_objects.TicketDAO;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
@@ -21,11 +22,23 @@ public class CommentDisplayController {
 	
 	private CommentDAO commentDAO;
 	
-	public void editComment() {
+	@FXML
+	public Button commentEdit;
+	public Button commentDelete;
+	public Text commentText;
+	
+	public void initialize() {
+		commentText.setText(commonObjs.getCommentText());
+	}
+	
+	@FXML public void editComment() {
 		URL url = getClass().getClassLoader().getResource("view/CommentInfo.fxml");
 		
 		try {
 			// Loads and AnchorPane for the ProjectCreation view
+			commonObjs.setCurrentComment(CommentDAO.getCommentID(commonObjs.getCurrentProject(), commonObjs.getCurrentTicket(), commentText.getText()));
+			commonObjs.setCommentText(commentText.getText());
+			System.out.println(commonObjs.getCommentText());
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
 			
 			HBox mainBox = commonObjs.getMainBox();
@@ -51,15 +64,15 @@ public class CommentDisplayController {
 		}
 	}
 	
-	public void deleteComment() {
+	@FXML public void deleteComment() {
 		URL url = getClass().getClassLoader().getResource("view/TicketBox.fxml");
 		URL ticketListUrl = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
 		URL commentUrl = getClass().getClassLoader().getResource("view/CommentDisplay.fxml");
 		
 		try {
+        	commonObjs.setCurrentComment(CommentDAO.getCommentID(commonObjs.getCurrentProject(), commonObjs.getCurrentTicket(), commentText.getText()));
         	System.out.println(commonObjs.getCurrentComment());
         	CommentDAO.deleteComment(commonObjs.getCurrentComment());
-        	commonObjs.setCurrentComment(0);
         	
             AnchorPane pane = (AnchorPane) FXMLLoader.load(url);
 
@@ -69,12 +82,28 @@ public class CommentDisplayController {
             if(mainBox.getChildren().size() > 1) {
                 mainBox.getChildren().remove(1);
             }
-
-
-
-            	
-				pane = (AnchorPane) FXMLLoader.load(url);
-				mainBox.getChildren().add(pane);
+    		
+			// Adds pane1 to the mainBox
+		    mainBox.getChildren().add(pane);
+		            
+			VBox commentList = commonObjs.getCommentList();
+			commentList.getChildren().clear();
+					
+			for (int commentID : commentDAO.getCommentIDs()) {
+				int commentTicketID = commentDAO.getCommentTicketByID(commentID);
+				int commentProjectID = commentDAO.getCommentProjectByID(commentID);
+				String commentText = commentDAO.getCommentByID(commentID);
+				commonObjs.setCommentText(commentText);
+				
+				// Check if the comment belongs to the current ticket (maybe current project)
+				if (commentProjectID == commonObjs.getCurrentProject() && commentTicketID == commonObjs.getCurrentTicket()) {
+					
+					AnchorPane commentDisplay = (AnchorPane) FXMLLoader.load(commentUrl);
+					commentList.getChildren().add(commentDisplay);
+				}
+			}
+					
+			pane.getChildren().add(commentList);
             
         } catch(IOException e) {
             e.printStackTrace();

@@ -62,6 +62,7 @@ public class CommentCreationController {
 //		URL url = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
 //	    URL commentUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 		URL commentBoxUrl = getClass().getClassLoader().getResource("view/TicketBox.fxml");
+		URL commentUrl = getClass().getClassLoader().getResource("view/CommentDisplay.fxml");
 		
 		try {
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(commentBoxUrl);
@@ -87,14 +88,14 @@ public class CommentCreationController {
 				int commentTicketID = commentDAO.getCommentTicketByID(commentID);
 				int commentProjectID = commentDAO.getCommentProjectByID(commentID);
 				String commentText = commentDAO.getCommentByID(commentID);
+				commonObjs.setCommentText(commentText);
 				
 				// Check if the comment belongs to the current ticket (maybe current project)
 				if (commentProjectID == commonObjs.getCurrentProject() && commentTicketID == commonObjs.getCurrentTicket()) {
 					
 					// Create a Text node for the comment and add to box1
-					Text commentTxt = new Text();
-					commentTxt.setText(commentText);
-					commentList.getChildren().add(commentTxt);
+					AnchorPane commentDisplay = (AnchorPane) FXMLLoader.load(commentUrl);
+					commentList.getChildren().add(commentDisplay);
 				}
 			}
 			
@@ -116,6 +117,7 @@ public class CommentCreationController {
 		
 		// Gets URL of the "TicketBox.fxml" file to load comment creation page
 		URL commentBoxUrl = getClass().getClassLoader().getResource("view/TicketBox.fxml");
+		URL commentUrl = getClass().getClassLoader().getResource("view/CommentDisplay.fxml");
 		try {
 			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(commentBoxUrl);
 			
@@ -132,12 +134,12 @@ public class CommentCreationController {
 		    	int commentTicketID = commentDAO.getCommentTicketByID(commentID);
 				int commentProjectID = commentDAO.getCommentProjectByID(commentID);
 				String commentText = commentDAO.getCommentByID(commentID);
+				commonObjs.setCommentText(commentText);
 				
 				if (commentProjectID == commonObjs.getCurrentProject() && commentTicketID == commonObjs.getCurrentTicket()) {
 					
-					Text commentTxt = new Text();
-					commentTxt.setText(commentText);
-					commentList.getChildren().add(commentTxt);
+					AnchorPane commentDisplay = (AnchorPane) FXMLLoader.load(commentUrl);
+					commentList.getChildren().add(commentDisplay);
 				}
 			}
 			
