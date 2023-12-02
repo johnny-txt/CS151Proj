@@ -40,94 +40,56 @@ public class EditTicketController {
 	}
 	
 	public void saveTicket() {
-		String newTicketName = name.getText();
-		String newDesc = description.getText();
-		
-		int ticketID = commonObjs.getCurrentTicket();
-		
-		TicketDAO.updateTicket(ticketID, newTicketName, newDesc);
-		
-		//URL url = getClass().getClassLoader().getResource("view/HomePage.fxml");
-		URL url = getClass().getClassLoader().getResource("view/HomePage.fxml");
-		URL buttonUrl = getClass().getClassLoader().getResource("view/TicketButton.fxml");
-	
-		try {
-	        
-			// Load an AnchorPane for the HomePageWelcome view
-			AnchorPane pane = (AnchorPane) FXMLLoader.load(url);
+	    String newTicketName = name.getText();
+	    String newDesc = description.getText();
+	    
+	    int ticketID = commonObjs.getCurrentTicket();
+	    
+	    TicketDAO.updateTicket(ticketID, newTicketName, newDesc);
 
-		    // Retrieve the mainBox from the commonObjs instance
-			HBox mainBox = commonObjs.getMainBox();
+	    URL allTicketsUrl = getClass().getClassLoader().getResource("view/AllTickets.fxml");
+	    URL ticketListUrl = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
+	    URL ticketButtonUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 
-			// Remove the old page
-			if (mainBox.getChildren().size() > 1) {
-				mainBox.getChildren().remove(1);
-			}
-			        
-			// Add the new page
-			if (CommentDAO.getCommentIDs().isEmpty()){
-				url = getClass().getClassLoader().getResource("view/HomePage.fxml");
-				pane = (AnchorPane) FXMLLoader.load(url);
-				mainBox.getChildren().add(pane);
-			}
-			else {
-//				URL allComments = getClass().getClassLoader().getResource("view/AllTickets.fxml");
-//				URL commentUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
-				URL commentListUrl = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
-							
-				// Load AnchorPane for the ProjectBox view
-				AnchorPane ticketBox = (AnchorPane) FXMLLoader.load(commentListUrl);
-							
-							
-				// Adds pane1 to the mainBox
-				mainBox.getChildren().add(ticketBox);
-				            
-				VBox ticketList = (VBox) FXMLLoader.load(commentListUrl);
-				commonObjs.setTicketList(ticketList);
-				ticketList.getChildren().clear();
-							
-				for (int commentID : commentDAO.getCommentIDs()) {
-					int commentTicketID = commentDAO.getCommentTicketByID(commentID);
-					int commentProjectID = commentDAO.getCommentProjectByID(commentID);
-					String commentText = commentDAO.getCommentByID(commentID);
-					
-					// Check if the comment belongs to the current ticket (maybe current project)
-					if (commentProjectID == commonObjs.getCurrentProject() && commentTicketID == commonObjs.getCurrentTicket()) {
-						
-						// Create a Text node for the comment and add to box1
-						Text commentTxt = new Text();
-						commentTxt.setText(commentText);
-//						commentList.getChildren().add(commentTxt);
-					}
-				}
-				ticketBox.getChildren().add(ticketList);
-			}
-			        
-//			VBox coolList = commonObjs.getList();
-//			coolList.getChildren().clear();
-//			AnchorPane lol = commonObjs.getProjectList();
-//			
-//			// Retrieve project names from database
-//			List<String> projNames = ProjectDAO.getProjectNames();
-//			
-//			// Loads the projects in button form
-//			URL urlButton = getClass().getClassLoader().getResource("view/ProjectButton.fxml");
-//			for (String name : projNames) {
-//				Button projectButton = (Button) FXMLLoader.load(urlButton);
-//			    projectButton.setText(name);
-//				coolList.getChildren().add(projectButton);
-//			}
-//			
-//            // Ensure that project names are displayed in the UI if projects exist
-//		    if (projNames.size() > 0 && lol.getChildren().size() < 5) {
-//		    	lol.getChildren().add(coolList);
-//	    	}
+	    try {
+	        // Load AnchorPane for the AllTickets view
+	        AnchorPane allTicketsPane = (AnchorPane) FXMLLoader.load(allTicketsUrl);
+	        VBox ticketList = (VBox) FXMLLoader.load(ticketListUrl);
 
-		        
-		// Handles any exception that may occur during the view loading process
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	        // Retrieve the mainBox from commonObjs
+	        HBox mainBox = commonObjs.getMainBox();
+
+	        // If there is a view page in mainBox, remove it
+	        if (mainBox.getChildren().size() > 1) {
+	            mainBox.getChildren().remove(1);
+	        }
+
+	        // Adds the AllTickets view to the mainBox
+	        mainBox.getChildren().add(allTicketsPane);
+
+	        // Add the ticketList to the AllTickets view
+	        allTicketsPane.getChildren().add(ticketList);
+
+	        // Clear the ticketList
+	        ticketList.getChildren().clear();
+
+	        for (int ticketID1 : TicketDAO.getTicketIDs()) {
+	            int ticketProjectID = TicketDAO.getTicketProjectByID(ticketID1);
+	            String projectName = ProjectDAO.getProjectNameByID(ticketProjectID);
+	            String ticketName = TicketDAO.getTicketNameByID(ticketID1);
+	            String ticketDesc = TicketDAO.getTicketDescByID(ticketID1);
+
+	            // Check if the ticket belongs to the current project
+	            if (ticketProjectID == commonObjs.getCurrentProject()) {
+	                // Create a button for the ticket and add it to the ticketList
+	                Button ticketButton = (Button) FXMLLoader.load(ticketButtonUrl);
+	                ticketButton.setText("Project: " + projectName + "     Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
+	                ticketList.getChildren().add(ticketButton);
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 	
 	public void cancel() {
