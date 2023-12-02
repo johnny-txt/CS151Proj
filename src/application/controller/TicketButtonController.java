@@ -29,6 +29,8 @@ public class TicketButtonController {
 		
 	    // Gets the URL of the "ProjectTicketList.fxml" file for displaying a list of ticket comments
 		URL commentListUrl = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
+		
+		URL commentUrl = getClass().getClassLoader().getResource("view/CommentDisplay.fxml");
 
 		try {
 			// Set the current ticket ID in CommonObjs based on the clicked ticketButton
@@ -69,9 +71,8 @@ public class TicketButtonController {
 				if (commentProjectID == commonObjs.getCurrentProject() && commentTicketID == commonObjs.getCurrentTicket()) {
 					
 					// Load the text of the comment
-					Text commentTxt = new Text();
-					commentTxt.setText(commentText);
-					commentList.getChildren().add(commentTxt);
+					AnchorPane commentDisplay = (AnchorPane) FXMLLoader.load(commentUrl);
+					commentList.getChildren().add(commentDisplay);
 				}
 			}
 			

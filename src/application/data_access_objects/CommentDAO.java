@@ -302,4 +302,117 @@ public class CommentDAO {
         }
         return comment;
     }
+	
+	public static int getCommentID(int projectID, int ticketID, String commentText) {
+        int commentId = -1;
+
+        // Attempt to load driver
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.err.println("SQLite JDBC driver not found.");
+            e.printStackTrace();
+            return commentId;
+        }
+
+        // Connect to database
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT id FROM comment_table WHERE "
+                    + "projectID = ? AND ticketID = ? AND commentText = ?")) {
+
+            // Query to select the ticketID associated with the comment with specified ID from comment table
+            preparedStatement.setInt(1, projectID);
+            preparedStatement.setInt(2, ticketID);
+            preparedStatement.setString(3, commentText);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // If set contains a row, means comment with specified ID was found
+            if (resultSet.next()) {
+                //commentTicket = resultSet.getInt("ticketID");
+            }
+
+        // Handles exceptions
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve project ID from the database: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return commentId;
+    }
+	
+	public static void deleteComment(int commentID) {
+		// Attempt to load sqlite driver
+		try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e) {
+			System.err.println("SQLite JDBC driver not found.");
+			e.printStackTrace();
+			return;
+		}
+
+		String query = "DELETE FROM comment_table WHERE id = ?";
+		try(Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db");
+				PreparedStatement preparedStatement = connect.prepareStatement(query)){
+			preparedStatement.setInt(1, commentID);
+			preparedStatement.execute();
+		}
+		catch (SQLException e) {
+			System.out.println("Failed to delete comment from the database: " + e.getMessage());
+			e.printStackTrace();
+		}
+
+		query = "DELETE FROM comment_table WHERE commentID = ?";
+		try(Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db");
+				PreparedStatement preparedStatement = connect.prepareStatement(query)){
+			preparedStatement.setInt(1, commentID);
+			preparedStatement.execute();
+		}
+
+		catch (SQLException e) {
+			System.out.println("Failed to comment project from the database: " + e.getMessage());
+			e.printStackTrace();
+		}
+
+		query = "DELETE FROM comment_table WHERE projectID = ?";
+		try(Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db");
+				PreparedStatement preparedStatement = connect.prepareStatement(query)){
+			preparedStatement.setInt(1, commentID);
+			preparedStatement.execute();
+		}
+		catch (SQLException e) {
+			System.out.println("Failed to delete comment from the database: " + e.getMessage());
+			e.printStackTrace();
+		}
+	} 
+	
+	public static void updateComment(int commentID, String updatedTime, String updatedText) {
+		// Attempt to load driver
+		try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e) {
+			System.err.println("SQLite JDBC driver not found.");
+			e.printStackTrace();
+			return;
+		}
+  	  
+		// Connect to database
+		try (Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db")) {
+          
+  		  // Inserts project into project table
+			String update = "UPDATE comment_table SET timeStamp = ?, commentText = ? WHERE id = ?";
+			try (PreparedStatement preparedStatement = connect.prepareStatement(update)) {
+				preparedStatement.setString(1, updatedTime);
+				preparedStatement.setString(2, updatedText);
+				preparedStatement.setInt(3, commentID);
+				preparedStatement.executeUpdate();
+				System.out.println("Data updated");
+          
+				// Error message if insertion failed
+			} catch (SQLException e) {
+				System.out.println("Failed to execute the SQL statement: " + e.getMessage());
+			}
+			// Handles exceptions
+		} catch (SQLException e) {
+			System.out.println("Failed to connect to the database: " + e.getMessage());
+		}
+	}
 }
