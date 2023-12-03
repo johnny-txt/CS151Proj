@@ -2,6 +2,7 @@ package application.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 
 import application.CommonObjs;
@@ -12,6 +13,7 @@ import application.data_access_objects.TicketDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -24,6 +26,10 @@ public class EditTicketController {
 	
 	@FXML
 	private Label ticketName;
+	
+	@FXML
+	public ComboBox<String> projectDropdown;
+	
 	@FXML
 	private TextField name;
 	
@@ -34,7 +40,21 @@ public class EditTicketController {
 	
 	private CommonObjs commonObjs = CommonObjs.getInstance();
 	
+	@FXML public void loadProjects() {
+		projectDropdown.getItems().clear();
+		
+		// Retrieve project names from the database and sort them in ascending order
+		List<String> projNames = ProjectDAO.getProjectNames();
+		Collections.sort(projNames, String.CASE_INSENSITIVE_ORDER);
+		
+		// Add project names to the dropdown
+		for (String name : projNames) {
+			projectDropdown.getItems().add(name);
+		}
+	}
+	
 	public void initialize() {
+		projectDropdown.setPromptText(ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(commonObjs.getCurrentTicket())));
 		ticketName.setText(TicketDAO.getTicketNameByID(commonObjs.getCurrentTicket()));
 		name.setText(TicketDAO.getTicketNameByID(commonObjs.getCurrentTicket()));
 		description.setText(TicketDAO.getTicketDescByID(commonObjs.getCurrentTicket()));
@@ -43,10 +63,13 @@ public class EditTicketController {
 	public void saveTicket() {
 	    String newTicketName = name.getText();
 	    String newDesc = description.getText();
+		String pName = projectDropdown.getValue();
+	    int projectID = ProjectDAO.getProjectIDByName(pName);
+	    commonObjs.setCurrentProject(projectID);
 	    
 	    int ticketID = commonObjs.getCurrentTicket();
 	    
-	    TicketDAO.updateTicket(ticketID, newTicketName, newDesc);
+	    TicketDAO.updateTicket(ticketID, projectID, newTicketName, newDesc);
 
 	    URL url = getClass().getClassLoader().getResource("view/TicketBox.fxml");
 	    URL ticketListUrl = getClass().getClassLoader().getResource("view/TicketCommentList.fxml");
