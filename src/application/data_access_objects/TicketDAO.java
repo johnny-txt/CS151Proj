@@ -331,7 +331,7 @@ public class TicketDAO {
         return ticketDesc;
 	}
 
-	public static void updateTicket(int ticketID, String updatedName, String updatedDesc) {
+	public static void updateTicket(int ticketID, int projID, String updatedName, String updatedDesc) {
 		
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -345,11 +345,24 @@ public class TicketDAO {
 		try (Connection connect = DriverManager.getConnection("jdbc:sqlite:database.db")) {
 		          
 			// Inserts project into project table
-			String update = "UPDATE ticket_table SET ticketName = ?, ticketDescription = ? WHERE id = ?";
+			String update = "UPDATE ticket_table SET projectID = ?, ticketName = ?, ticketDescription = ? WHERE id = ?";
 			try (PreparedStatement preparedStatement = connect.prepareStatement(update)) {
-				preparedStatement.setString(1, updatedName);
-				preparedStatement.setString(2, updatedDesc);
-				preparedStatement.setInt(3, ticketID);
+				preparedStatement.setInt(1, projID);
+				preparedStatement.setString(2, updatedName);
+				preparedStatement.setString(3, updatedDesc);
+				preparedStatement.setInt(4, ticketID);
+				preparedStatement.executeUpdate();
+				System.out.println("Data updated");
+		          
+				// Error message if insertion failed
+			} catch (SQLException e) {
+				System.out.println("Failed to execute the SQL statement: " + e.getMessage());
+			}
+			
+			String update2 = "UPDATE comment_table SET projectID = ? WHERE ticketID = ?";
+			try (PreparedStatement preparedStatement = connect.prepareStatement(update2)) {
+				preparedStatement.setInt(1, projID);
+				preparedStatement.setInt(2, ticketID);
 				preparedStatement.executeUpdate();
 				System.out.println("Data updated");
 		          

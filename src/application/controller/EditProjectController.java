@@ -64,9 +64,14 @@ public class EditProjectController {
 		
 	    ProjectDAO.updateProject(projectID, projName, theDate, desc);
 	   
-		// Continue with page change
-		URL url = getClass().getClassLoader().getResource("view/HomePage.fxml");
-		URL buttonUrl = getClass().getClassLoader().getResource("view/ProjectButton.fxml");
+	    // Gets the URL of the "ProjectBox.fxml" file for displaying box for ticket creation
+	 	URL url = getClass().getClassLoader().getResource("view/ProjectBox.fxml");
+	 		
+	 	// Gets the URL of the "ProjectTicketList.fxml" file for displaying a list of project tickets
+	 	URL ticketListUrl = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
+	 		
+	 	// Gets the URL of the "ticketButton.fxml" file for displaying individual ticket button with details
+	 	URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 			    
 		try {
 			        
@@ -81,39 +86,34 @@ public class EditProjectController {
 				mainBox.getChildren().remove(1);
 			}
 			        
-			// Add the new page
-			if (TicketDAO.getTicketIDs().isEmpty()){
-				url = getClass().getClassLoader().getResource("view/HomePage.fxml");
-				pane = (AnchorPane) FXMLLoader.load(url);
-				mainBox.getChildren().add(pane);
-			}
-			else {
-				URL allTickets = getClass().getClassLoader().getResource("view/AllTickets.fxml");
-				URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
-				URL ticketListUrl = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
-							
-				// Load AnchorPane for the ProjectBox view
-				AnchorPane ticketBox = (AnchorPane) FXMLLoader.load(allTickets);
-							
-							
-				// Adds pane1 to the mainBox
-				mainBox.getChildren().add(ticketBox);
-				            
-				VBox ticketList = (VBox) FXMLLoader.load(ticketListUrl);
-				commonObjs.setTicketList(ticketList);
-				ticketList.getChildren().clear();
-							
-				for (int ticketID : TicketDAO.getTicketIDs()) {
-					String projectName = ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(ticketID));
-					String ticketName = TicketDAO.getTicketNameByID(ticketID);
-					String ticketDesc = TicketDAO.getTicketDescByID(ticketID);
+			VBox ticketList = (VBox) FXMLLoader.load(ticketListUrl);
+			System.out.println(commonObjs.getTicketList());
+			commonObjs.setTicketList(ticketList);
+			pane.getChildren().add(commonObjs.getTicketList());
+			
+			// Iterate through all ticket IDs in the database
+			
+			for (int ticketID : TicketDAO.getTicketIDs()) {
+				
+				// Retrieve project ID, name, and description for each ticket
+				int ticketProjectID = TicketDAO.getTicketProjectByID(ticketID);
+				projName = ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(ticketID));
+				String ticketName = TicketDAO.getTicketNameByID(ticketID);
+				String ticketDesc = TicketDAO.getTicketDescByID(ticketID);
+				
+				// Check if the ticket belongs to the current project
+				if (ticketProjectID == commonObjs.getCurrentProject()) {
+					
+					// Load and set up a Button for the ticket
 					Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
-					ticketButton.setText("Project: " + projectName + "     Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
+					ticketButton.setText("Project: " + projName + "     Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
 					ticketList.getChildren().add(ticketButton);
 				}
-				ticketBox.getChildren().add(ticketList);
 			}
-			        
+			
+			mainBox.getChildren().add(pane);
+			
+			
 			VBox coolList = commonObjs.getList();
 			coolList.getChildren().clear();
 			AnchorPane lol = commonObjs.getProjectList();
@@ -142,18 +142,24 @@ public class EditProjectController {
 	}
 	
 	public void cancel() {
-		// URL for the "ProjectBox.fxml" file
-		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/AllTickets.fxml");
-		URL url = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
+		// Gets the URL of the "ProjectBox.fxml" file for displaying box for ticket creation
+		URL url = getClass().getClassLoader().getResource("view/ProjectBox.fxml");
+				
+		// Gets the URL of the "ProjectTicketList.fxml" file for displaying a list of project tickets
+		URL ticketListUrl = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
+				
+		// Gets the URL of the "ticketButton.fxml" file for displaying individual ticket button with details
 		URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
 		try {
+			String projectName = name.getText();
 					
 			// Load AnchorPane for the ProjectBox view
-			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(ticketBoxUrl);
-		    VBox box1 = (VBox) FXMLLoader.load(url);
+			AnchorPane pane1 = (AnchorPane) FXMLLoader.load(url);
+			VBox ticketList = (VBox) FXMLLoader.load(ticketListUrl);
 					
 			// Retrieve the mainBox from commonObjs
 			HBox mainBox = commonObjs.getMainBox();
+			commonObjs.setTicketList(ticketList);
 					
 			// If there is a view page in mainBox, remove it
 			if (mainBox.getChildren().size() > 1) {
@@ -162,25 +168,26 @@ public class EditProjectController {
 					
 			// Adds pane1 to the mainBox
 		    mainBox.getChildren().add(pane1);
-		            
-			VBox ticketList = commonObjs.getTicketList();
-			ticketList.getChildren().clear();
 					
-			for (int ticketID : ticketDAO.getTicketIDs()) {
-				int ticketProjectID = ticketDAO.getTicketProjectByID(ticketID);
-				String projectName = ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(ticketID));
-				String ticketName = ticketDAO.getTicketNameByID(ticketID);
-				String ticketDesc = ticketDAO.getTicketDescByID(ticketID);
-						
-				System.out.println(commonObjs.getCurrentProject());
-							
-				// Create a button for the ticket and add it to box1
-				Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
-				ticketButton.setText("Project: " + projectName + "     Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
-				box1.getChildren().add(ticketButton);
+		    for (int ticketID : TicketDAO.getTicketIDs()) {
+				
+				// Retrieve project ID, name, and description for each ticket
+				int ticketProjectID = TicketDAO.getTicketProjectByID(ticketID);
+				projectName = ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(ticketID));
+				String ticketName = TicketDAO.getTicketNameByID(ticketID);
+				String ticketDesc = TicketDAO.getTicketDescByID(ticketID);
+				
+				// Check if the ticket belongs to the current project
+				if (ticketProjectID == commonObjs.getCurrentProject()) {
+					
+					// Load and set up a Button for the ticket
+					Button ticketButton = (Button) FXMLLoader.load(ticketUrl);
+					ticketButton.setText("Project: " + projectName + "     Ticket Name: " + ticketName + "     Desc: " + ticketDesc);
+					ticketList.getChildren().add(ticketButton);
+				}
 			}
 					
-			pane1.getChildren().add(box1);
+		    pane1.getChildren().add(commonObjs.getTicketList());
 				
 		// Handles exceptions
 		} catch(IOException e) {
