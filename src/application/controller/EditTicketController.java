@@ -54,7 +54,7 @@ public class EditTicketController {
 	}
 	
 	public void initialize() {
-		projectDropdown.setPromptText(ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(commonObjs.getCurrentTicket())));
+		projectDropdown.setValue(ProjectDAO.getProjectNameByID(TicketDAO.getTicketProjectByID(commonObjs.getCurrentTicket())));
 		ticketName.setText(TicketDAO.getTicketNameByID(commonObjs.getCurrentTicket()));
 		name.setText(TicketDAO.getTicketNameByID(commonObjs.getCurrentTicket()));
 		description.setText(TicketDAO.getTicketDescByID(commonObjs.getCurrentTicket()));
