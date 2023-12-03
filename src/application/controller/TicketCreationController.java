@@ -71,6 +71,8 @@ public class TicketCreationController {
 		TicketBean ticket = new TicketBean(projectID, tName, desc);
 		ticketDAO.insertTicket(ticket, projectID);
 		
+		commonObjs.setCurrentProject(projectID);
+		
 		URL ticketBoxUrl = getClass().getClassLoader().getResource("view/ProjectBox.fxml");
 		URL url = getClass().getClassLoader().getResource("view/ProjectTicketList.fxml");
 	    URL ticketUrl = getClass().getClassLoader().getResource("view/ticketButton.fxml");
