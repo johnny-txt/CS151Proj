@@ -112,6 +112,27 @@ public class EditProjectController {
 			}
 			
 			mainBox.getChildren().add(pane);
+			
+			
+			VBox coolList = commonObjs.getList();
+			coolList.getChildren().clear();
+			AnchorPane lol = commonObjs.getProjectList();
+			
+			// Retrieve project names from database
+			List<String> projNames = ProjectDAO.getProjectNames();
+			
+			// Loads the projects in button form
+			URL urlButton = getClass().getClassLoader().getResource("view/ProjectButton.fxml");
+			for (String name : projNames) {
+				Button projectButton = (Button) FXMLLoader.load(urlButton);
+			    projectButton.setText(name);
+				coolList.getChildren().add(projectButton);
+			}
+			
+            // Ensure that project names are displayed in the UI if projects exist
+		    if (projNames.size() > 0 && lol.getChildren().size() < 5) {
+		    	lol.getChildren().add(coolList);
+	    	}
 
 		        
 		// Handles any exception that may occur during the view loading process
